@@ -1,5 +1,8 @@
-package com.example.addressbook;
+package com.example.addressbook.controller;
 
+import com.example.addressbook.model.Contact;
+import com.example.addressbook.model.IContactDAO;
+import com.example.addressbook.model.SqliteContactDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -11,7 +14,7 @@ public class MainController {
     private IContactDAO contactDAO;
 
     public MainController() {
-        contactDAO = new MockContactDAO();
+        contactDAO = new SqliteContactDAO();
     }
 
     @FXML
