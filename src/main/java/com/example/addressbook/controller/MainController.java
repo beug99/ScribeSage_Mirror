@@ -1,9 +1,15 @@
 package com.example.addressbook.controller;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.example.addressbook.model.Contact;
 import com.example.addressbook.model.IContactDAO;
 import com.example.addressbook.model.SqliteContactDAO;
+=======
+import com.example.addressbook.Contact;
+import com.example.addressbook.IContactDAO;
+import com.example.addressbook.MockContactDAO;
+>>>>>>> Stashed changes
 =======
 import com.example.addressbook.Contact;
 import com.example.addressbook.IContactDAO;

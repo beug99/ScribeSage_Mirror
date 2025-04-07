@@ -8,8 +8,11 @@ module com.example.addressbook {
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     exports com.example.addressbook.model;
     opens com.example.addressbook.model to javafx.fxml;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     exports com.example.addressbook.controller;
