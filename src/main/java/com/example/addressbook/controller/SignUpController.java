@@ -46,7 +46,7 @@ public class SignUpController {
 
             Stage stage = (Stage) signUp.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         }
     }

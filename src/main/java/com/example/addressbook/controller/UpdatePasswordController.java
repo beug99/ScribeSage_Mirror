@@ -30,7 +30,7 @@ public class UpdatePasswordController {
             // check if oldPassword matches latest password used in authenticateUser method (current user password)
             Stage stage = (Stage) updatePWordConfirm.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         } else {
             // show error message for failed log in attempts

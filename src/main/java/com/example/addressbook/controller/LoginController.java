@@ -21,6 +21,17 @@ public class LoginController {
     private PasswordField password;
 
     @FXML
+    private Button signUp;
+
+    @FXML
+    protected void onSignUp() throws IOException {
+        Stage stage = (Stage) logIn.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+    }
+
+    @FXML
     private void onLogIn() throws IOException{
         String emailInput = this.eMail.getText();
         String passwordInput = this.password.getText();
@@ -38,7 +49,7 @@ public class LoginController {
             // if user is successful, move them to the main note view
             Stage stage = (Stage) logIn.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         } else {
             // show error message for failed log in attempts
