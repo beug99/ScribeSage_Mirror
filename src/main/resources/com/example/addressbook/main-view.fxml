@@ -12,7 +12,17 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.addressbook.controller.SignUpController">
-
+      fx:controller="com.example.addressbook.controller.HomePageController">
+    <HBox>
+        <Label text="Home Page"/>
+    </HBox>
+    <HBox>
+        <Label text="Notes"/>
+    </HBox>
+    <HBox>
+        <Button text = "Log Out"
+        fx:id="logOut"
+        onAction = "#onLogOut"/>
+    </HBox>
 </VBox>
 

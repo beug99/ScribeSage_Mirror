@@ -24,7 +24,7 @@ public class LoginController {
         String emailInput = this.eMail.getText();
         String passwordInput = this.password.getText();
 
-        if (SqliteConnection.authenticateUser(emailInput, passwordInput)) {
+        if (SqliteUserDAO.authenticateUser(emailInput, passwordInput)) {
             // if user is successful, move them to the main note view
             Stage stage = (Stage) logIn.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));

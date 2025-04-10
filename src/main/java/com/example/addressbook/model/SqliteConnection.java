@@ -24,26 +24,5 @@ public class SqliteConnection {
         return instance;
     }
 
-    public static boolean authenticateUser(String email, String password) {
-        boolean isAuthenticated = false;
 
-        try {
-            // match email and password parameters with userbase
-            PreparedStatement statement = getInstance().prepareStatement(
-                    "SELECT * FROM users WHERE email = ? AND password = ?");
-
-            statement.setString(1, email);
-            statement.setString(2, password);
-
-            ResultSet resultSet = statement.executeQuery();
-            isAuthenticated = resultSet.next();
-
-            resultSet.close();
-            statement.close();
-
-        } catch (SQLException e) {
-            System.err.println("Authentication error: " + e.getMessage());
-        }
-        return isAuthenticated;
-    }
 }
