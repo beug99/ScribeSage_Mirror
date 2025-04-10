@@ -25,7 +25,14 @@ public class LoginController {
         String emailInput = this.eMail.getText();
         String passwordInput = this.password.getText();
 
-        if (SqliteUserDAO.authenticateUser(emailInput, passwordInput)) {
+        if (emailInput.isBlank() || passwordInput.isBlank()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("You must input both your email and password!");
+            alert.showAndWait();
+        }
+        else if (SqliteUserDAO.authenticateUser(emailInput, passwordInput)) {
             // set email input to loggedInEmail
             Session.setLoggedInEmail(emailInput);
             // if user is successful, move them to the main note view

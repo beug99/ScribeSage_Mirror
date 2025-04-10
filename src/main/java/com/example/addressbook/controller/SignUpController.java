@@ -34,10 +34,20 @@ public class SignUpController {
      */
     @FXML
     private void onSignUp() throws IOException {
-        userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), password.getText()));
-        Stage stage = (Stage) signUp.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
+        if (firstName.getText().isBlank()|| lastName.getText().isBlank() || eMail.getText().isBlank() || password.getText().isBlank()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Sign-up Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("You must input both your email and password!");
+            alert.showAndWait();
+        }
+        else {
+            userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), password.getText()));
+
+            Stage stage = (Stage) signUp.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+            stage.setScene(scene);
+        }
     }
 }
