@@ -10,36 +10,35 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import static java.sql.DriverManager.println;
-
-public class LoginController {
+public class UpdatePasswordController {
     @FXML
-    private Button logIn;
-    @FXML
-    private TextField eMail;
-    @FXML
-    private PasswordField password;
+    private PasswordField oldPassword;
 
     @FXML
-    private void onLogIn() throws IOException{
-        String emailInput = this.eMail.getText();
-        String passwordInput = this.password.getText();
+    private PasswordField newPassword;
 
-        if (SqliteUserDAO.authenticateUser(emailInput, passwordInput)) {
-            // set email input to loggedInEmail
-            Session.setLoggedInEmail(emailInput);
-            // if user is successful, move them to the main note view
-            Stage stage = (Stage) logIn.getScene().getWindow();
+    @FXML
+    private Button updatePWordConfirm;
+
+    @FXML
+    private void onUpdatePassword() throws IOException{
+        String oldPassword = this.oldPassword.getText();
+        String newPassword = this.newPassword.getText();
+        String email = Session.getLoggedInEmail();
+
+        if (SqliteUserDAO.updatePassword(email, oldPassword, newPassword)) {
+            // check if oldPassword matches latest password used in authenticateUser method (current user password)
+            Stage stage = (Stage) updatePWordConfirm.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
             stage.setScene(scene);
         } else {
             // show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Failed");
+            alert.setTitle("Update Password Failed");
             alert.setHeaderText(null);
             alert.setContentText("Invalid email or password. Please check you have" + " " +
-                    "typed your email and password correctly");
+                    "typed your old password correctly");
             alert.showAndWait();
         }
     }

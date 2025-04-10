@@ -123,7 +123,6 @@ public class SqliteUserDAO implements IUserDAO {
 
     public static boolean authenticateUser(String email, String password) {
         boolean isAuthenticated = false;
-
         try {
             // match email and password parameters with userbase
             PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
@@ -134,7 +133,6 @@ public class SqliteUserDAO implements IUserDAO {
 
             ResultSet resultSet = statement.executeQuery();
             isAuthenticated = resultSet.next();
-
             resultSet.close();
             statement.close();
 
@@ -143,4 +141,39 @@ public class SqliteUserDAO implements IUserDAO {
         }
         return isAuthenticated;
     }
+
+    public static boolean updatePassword(String email, String oldPassword, String newPassword) {
+        boolean isUpdated = false;
+
+        try {
+            // check if the old password matches input
+            PreparedStatement checkStmt = SqliteConnection.getInstance().prepareStatement(
+                    "SELECT * FROM users WHERE email = ? AND password = ?");
+            checkStmt.setString(1, email);
+            checkStmt.setString(2, oldPassword);
+
+            ResultSet resultSet = checkStmt.executeQuery();
+
+            if (resultSet.next()) {
+                // if password is correct, proceed to update
+                PreparedStatement updateStmt = SqliteConnection.getInstance().prepareStatement(
+                        "UPDATE users SET password = ? WHERE email = ?");
+                updateStmt.setString(1, newPassword);
+                updateStmt.setString(2, email);
+                int rowsAffected = updateStmt.executeUpdate();
+                isUpdated = (rowsAffected > 0);
+
+                updateStmt.close();
+            }
+
+            resultSet.close();
+            checkStmt.close();
+
+        } catch (SQLException e) {
+            System.err.println("Password update error: " + e.getMessage());
+        }
+
+        return isUpdated;
+    }
+
 }

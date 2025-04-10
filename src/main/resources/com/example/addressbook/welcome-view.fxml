@@ -21,6 +21,9 @@
 
     <Button text = "Sign up"
         onAction = "#onSignUp"
+            fx:id="signUp"
     />
+
+
 
 </VBox>

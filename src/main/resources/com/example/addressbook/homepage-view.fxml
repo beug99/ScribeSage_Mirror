@@ -24,5 +24,10 @@
         fx:id="logOut"
         onAction = "#onLogOut"/>
     </HBox>
+    <HBox>
+        <Button text = "Update Password"
+                fx:id="updatePassword"
+                onAction = "#onUpdatePassword"/>
+    </HBox>
 </VBox>
 
