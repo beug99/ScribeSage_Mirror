@@ -1,5 +1,10 @@
 package com.example.addressbook;
 
+import com.example.addressbook.model.Note;
+import com.example.addressbook.model.INoteDAO;
+import com.example.addressbook.model.SqliteNoteDAO;
+
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -7,72 +12,62 @@ import javafx.scene.control.TextField;
 
 public class MainController {
     @FXML
-    private ListView<Contact> contactsListView;
-    private IContactDAO contactDAO;
+    private ListView<Note> noteListView;
+    private INoteDAO noteDAO;
+//
+//    public ListView notesListView;
+//    @FXML
+//    private ListView<Note> noteListView;
+//    private INoteDAO noteDAO;
 
     public MainController() {
-        contactDAO = new MockContactDAO();
+        noteDAO = new SqliteNoteDAO();
     }
 
-    @FXML
-    private TextField firstNameTextField;
-    @FXML
-    private TextField lastNameTextField;
-    @FXML
-    private TextField emailTextField;
-    @FXML
-    private TextField phoneTextField;
 
-    /**
-     * Programmatically selects a contact in the list view and
-     * updates the text fields with the contact's information.
-     * @param contact The contact to select.
-     */
-    private void selectContact(Contact contact) {
-        contactsListView.getSelectionModel().select(contact);
-        firstNameTextField.setText(contact.getFirstName());
-        lastNameTextField.setText(contact.getLastName());
-        emailTextField.setText(contact.getEmail());
-        phoneTextField.setText(contact.getPhone());
+    @FXML
+    private TextField noteNameTextField;
+    @FXML
+    private TextField noteTagsTextField;
+
+
+    private void selectNote(Note note) {
+        noteListView.getSelectionModel().select(note);
+        noteNameTextField.setText(note.getNoteName());
+        noteTagsTextField.setText(note.getNoteTags());
     }
 
-    /**
-     * Renders a cell in the contacts list view by setting the text to the contact's full name.
-     * @param contactListView The list view to render the cell for.
-     * @return The rendered cell.
-     */
-    private ListCell<Contact> renderCell(ListView<Contact> contactListView) {
+
+    private ListCell<Note> renderCell(ListView<Note> noteListView) {
         return new ListCell<>() {
             @Override
-            protected void updateItem(Contact contact, boolean empty) {
-                super.updateItem(contact, empty);
+            protected void updateItem(Note note, boolean empty) {
+                super.updateItem(note, empty);
                 // If the cell is empty, set the text to null, otherwise set it to the contact's full name
-                if (empty || contact == null || contact.getFullName() == null) {
+                if (empty || note == null || note.getNoteName() == null) {
                     setText(null);
                 } else {
-                    setText(contact.getFullName());
+                    setText(note.getNoteName());
                 }
             }
         };
     }
 
-    /**
-     * Synchronizes the contacts list view with the contacts in the database.
-     */
-    private void syncContacts() {
-        contactsListView.getItems().clear();
-        contactsListView.getItems().addAll(contactDAO.getAllContacts());
+
+    private void syncNotes() {
+        noteListView.getItems().clear();
+        noteListView.getItems().addAll(noteDAO.getAllNotes());
     }
 
     @FXML
     public void initialize() {
-        contactsListView.setCellFactory(this::renderCell);
-        syncContacts();
+        noteListView.setCellFactory(this::renderCell);
+        syncNotes();
 
         // Add listener for selection changes
-        contactsListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        noteListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                selectContact(newSelection);
+                selectNote(newSelection);
             }
         });
     }
@@ -80,52 +75,50 @@ public class MainController {
     @FXML
     private void onEditConfirm() {
         // Get the selected contact from the list view
-        Contact selectedContact = contactsListView.getSelectionModel().getSelectedItem();
-        if (selectedContact != null) {
-            selectedContact.setFirstName(firstNameTextField.getText());
-            selectedContact.setLastName(lastNameTextField.getText());
-            selectedContact.setEmail(emailTextField.getText());
-            selectedContact.setPhone(phoneTextField.getText());
-            contactDAO.updateContact(selectedContact);
-            syncContacts();
+        Note selectedNote = noteListView.getSelectionModel().getSelectedItem();
+        if (selectedNote != null) {
+            selectedNote.setNoteName(noteNameTextField.getText());
+            selectedNote.setNoteTags(noteTagsTextField.getText());
+
+            noteDAO.updateNote(selectedNote);
+            syncNotes();
         }
     }
 
     @FXML
     private void onDelete() {
         // Get the selected contact from the list view
-        Contact selectedContact = contactsListView.getSelectionModel().getSelectedItem();
-        if (selectedContact != null) {
-            contactDAO.deleteContact(selectedContact);
-            syncContacts();
+        Note selectedNote = noteListView.getSelectionModel().getSelectedItem();
+        if (selectedNote != null) {
+            noteDAO.deleteNote(selectedNote);
+            syncNotes();
         }
     }
 
     @FXML
     private void onAdd() {
         // Default values for a new contact
-        final String DEFAULT_FIRST_NAME = "New";
-        final String DEFAULT_LAST_NAME = "Contact";
-        final String DEFAULT_EMAIL = "";
-        final String DEFAULT_PHONE = "";
-        Contact newContact = new Contact(DEFAULT_FIRST_NAME, DEFAULT_LAST_NAME, DEFAULT_EMAIL, DEFAULT_PHONE);
+        final String DEFAULT_NOTE_NAME = "New Note";
+        final String DEFAULT_NOTE_TAGS = "Tags";
+
+        Note newNote = new Note(DEFAULT_NOTE_NAME, DEFAULT_NOTE_TAGS);
         // Add the new contact to the database
-        contactDAO.addContact(newContact);
-        syncContacts();
+        noteDAO.addNote(newNote);
+        syncNotes();
         // Select the new contact in the list view
         // and focus the first name text field
-        selectContact(newContact);
-        firstNameTextField.requestFocus();
+        selectNote(newNote);
+        noteNameTextField.requestFocus();
     }
 
     @FXML
     private void onCancel() {
         // Find the selected contact
-        Contact selectedContact = contactsListView.getSelectionModel().getSelectedItem();
-        if (selectedContact != null) {
+        Note selectedNote = noteListView.getSelectionModel().getSelectedItem();
+        if (selectedNote != null) {
             // Since the contact hasn't been modified,
             // we can just re-select it to refresh the text fields
-            selectContact(selectedContact);
+            selectNote(selectedNote);
         }
     }
 }

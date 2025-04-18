@@ -20,7 +20,7 @@
     <Label text="Select a contact to view or edit." />
     <HBox VBox.vgrow="ALWAYS" spacing="20.0">
         <VBox spacing="10.0">
-            <ListView fx:id="contactsListView"  />
+            <ListView fx:id="noteListView"  />
             <Button text="New" onAction="#onAdd" maxWidth="Infinity"/>
         </VBox>
         <VBox spacing="10.0" prefWidth="400" >
@@ -32,12 +32,10 @@
                 </columnConstraints>
                 <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <TextField fx:id="firstNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
-                <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <TextField fx:id="noteNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+                <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
             </GridPane>
             <HBox spacing="10.0" alignment="CENTER">
                 <Button text="Confirm" onAction="#onEditConfirm"/>
