@@ -1,4 +1,4 @@
-package com.example.addressbook;
+package com.example.addressbook.shellsstufftodelete;
 
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
