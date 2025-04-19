@@ -11,12 +11,27 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.addressbook.controller.NewNoteController">
 
-    <VBox alignment="CENTER" spacing = "10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0">
-
+    <VBox alignment="CENTER" >
         <padding>
-            <Insets bottom="20.0" right="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
         </padding>
+
+        <GridPane hgap="5.0" vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints minWidth="0" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <HBox>
+                <Label text="Name:   " GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.vgrow="NEVER"/>
+                <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
+            </HBox>
+            <Button fx:id="homeButton" GridPane.halignment="RIGHT"  text="Home" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <padding>
+                <Insets bottom="15.0" />
+            </padding>
+            <TextField fx:id="searchBarID" text="Search" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        </GridPane>
+
         <Label text="This is the heading section - label, search bar etc" />
         <HBox>
             <Label text="This is where the font/size/colour etc goes" />
