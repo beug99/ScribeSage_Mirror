@@ -16,9 +16,9 @@
         </columnConstraints>
         <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <Button fx:id="homeButton" GridPane.halignment="RIGHT" text="Home" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                 <padding>
-                    <Insets bottom="20.0" />
-                 </padding>
+        <padding>
+            <Insets bottom="20.0" />
+        </padding>
     </GridPane>
 
     <GridPane hgap="5.0" vgap="5.0">
@@ -32,13 +32,13 @@
 
         <TextField fx:id="noteNameTextField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
-      <padding>
-         <Insets bottom="20.0" />
-      </padding>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+        <padding>
+            <Insets bottom="20.0" />
+        </padding>
     </GridPane>
 
     <GridPane hgap="5.0" vgap="5.0">
@@ -46,7 +46,7 @@
         <columnConstraints>
             <ColumnConstraints minWidth="70.0" />
             <ColumnConstraints hgrow="ALWAYS" />
-         <ColumnConstraints />
+            <ColumnConstraints />
 
         </columnConstraints>
         <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -60,15 +60,15 @@
         <Button maxWidth="Infinity" onAction="#onUploadSparseClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="1" />
         <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="2" />
         <CheckBox maxWidth="Infinity" onAction="#onAINoteSummariseClick" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
 
     </GridPane>
-    
+
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -78,7 +78,11 @@
         <padding>
             <Insets top="50.0" />
         </padding>
-        <Button text="Cancel" onAction="#onCancel"/>
+
+        <Button fx:id="cancelButton"
+                text="Cancel"
+                onAction="#onCancelButtonClick"
+        />
         <Button fx:id="createButton"
                 text="Create"
                 onAction="#onCreateButtonClick"

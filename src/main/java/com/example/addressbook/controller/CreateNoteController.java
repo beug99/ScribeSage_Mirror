@@ -21,33 +21,31 @@ public class CreateNoteController {
     public Label folderName;
     public Button createButton;
     public Button homeButton;
-
+    public Button cancelButton;
     public String currentNote;
 
     @FXML
     private ListView<Note> noteListView;
     private INoteDAO noteDAO;
-
-
-    public CreateNoteController() {
-        noteDAO = new SqliteNoteDAO();
-    }
-
     @FXML
     private TextField noteNameTextField;
     @FXML
     private TextField noteTagsTextField;
 
+    public CreateNoteController() {
+        noteDAO = new SqliteNoteDAO();
+    }
 
 
     @FXML
     public void onCreateButtonClick(ActionEvent actionEvent) throws IOException {
+        //When clicked, create instance of a new note, add note to the DB,
+        //Open the New Note scene under with the note name that was entered
+
         NewNoteController labelForFXML = null;
         if (noteNameTextField != null && noteTagsTextField != null) {
             Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText());
-
             noteDAO.addNote(newNote);
-
             currentNote = noteNameTextField.getText();
 
             Stage stage = (Stage) createButton.getScene().getWindow();
@@ -59,9 +57,21 @@ public class CreateNoteController {
         }
     }
 
+    @FXML
     public void onHomeClick(ActionEvent actionEvent) throws IOException {
+        //Will change the FXML file to the home page once I've merged the project
 
         Stage stage = (Stage) homeButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+    }
+
+    @FXML
+    public void onCancelButtonClick() throws IOException {
+        //This just re-loads the page a fresh, no text, no buttons clicked etc
+
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
@@ -77,12 +87,6 @@ public class CreateNoteController {
     }
 
     public void onChangeFolderClick(ActionEvent actionEvent) {
-    }
-
-
-    @FXML
-    public void onCancel(ActionEvent actionEvent) {
-        //Make link to go back to home page
     }
 
 }
