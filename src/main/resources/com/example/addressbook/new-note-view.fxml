@@ -22,27 +22,33 @@
                 <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
             <HBox>
-                <Label text="Name:   " GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.vgrow="NEVER"/>
+                <Label text="Name:   " GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       GridPane.vgrow="NEVER"/>
                 <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
             </HBox>
-            <Button fx:id="homeButton" GridPane.halignment="RIGHT"  text="Home" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <Button fx:id="homeButton" GridPane.halignment="RIGHT" onAction="#onHomeButtonClick"
+                    text="Home" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
             <padding>
                 <Insets bottom="15.0" />
             </padding>
             <TextField fx:id="searchBarID" text="Search" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         </GridPane>
 
-        <Label text="This is the heading section - label, search bar etc" />
         <HBox>
             <Label text="This is where the font/size/colour etc goes" />
         </HBox>
         <HBox>
             <TextArea fx:id="noteTextField">
-
             </TextArea>
         </HBox>
-
-
+        <HBox>
+            <padding>
+                <Insets top="15.0" />
+            </padding>
+            <Button fx:id="saveButton" text="Save" onAction="#onSaveButtonClick"/>
+            <Label text="  "/>
+            <Button fx:id="cancelButton" text="Cancel" onAction="#onCancelButtonClick"/>
+        </HBox>
 
     </VBox>
 
