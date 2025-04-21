@@ -5,13 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="472.0" prefWidth="811.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
-    <HBox>
+<VBox prefHeight="472.0" prefWidth="811.0" spacing="20.0" styleClass="#ffffff" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">    <HBox>
         <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../Images/UserIcon.png" />
             </image></ImageView>
-        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="64.0" prefWidth="189.0" text="First and last name">            <font>
+        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="190.0" text="First and last name">            <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
