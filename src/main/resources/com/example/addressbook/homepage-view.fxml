@@ -40,8 +40,7 @@
                             <Font name="System Bold" size="12.0" />
                         </font></Label>
                 </children></HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                <children>
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">                <children>
                     <ImageView fitHeight="38.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../../../Images/Logout_button.png" />
