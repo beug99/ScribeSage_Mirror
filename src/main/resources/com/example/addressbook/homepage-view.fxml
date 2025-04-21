@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <VBox prefHeight="472.0" prefWidth="814.0" spacing="12.0" styleClass="#FFFFF" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
-    <HBox fx:id="profileBar" onMouseClicked="#toggleNavMenu" prefHeight="0.0" prefWidth="814.0">
+    <HBox fx:id="profileBar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="200.0">
     <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../Images/UserIcon.png" />
             </image></ImageView>
-        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="188.0" text="First and last name">            <font>
+        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name">            <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
