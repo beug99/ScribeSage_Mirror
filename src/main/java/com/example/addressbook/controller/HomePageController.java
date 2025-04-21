@@ -2,6 +2,7 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
+import com.example.addressbook.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,7 +15,15 @@ public class HomePageController {
     private Button logOut;
 
     @FXML
+    private Label nameLabel;
+
+    @FXML
     private Button updatePassword;
+
+    public void initialize() {
+        String fullName = Session.getFirstName() + " " + Session.getLastName();
+        nameLabel.setText(fullName);
+    }
 
     @FXML
     private void onLogOut() throws IOException{

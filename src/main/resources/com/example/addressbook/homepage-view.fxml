@@ -11,8 +11,7 @@
             <image>
                 <Image url="@../../../Images/UserIcon.png" />
             </image></ImageView>
-        <Label contentDisplay="BOTTOM" prefHeight="39.0" prefWidth="190.0" text="First and last name">
-            <font>
+        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="64.0" prefWidth="189.0" text="First and last name">            <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>

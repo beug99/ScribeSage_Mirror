@@ -44,13 +44,19 @@ public class LoginController {
             alert.showAndWait();
         }
         else if (SqliteUserDAO.authenticateUser(emailInput, passwordInput)) {
-            // set email input to loggedInEmail
-            Session.setLoggedInEmail(emailInput);
-            // if user is successful, move them to the main note view
+            // fetch full user details
+            User user = SqliteUserDAO.getUserByEmail(emailInput);
+
+            if (user != null) {
+                Session.setUser(user.getEmail(), user.getFirstName(), user.getLastName());
+            }
+
+            // load the homepage
             Stage stage = (Stage) logIn.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+
         } else {
             // show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);

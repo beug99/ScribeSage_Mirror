@@ -176,4 +176,28 @@ public class SqliteUserDAO implements IUserDAO {
         return isUpdated;
     }
 
+
+    public static User getUserByEmail(String email) {
+        try {
+            Connection conn = SqliteConnection.getInstance();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+                user.setId(rs.getInt("id"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
