@@ -3,16 +3,20 @@ package com.example.addressbook.controller;
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
 import com.example.addressbook.Session;
+import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.awt.event.MouseEvent;
 
 public class HomePageController {
     @FXML
     private Button logOut;
+
+    @FXML private VBox navMenu;
 
     @FXML
     private Label nameLabel;
@@ -39,6 +43,10 @@ public class HomePageController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updatePassword-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+    }
+
+    public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
+        navMenu.setVisible(!navMenu.isVisible());
     }
 
 

@@ -1,27 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="472.0" prefWidth="811.0" spacing="20.0" styleClass="#ffffff" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">    <HBox>
-        <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+<VBox prefHeight="472.0" prefWidth="814.0" spacing="12.0" styleClass="#FFFFF" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
+    <HBox fx:id="profileBar" onMouseClicked="#toggleNavMenu" prefHeight="0.0" prefWidth="814.0">
+    <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../Images/UserIcon.png" />
             </image></ImageView>
-        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="190.0" text="First and last name">            <font>
+        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="188.0" text="First and last name">            <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
     </HBox>
-    <HBox>
-        <Label text="Notes" />
-    </HBox>
-    <HBox>
+    <VBox fx:id="navMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="188.0" stylesheets="@../../../css/navmenu.css" visible="false">
+        <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                <children>
+                    <ImageView fitHeight="39.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../Images/Edit_button.png" />
+                        </image></ImageView>
+                    <Label prefHeight="18.0" prefWidth="138.0" text="Update Details">
+                        <font>
+                            <Font name="System Bold" size="12.0" />
+                        </font></Label>
+                </children></HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                <children>
+                    <ImageView fitHeight="42.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../Images/Settings.png" />
+                        </image></ImageView>
+                    <Label prefHeight="18.0" prefWidth="114.0" text="Settings">
+                        <font>
+                            <Font name="System Bold" size="12.0" />
+                        </font></Label>
+                </children></HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                <children>
+                    <ImageView fitHeight="38.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../Images/Logout_button.png" />
+                        </image>
+                    </ImageView>
+                    <Label prefHeight="18.0" prefWidth="152.0" text="Logout">
+                        <font>
+                            <Font name="System Bold" size="12.0" />
+                        </font></Label>
+                </children></HBox>
+        </children></VBox>
+    <children>
         <Button fx:id="logOut" onAction="#onLogOut" text="Log Out" />
-    </HBox>
-    <HBox>
-        <Button fx:id="updatePassword" onAction="#onUpdatePassword" text="Update Password" />
-    </HBox>
+        <Button mnemonicParsing="false" text="Create New" />
+        <Button fx:id="updatePassword" onAction="#onUpdatePassword" prefWidth="109.0" text="Update Password" />
+    </children>
 </VBox>
