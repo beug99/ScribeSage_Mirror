@@ -83,7 +83,7 @@
                 text="Cancel"
                 onAction="#onCancelButtonClick"
         />
-        <Button fx:id="createButton"
+        <Button fx:id="createNoteButton"
                 text="Create"
                 onAction="#onCreateButtonClick"
         />
