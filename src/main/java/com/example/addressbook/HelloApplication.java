@@ -10,6 +10,9 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     // Constants defining the window title and size
     public static final String TITLE = "SageScribe";
+    public static final double WIDTH = 0;
+    public static final double HEIGHT = 0;
+
 
     @Override
     public void start(Stage stage) throws IOException {
