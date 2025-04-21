@@ -1,13 +1,19 @@
 package com.example.addressbook.model;
 
+import java.awt.*;
+import java.io.File;
+
+
 public class Note {
     private int noteID;
     private String noteName;
     private String noteTags;
+    private String noteText;
 
-    public Note(String noteName, String noteTags){
+    public Note(String noteName, String noteTags, String noteText){
         this.noteName = noteName;
         this.noteTags = noteTags;
+        this.noteText = noteText;
     }
 
     public int getId() {
@@ -24,6 +30,14 @@ public class Note {
 
     public void setNoteName(String noteName) {
         this.noteName = noteName;
+    }
+
+    public String getNoteText() {
+        return noteText;
+    }
+
+    public void setNoteText(String noteText) {
+        this.noteText = noteText;
     }
 
     public String getNoteTags() {

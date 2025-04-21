@@ -7,7 +7,7 @@ public class SqliteNoteConnection {
     private static Connection instance = null;
 
     private SqliteNoteConnection() {
-        String url = "jdbc:sqlite:note.db";
+        String url = "jdbc:sqlite:notes.db";
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
