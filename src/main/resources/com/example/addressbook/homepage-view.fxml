@@ -61,5 +61,5 @@
                         </font></Label>
                 </children></HBox>
         </children></VBox>
-   <Button mnemonicParsing="false" text="Create New" />
+    <Button fx:id="createNewButton" mnemonicParsing="false" text="Create New" onAction="#onCreateNew"/>
 </VBox>

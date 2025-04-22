@@ -4,6 +4,7 @@ import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.awt.event.MouseEvent;
 
@@ -19,6 +22,9 @@ public class HomePageController {
     public HBox profileBar;
     @FXML
     private Label updateDetailsLabel;
+
+    @FXML
+    private Button createNewButton;
 
 
     @FXML private VBox navMenu;
@@ -65,4 +71,13 @@ public class HomePageController {
     }
 
 
+    public void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/create-note-view.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) createNewButton.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

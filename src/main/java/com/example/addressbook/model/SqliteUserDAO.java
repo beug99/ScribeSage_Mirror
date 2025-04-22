@@ -146,7 +146,7 @@ public class SqliteUserDAO implements IUserDAO {
 
         try {
             // Check if the current email and password match
-            PreparedStatement checkStmt = SqliteConnection.getInstance().prepareStatement(
+            PreparedStatement checkStmt = SqliteUserConnection.getInstance().prepareStatement(
                     "SELECT * FROM users WHERE email = ? AND password = ?");
             checkStmt.setString(1, currentEmail);
             checkStmt.setString(2, password);
@@ -155,7 +155,7 @@ public class SqliteUserDAO implements IUserDAO {
 
             if (resultSet.next()) {
                 // If valid, update the email
-                PreparedStatement updateStmt = SqliteConnection.getInstance().prepareStatement(
+                PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
                         "UPDATE users SET email = ? WHERE email = ?");
                 updateStmt.setString(1, newEmail);
                 updateStmt.setString(2, currentEmail);
@@ -214,7 +214,7 @@ public class SqliteUserDAO implements IUserDAO {
 
     public static User getUserByEmail(String email) {
         try {
-            Connection conn = SqliteConnection.getInstance();
+            Connection conn = SqliteUserConnection.getInstance();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
