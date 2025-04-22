@@ -11,7 +11,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     public SqliteNoteDAO() {
-        connection = SqliteConnection.getInstance();
+        connection = SqliteUserConnection.getInstance();
         createTable();
     }
 
