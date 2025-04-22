@@ -1,15 +1,15 @@
 package com.example.addressbook.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
 
-public class SqliteConnection {
+/// could be combined with SqliteUserConnection.java?
+
+public class SqliteNoteConnection {
     private static Connection instance = null;
 
-    private SqliteConnection() {
-        String url = "jdbc:sqlite:users.db";
+    private SqliteNoteConnection() {
+        String url = "jdbc:sqlite:notes.db";
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
@@ -19,10 +19,8 @@ public class SqliteConnection {
 
     public static Connection getInstance() {
         if (instance == null) {
-            new SqliteConnection();
+            new SqliteNoteConnection();
         }
         return instance;
     }
-
-
 }

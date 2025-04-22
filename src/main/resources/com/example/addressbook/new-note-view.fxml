@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.web.HTMLEditor?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.addressbook.controller.NewNoteController">
+    <VBox>
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+
+        <GridPane hgap="5.0" vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints minWidth="0" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <HBox>
+                <Label text="Name:   " GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       GridPane.vgrow="NEVER"/>
+                <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
+            </HBox>
+
+            <Button fx:id="homeButton" GridPane.halignment="RIGHT" onAction="#onHomeButtonClick"
+                    text="Home" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <TextField fx:id="searchBarID" text="Search Note" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Button fx:id="searchBarButton" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                    onAction="#searchBarButtonClick"/>
+        </GridPane>
+
+        <HBox>
+            <padding>
+                <Insets top="15" bottom="15" />
+            </padding>
+
+            <Button fx:id="saveButton" text="Save" onAction="#onSaveButtonClick"/>
+            <Label text="  "/>
+            <Button fx:id="htmlToText" text="HTML to Text" onAction="#htmlToTextButtonClick"/>
+            <Label text="  "/>
+            <Button fx:id="cancelButton" text="Cancel" onAction="#onCancelButtonClick"/>
+        </HBox>
+
+        <TextArea prefHeight="100" maxWidth="400" fx:id="todeletejustdisplay" text="This will be deleted!
+        Just demonstrates what the html is saved as under a string variable."/>
+
+        <VBox alignment="CENTER" fx:id="vBoxForHtmlGui" >
+            <padding>
+                <Insets bottom="15" top="15" />
+            </padding>
+            <HTMLEditor fx:id="htmlEditorGui"/>
+        </VBox>
+    </VBox>
+
+</AnchorPane>

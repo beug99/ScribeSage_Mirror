@@ -48,7 +48,7 @@ public class LoginController {
             Session.setLoggedInEmail(emailInput);
             // if user is successful, move them to the main note view
             Stage stage = (Stage) logIn.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         } else {

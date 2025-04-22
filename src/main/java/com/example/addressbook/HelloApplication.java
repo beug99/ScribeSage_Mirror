@@ -10,7 +10,6 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     // Constants defining the window title and size
     public static final String TITLE = "SageScribe";
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));

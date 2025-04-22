@@ -1,7 +1,5 @@
 package com.example.addressbook.model;
 
-import com.example.addressbook.model.*;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,7 @@ public class SqliteUserDAO implements IUserDAO {
     private Connection connection;
 
     public SqliteUserDAO() {
-        connection = SqliteConnection.getInstance();
+        connection = SqliteUserConnection.getInstance();
         createTable();
     }
 
@@ -125,7 +123,7 @@ public class SqliteUserDAO implements IUserDAO {
         boolean isAuthenticated = false;
         try {
             // match email and password parameters with userbase
-            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+            PreparedStatement statement = SqliteUserConnection.getInstance().prepareStatement(
                     "SELECT * FROM users WHERE email = ? AND password = ?");
 
             statement.setString(1, email);
@@ -147,7 +145,7 @@ public class SqliteUserDAO implements IUserDAO {
 
         try {
             // check if the old password matches input
-            PreparedStatement checkStmt = SqliteConnection.getInstance().prepareStatement(
+            PreparedStatement checkStmt = SqliteUserConnection.getInstance().prepareStatement(
                     "SELECT * FROM users WHERE email = ? AND password = ?");
             checkStmt.setString(1, email);
             checkStmt.setString(2, oldPassword);
@@ -156,7 +154,7 @@ public class SqliteUserDAO implements IUserDAO {
 
             if (resultSet.next()) {
                 // if password is correct, proceed to update
-                PreparedStatement updateStmt = SqliteConnection.getInstance().prepareStatement(
+                PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
                         "UPDATE users SET password = ? WHERE email = ?");
                 updateStmt.setString(1, newPassword);
                 updateStmt.setString(2, email);
