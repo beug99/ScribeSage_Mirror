@@ -142,6 +142,42 @@ public class SqliteUserDAO implements IUserDAO {
         return isAuthenticated;
     }
 
+    public static boolean updateEmail(String currentEmail, String password, String newEmail) {
+        boolean isUpdated = false;
+
+        try {
+            // Check if the current email and password match
+            PreparedStatement checkStmt = SqliteConnection.getInstance().prepareStatement(
+                    "SELECT * FROM users WHERE email = ? AND password = ?");
+            checkStmt.setString(1, currentEmail);
+            checkStmt.setString(2, password);
+
+            ResultSet resultSet = checkStmt.executeQuery();
+
+            if (resultSet.next()) {
+                // If valid, update the email
+                PreparedStatement updateStmt = SqliteConnection.getInstance().prepareStatement(
+                        "UPDATE users SET email = ? WHERE email = ?");
+                updateStmt.setString(1, newEmail);
+                updateStmt.setString(2, currentEmail);
+                int rowsAffected = updateStmt.executeUpdate();
+                isUpdated = (rowsAffected > 0);
+
+                updateStmt.close();
+            }
+
+            resultSet.close();
+            checkStmt.close();
+
+        } catch (SQLException e) {
+            System.err.println("Email update error: " + e.getMessage());
+        }
+
+        return isUpdated;
+    }
+
+
+
     public static boolean updatePassword(String email, String oldPassword, String newPassword) {
         boolean isUpdated = false;
 

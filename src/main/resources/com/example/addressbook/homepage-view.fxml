@@ -6,16 +6,21 @@
 <?import javafx.scene.text.*?>
 
 <VBox prefHeight="472.0" prefWidth="814.0" spacing="12.0" styleClass="#FFFFF" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
-    <HBox fx:id="profileBar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="200.0">
-    <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/UserIcon.png" />
-            </image></ImageView>
-        <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name">            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-    </HBox>
+   <AnchorPane maxWidth="-Infinity" prefHeight="42.0" prefWidth="198.0">
+      <children>
+          <HBox fx:id="profileBar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="200.0">
+          <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../../../Images/UserIcon.png" />
+                  </image>
+            </ImageView>
+              <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name">            <font>
+                      <Font name="System Bold" size="16.0" />
+                  </font>
+              </Label>
+          </HBox>
+      </children>
+   </AnchorPane>
     <VBox fx:id="navMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="188.0" stylesheets="@../../../css/navmenu.css" visible="false">
         <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
@@ -24,10 +29,14 @@
                         <image>
                             <Image url="@../../../Images/Edit_button.png" />
                         </image></ImageView>
-                    <Label prefHeight="18.0" prefWidth="138.0" text="Update Details">
+                    <Label fx:id="updateDetailsLabel"
+                           text="Update Details"
+                           onMouseClicked="#onUpdateDetails"
+                           style="-fx-cursor: hand;">
                         <font>
-                            <Font name="System Bold" size="12.0" />
-                        </font></Label>
+                            <Font name="System Bold" size="12.0"/>
+                        </font>
+                    </Label>
                 </children></HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
                 <children>
@@ -52,9 +61,5 @@
                         </font></Label>
                 </children></HBox>
         </children></VBox>
-    <children>
-        <Button fx:id="logOut" onAction="#onLogOut" text="Log Out" />
-        <Button mnemonicParsing="false" text="Create New" />
-        <Button fx:id="updatePassword" onAction="#onUpdatePassword" prefWidth="109.0" text="Update Password" />
-    </children>
+   <Button mnemonicParsing="false" text="Create New" />
 </VBox>

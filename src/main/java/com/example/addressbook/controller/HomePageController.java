@@ -16,16 +16,15 @@ import java.awt.event.MouseEvent;
 
 public class HomePageController {
     @FXML
-    private Button logOut;
     public HBox profileBar;
+    @FXML
+    private Label updateDetailsLabel;
+
 
     @FXML private VBox navMenu;
 
     @FXML
     private Label nameLabel;
-
-    @FXML
-    private Button updatePassword;
 
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
@@ -42,22 +41,24 @@ public class HomePageController {
             });
         });
     }
+    @FXML
+    private void onUpdateDetails() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
+        stage.setScene(scene);
+    }
 
     @FXML
-    private void onLogOut() throws IOException{
-        Stage stage = (Stage) logOut.getScene().getWindow();
+    private void onLogOut() throws IOException {
+        Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
     }
 
-    @FXML
-    private void onUpdatePassword() throws IOException{
-        Stage stage = (Stage) updatePassword.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updatePassword-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-    }
+
 
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
