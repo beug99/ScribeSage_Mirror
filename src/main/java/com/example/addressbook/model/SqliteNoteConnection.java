@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/// could be combined with SqliteUserConnection.java?
+
 public class SqliteNoteConnection {
     private static Connection instance = null;
 

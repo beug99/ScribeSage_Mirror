@@ -2,12 +2,13 @@ package com.example.addressbook.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+/// could be combined with SqliteNoteConnection.java?
 
-public class SqliteConnection {
+public class SqliteUserConnection {
     private static Connection instance = null;
 
-    private SqliteConnection() {
-        String url = "jdbc:sqlite:notes.db";
+    private SqliteUserConnection() {
+        String url = "jdbc:sqlite:users.db";
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
@@ -17,7 +18,7 @@ public class SqliteConnection {
 
     public static Connection getInstance() {
         if (instance == null) {
-            new SqliteConnection();
+            new SqliteUserConnection();
         }
         return instance;
     }
