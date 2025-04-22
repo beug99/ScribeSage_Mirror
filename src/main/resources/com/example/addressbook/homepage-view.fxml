@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.addressbook.controller.HomePageController">
+    <HBox>
+        <Label text="Home Page"/>
+    </HBox>
+    <HBox>
+        <Label text="Notes"/>
+    </HBox>
+    <HBox>
+        <Button text = "Log Out"
+        fx:id="logOut"
+        onAction = "#onLogOut"/>
+    </HBox>
+    <HBox>
+        <Button text = "Update Password"
+                fx:id="updatePassword"
+                onAction = "#onUpdatePassword"/>
+    </HBox>
+</VBox>
+
