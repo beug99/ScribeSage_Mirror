@@ -9,11 +9,13 @@ public class Note {
     private String noteName;
     private String noteTags;
     private String noteText;
+    private String noteOwner;
 
-    public Note(String noteName, String noteTags, String noteText){
+    public Note(String noteName, String noteTags, String noteText, String noteOwner){
         this.noteName = noteName;
         this.noteTags = noteTags;
         this.noteText = noteText;
+        this.noteOwner = noteOwner;
     }
 
     public int getId() {
@@ -48,5 +50,8 @@ public class Note {
         this.noteTags = noteTags;
     }
 
+    public String getNoteOwner() { return noteOwner;}
+
+    public void setNoteOwner(String owner) { this.noteOwner = owner;}
 
 }
