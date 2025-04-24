@@ -1,7 +1,6 @@
 package com.example.addressbook.model;
 
 import com.example.addressbook.Session;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +12,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     public SqliteNoteDAO() {
-        connection = SqliteUserConnection.getInstance();
+        connection = DatabaseConnection.getInstance("notes.db");
         createTable();
     }
 
@@ -71,7 +70,7 @@ public class SqliteNoteDAO implements INoteDAO {
     }
 
     @Override
-    public Note getNote(int id) {
+    public Note getNoteById(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE id = ?");
             statement.setInt(1, id);
@@ -90,6 +89,30 @@ public class SqliteNoteDAO implements INoteDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Note> getNotesByOwner(String owner) {
+        List<Note> notes = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE noteOwner = ?");
+            statement.setString(1, owner);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String noteName = resultSet.getString("noteName");
+                String noteTags = resultSet.getString("noteTags");
+                String noteText = resultSet.getString("noteText");
+                String noteOwner = resultSet.getString("noteOwner");
+
+                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                note.setId(id);
+                notes.add(note);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return notes;
     }
 
 
@@ -119,13 +142,12 @@ public class SqliteNoteDAO implements INoteDAO {
 
     @Override
     public void deleteNote(Note selectedNote) {
-
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
-//            statement.setInt(1, selectedNote.getId());
-//            statement.executeUpdate();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
+            statement.setInt(1, selectedNote.getId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

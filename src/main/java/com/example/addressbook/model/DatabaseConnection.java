@@ -3,13 +3,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/// could be combined with SqliteNoteConnection.java?
 
-public class SqliteUserConnection {
+public class DatabaseConnection {
     private static Connection instance = null;
 
-    private SqliteUserConnection() {
-        String url = "jdbc:sqlite:users.db";
+
+    private DatabaseConnection(String DbName) {
+        String url = "jdbc:sqlite:" + DbName;
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
@@ -17,9 +17,14 @@ public class SqliteUserConnection {
         }
     }
 
-    public static Connection getInstance() {
+    /**
+     * Establishes a connection to a Database if a
+     * connection instance doesn't already exist
+     * @param DbName Name of Database to connect to
+     */
+    public static Connection getInstance(String DbName) {
         if (instance == null) {
-            new SqliteUserConnection();
+            new DatabaseConnection(DbName);
         }
         return instance;
     }

@@ -21,6 +21,18 @@
           </HBox>
       </children>
    </AnchorPane>
+   <HBox prefHeight="156.0" prefWidth="814.0">
+      <children>
+         <VBox prefHeight="156.0" prefWidth="355.0">
+            <children>
+               <Label text="Choose a note" />
+               <ListView prefHeight="200.0" prefWidth="280.0" />
+            </children>
+         </VBox>
+         <VBox prefHeight="200.0" prefWidth="100.0" />
+          <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#onCreateNew" text="Create New" />
+      </children>
+   </HBox>
     <VBox fx:id="navMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="188.0" stylesheets="@../../../css/navmenu.css" visible="false">
         <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
@@ -29,12 +41,9 @@
                         <image>
                             <Image url="@../../../Images/Edit_button.png" />
                         </image></ImageView>
-                    <Label fx:id="updateDetailsLabel"
-                           text="Update Details"
-                           onMouseClicked="#onUpdateDetails"
-                           style="-fx-cursor: hand;">
+                    <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
                         <font>
-                            <Font name="System Bold" size="12.0"/>
+                            <Font name="System Bold" size="12.0" />
                         </font>
                     </Label>
                 </children></HBox>
@@ -61,5 +70,4 @@
                         </font></Label>
                 </children></HBox>
         </children></VBox>
-    <Button fx:id="createNewButton" mnemonicParsing="false" text="Create New" onAction="#onCreateNew"/>
 </VBox>
