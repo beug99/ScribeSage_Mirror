@@ -27,7 +27,6 @@ public class AI_IntegrationTest {
         MockAIService service = new MockAIService();
         TimeoutException thrown = assertThrows(
                 TimeoutException.class, () -> service.getResponse("This might timeout"));
-
         assertEquals("AI service timed out", thrown.getMessage());
     }
 
