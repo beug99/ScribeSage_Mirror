@@ -1,7 +1,9 @@
 import com.example.addressbook.model.MockAIService;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.concurrent.TimeoutException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AI_IntegrationTest {
 
@@ -18,6 +20,15 @@ public class AI_IntegrationTest {
         MockAIService service = new MockAIService();
         String prompt = service.createPrompt("");
         assertFalse(prompt.isEmpty());
+    }
+
+    @Test
+    void AITimeOut() {
+        MockAIService service = new MockAIService();
+        TimeoutException thrown = assertThrows(
+                TimeoutException.class, () -> service.getResponse("This might timeout"));
+
+        assertEquals("AI service timed out", thrown.getMessage());
     }
 
 }
