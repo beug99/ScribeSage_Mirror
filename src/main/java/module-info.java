@@ -4,6 +4,7 @@ module com.example.addressbook {
     requires java.desktop;
     requires java.sql;
 
+    requires javafx.web;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;
@@ -11,6 +12,4 @@ module com.example.addressbook {
     opens com.example.addressbook.controller to javafx.fxml;
     exports com.example.addressbook.model;
     opens com.example.addressbook.model to javafx.fxml;
-    opens com.example.addressbook.shellsstufftodelete to javafx.fxml;
-    exports com.example.addressbook.shellsstufftodelete;
 }

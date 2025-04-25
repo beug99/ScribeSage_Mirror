@@ -9,11 +9,10 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     // Constants defining the window title and size
-    public static final String TITLE = "Address Book";
-
+    public static final String TITLE = "SageScribe";
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle(TITLE);
         stage.setScene(scene);

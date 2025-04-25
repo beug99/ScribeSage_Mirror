@@ -1,0 +1,34 @@
+/* Dropdown menu container */
+ #navMenu {
+     -fx-background-color: white;
+     -fx-border-color: #dce1e7;
+     -fx-border-radius: 10;
+     -fx-background-radius: 10;
+     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 3);
+     -fx-padding: 10 15 10 15;
+     -fx-spacing: 12;
+ }
+
+ /* Each clickable row (HBox) inside the dropdown */
+ .nav-item {
+     -fx-cursor: hand;
+     -fx-padding: 6 10;
+     -fx-background-radius: 8;
+ }
+
+ /* Hover effect for items */
+ .nav-item:hover {
+     -fx-background-color: #eaf4ff;
+ }
+
+ /* Label inside the item */
+ .nav-label {
+     -fx-font-size: 14px;
+     -fx-text-fill: #333;
+ }
+
+ /* Icons inside the item */
+ .nav-icon {
+     -fx-fit-width: 20px;
+     -fx-fit-height: 20px;
+ }

@@ -11,7 +11,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     public SqliteNoteDAO() {
-        connection = SqliteConnection.getInstance();
+        connection = SqliteUserConnection.getInstance();
         createTable();
     }
 
@@ -22,7 +22,8 @@ public class SqliteNoteDAO implements INoteDAO {
             String query = "CREATE TABLE IF NOT EXISTS notes ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "noteName VARCHAR NOT NULL,"
-                    + "noteTags VARCHAR NOT NULL"
+                    + "noteTags VARCHAR NOT NULL,"
+                    + "noteText VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -34,9 +35,10 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void addNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags) VALUES (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText) VALUES (?, ?, ?)");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
+            statement.setString(3, note.getNoteText());
 
             statement.executeUpdate();
             // Set the id of the new contact
@@ -52,10 +54,11 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void updateNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
-            statement.setInt(3, note.getId());
+            statement.setString(3, note.getNoteText());
+            statement.setInt(4, note.getId());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,8 +74,9 @@ public class SqliteNoteDAO implements INoteDAO {
             if (resultSet.next()) {
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
+                String noteText = resultSet.getString("noteText");
 
-                Note note = new Note(noteName, noteTags);
+                Note note = new Note(noteName, noteTags, noteText);
                 note.setId(id);
                 return note;
             }
@@ -94,7 +98,9 @@ public class SqliteNoteDAO implements INoteDAO {
                 int id = resultSet.getInt("id");
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
-                Note note = new Note(noteName, noteTags);
+                String noteText = resultSet.getString("noteText");
+
+                Note note = new Note(noteName, noteTags, noteText);
                 note.setId(id);
                 notes.add(note);
             }
@@ -106,12 +112,13 @@ public class SqliteNoteDAO implements INoteDAO {
 
     @Override
     public void deleteNote(Note selectedNote) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
-            statement.setInt(1, selectedNote.getId());
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
+//            statement.setInt(1, selectedNote.getId());
+//            statement.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }
