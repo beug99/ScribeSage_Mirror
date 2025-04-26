@@ -1,11 +1,11 @@
 import com.example.addressbook.model.Note;
-import com.example.addressbook.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NoteTest {
+
     //SHELLEY'S TEST FILE
 
     private static final String NOTE_NAME = "Uni Week 1";
@@ -30,26 +30,37 @@ public class NoteTest {
     public void testSetId() {
         note.setId(1);
         assertEquals(1, note.getId());
+        noteTwo.setId(2);
+        assertEquals(2, noteTwo.getId());
     }
 
     @Test
     public void testGetNoteName() {
         assertEquals(NOTE_NAME, note.getNoteName());
+        assertEquals(NOTE_NAME_TWO, noteTwo.getNoteName());
     }
 
     @Test
     public void testSetNoteName() {
-        note.setNoteName(NOTE_NAME_TWO);
-        assertEquals(NOTE_NAME_TWO, note.getNoteName());
+        note.setNoteName(NOTE_NAME);
+        assertEquals(NOTE_NAME, note.getNoteName());
+
+        noteTwo.setNoteName(NOTE_NAME_TWO);
+        assertEquals(NOTE_NAME_TWO, noteTwo.getNoteName());
     }
+
     @Test
     public void testGetNoteTags() {
         assertEquals(NOTE_TAGS, note.getNoteTags());
-    }
-    @Test
-    public void testSetNoteTags() {
-        note.setNoteTags(NOTE_TAGS_TWO);
-        assertEquals(NOTE_TAGS_TWO, note.getNoteTags());
+        assertEquals(NOTE_TAGS_TWO, noteTwo.getNoteTags());
     }
 
+    @Test
+    public void testSetNoteTags() {
+        note.setNoteTags(NOTE_TAGS);
+        assertEquals(NOTE_TAGS, note.getNoteTags());
+
+        noteTwo.setNoteTags(NOTE_TAGS_TWO);
+        assertEquals(NOTE_TAGS_TWO, noteTwo.getNoteTags());
+    }
 }
