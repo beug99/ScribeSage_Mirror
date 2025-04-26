@@ -47,9 +47,10 @@ public class NewNoteController extends CreateNoteController {
         //TODO Currently just goes back to previous page
         // ------------------------- //
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+
     }
 
     @FXML

@@ -5,7 +5,7 @@ public class Note {
     private String noteName;
     private String noteTags;
 
-    public Note(String noteName, String noteTags){
+    public Note(String noteName, String noteTags, String yourNote){
         this.noteName = noteName;
         this.noteTags = noteTags;
     }
@@ -35,4 +35,7 @@ public class Note {
     }
 
 
+    public String getNoteText() {
+        return "";
+    }
 }
