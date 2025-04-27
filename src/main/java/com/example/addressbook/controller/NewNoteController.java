@@ -1,6 +1,8 @@
 package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.model.Note;
+import com.example.addressbook.model.SqliteNoteDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,14 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
 
+    private SqliteNoteDAO noteDOA;
+    private Note currentNote;
+
+    public NewNoteController() {
+        noteDOA = new SqliteNoteDAO();
+    }
+
+
     @FXML
     public void setLabelText(String text) {
         //This sets the note name displayed to the note name just created
@@ -31,13 +41,24 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
+    public void setCurrentNote(Note note) {
+        currentNote = note;
+    }
+
+    @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
-        //TODO This code needs to be changed to save the data to a DB
-        //TODO It currently just displays the html string in textarea so
-        //TODO Yas know what it does - setText(htmlEditorGui.getHtmlText()) will probs
-        //TODO Be the way to save it to the string/Note DB
+        System.out.println("Attempting to save: Note ID_" + currentNote.getId() + " Note name_" + currentNote.getNoteName());
+        String updatedContent = htmlEditorGui.getHtmlText();
+        currentNote.setNoteText(updatedContent);
+        noteDOA.updateNote(currentNote);
 
         todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
+    }
+
+    @FXML
+    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
+        System.out.println("Load button pressed");
+        //TODO Load another view with sole purpose to display notes associated with owner
     }
 
     @FXML

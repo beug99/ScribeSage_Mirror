@@ -33,6 +33,10 @@ public class SqliteNoteDAO implements INoteDAO {
         }
     }
 
+    private void logSQLexecution(Statement statement) {
+        System.out.println("SQL executed: " + statement);
+    }
+
 
     @Override
     public void addNote(Note note) {
@@ -44,6 +48,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(4, Session.getLoggedInEmail());
 
             statement.executeUpdate();
+            logSQLexecution(statement);
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -61,9 +66,10 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
-            statement.setInt(4, note.getId());
-            statement.setString(5, Session.getLoggedInEmail());
+            statement.setString(4, Session.getLoggedInEmail());
+            statement.setInt(5, note.getId());
             statement.executeUpdate();
+            logSQLexecution(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,6 +135,7 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                logSQLexecution(statement);
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner);
                 note.setId(id);
@@ -146,6 +153,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
             statement.setInt(1, selectedNote.getId());
             statement.executeUpdate();
+            logSQLexecution(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }

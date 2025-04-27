@@ -4,7 +4,10 @@ import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,22 +18,30 @@ import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.awt.event.MouseEvent;
+import java.sql.*;
+import java.util.List;
+
+import static com.example.addressbook.Session.getLoggedInEmail;
 
 public class HomePageController {
     @FXML
     public HBox profileBar;
     @FXML
     private Label updateDetailsLabel;
-
     @FXML
     private Button createNewButton;
-
-
-    @FXML private VBox navMenu;
-
+    @FXML
+    private VBox navMenu;
+    @FXML
+    private ListView<String> notesListView;
     @FXML
     private Label nameLabel;
+
+    private INoteDAO noteDAO;
+
+    public HomePageController() {
+        noteDAO = new SqliteNoteDAO();
+    }
 
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
@@ -64,12 +75,21 @@ public class HomePageController {
         stage.setScene(scene);
     }
 
+    @FXML
+    private void onLoadNote() throws IOException {
+    //TODO load selected note db
+    }
+
+    @FXML
+    private void onDeleteNote() throws IOException {
+    //TODO delete selected note from db
+    }
+
 
 
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
-
 
     public void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/create-note-view.fxml"));
