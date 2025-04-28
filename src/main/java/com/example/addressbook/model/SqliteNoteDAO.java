@@ -28,6 +28,7 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteOwner VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
+            logSQLexecution(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,6 +82,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
+            logSQLexecution(statement);
             if (resultSet.next()) {
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
@@ -104,6 +106,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE noteOwner = ?");
             statement.setString(1, owner);
             ResultSet resultSet = statement.executeQuery();
+            logSQLexecution(statement);
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String noteName = resultSet.getString("noteName");

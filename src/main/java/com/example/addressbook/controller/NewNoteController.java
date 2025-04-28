@@ -43,7 +43,7 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void setCurrentNote(Note note) {
         currentNote = note;
-        System.out.println("Note set in NewNoteController " + currentNote.getNoteName());
+        System.out.println("Note set in NewNoteController: " + currentNote.getNoteName());
         if (currentNoteName != null && htmlEditorGui != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());

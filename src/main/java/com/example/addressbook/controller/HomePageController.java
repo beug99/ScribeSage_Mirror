@@ -84,17 +84,17 @@ public class HomePageController {
         stage.setScene(scene);
     }
 
+    // Loads a selected note from the LoadNote listener
     @FXML
     private void onLoadNote() throws IOException {
         if (selectedNote != null) {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/new-note-view.fxml"));
             Parent root = fxmlLoader.load();
 
+            // Sets Note and Note name for NoteController
             NewNoteController noteController = fxmlLoader.getController();
-
             noteController.setCurrentNote(selectedNote);
-            System.out.println("Selected note: " + selectedNote.getNoteName() + " Owner: " + selectedNote.getNoteOwner() + " ID: " + selectedNote.getId());
-
             noteController.setLabelText(selectedNote.getNoteName());
 
             Stage stage = (Stage) notesListView.getScene().getWindow();
@@ -106,29 +106,34 @@ public class HomePageController {
         }
     }
 
+    // Deletes the selected note in the user's notes list from notes DB
     @FXML
     private void onDeleteNote() throws IOException {
         if (selectedNote != null) {
             noteDAO.deleteNote(selectedNote);
-            System.out.println("Deleted note: " + selectedNote.getNoteName());
-
             loadUserNotes();
         } else {
             System.out.println("No note selected to delete.");
         }
-
     }
 
+    // Presents current user's notes from db
     private void loadUserNotes() {
         try {
+            // Load notes associated with user email from notes db
             List<Note> userNotes = noteDAO.getNotesByOwner(Session.getLoggedInEmail());
+
+            // Populates the observable list with note objects
             notesObservableList = FXCollections.observableArrayList(userNotes);
+
+            // Represent note objects via name (what appears visually)
             noteNamesObservableList = FXCollections.observableArrayList();
             for (Note note : notesObservableList) {
                 noteNamesObservableList.add(note.getNoteName());
             }
             notesListView.setItems(noteNamesObservableList);
 
+            // Listener for when user selects a note to Load or Delete
             notesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -136,7 +141,8 @@ public class HomePageController {
                     if (selectedNoteName != null) {
                         for (Note note : notesObservableList) {
                             if (note.getNoteName().equals(selectedNoteName)) {
-                                selectedNote = note;
+                                // Note to be passed for Loading/Deleting
+                                setSelectedNote(note);
                                 break;
                             }
                         }
@@ -180,8 +186,6 @@ public class HomePageController {
         }
     }
 */
-
-
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
