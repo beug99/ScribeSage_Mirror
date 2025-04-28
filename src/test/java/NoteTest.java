@@ -11,10 +11,12 @@ public class NoteTest {
     private static final String NOTE_NAME = "Uni Week 1";
     private static final String NOTE_TAGS = "Math";
     private static final String NOTE_TEXT = "This is my note";
+    private static final String NOTE_OWNER = "Test@user";
 
     private static final String NOTE_NAME_TWO = "Uni Week 2";
     private static final String NOTE_TAGS_TWO = "Databases";
     private static final String NOTE_TEXT_TWO = "This is my second note";
+    private static final String NOTE_OWNER_TWO = "Test@user";
 
 
     private Note note;
@@ -22,8 +24,8 @@ public class NoteTest {
 
     @BeforeEach
     public void setUp() {
-        note = new Note(NOTE_NAME, NOTE_TAGS, NOTE_TEXT);
-        noteTwo = new Note(NOTE_NAME_TWO, NOTE_TAGS_TWO, NOTE_TEXT_TWO);
+        note = new Note(NOTE_NAME, NOTE_TAGS, NOTE_TEXT, NOTE_OWNER);
+        noteTwo = new Note(NOTE_NAME_TWO, NOTE_TAGS_TWO, NOTE_TEXT_TWO, NOTE_OWNER_TWO);
     }
 
     @Test
