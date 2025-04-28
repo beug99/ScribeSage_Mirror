@@ -91,7 +91,10 @@ public class HomePageController {
             Parent root = fxmlLoader.load();
 
             NewNoteController noteController = fxmlLoader.getController();
+
             noteController.setCurrentNote(selectedNote);
+            System.out.println("Selected note: " + selectedNote.getNoteName() + " Owner: " + selectedNote.getNoteOwner() + " ID: " + selectedNote.getId());
+
             noteController.setLabelText(selectedNote.getNoteName());
 
             Stage stage = (Stage) notesListView.getScene().getWindow();
@@ -101,7 +104,6 @@ public class HomePageController {
         } else {
             System.out.println("No note selected to load.");
         }
-
     }
 
     @FXML

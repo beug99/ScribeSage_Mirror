@@ -43,7 +43,27 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void setCurrentNote(Note note) {
         currentNote = note;
+        System.out.println("Note set in NewNoteController " + currentNote.getNoteName());
+        if (currentNoteName != null && htmlEditorGui != null) {
+            currentNoteName.setText(currentNote.getNoteName());
+            htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            System.out.println("UI updated from setCurrentNote().");
+        }
+
     }
+
+    @FXML
+    public void initialize() {
+        System.out.println("Initialising NewNoteController");
+        if(currentNote != null) {
+            currentNoteName.setText(currentNote.getNoteName());
+            htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
+        } else {
+            System.out.println("Current Note is null");
+        }
+     }
+
 
     @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
