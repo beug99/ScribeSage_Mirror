@@ -36,14 +36,20 @@
             <padding>
                 <Insets bottom="15" top="15" />
             </padding>
-
+            <!-- instead of having the blank labels, add padding between buttons in the hbox -->
             <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save" />
             <Label text="  " />
+
             <Button fx:id= "loadButton" onAction="#onLoadButtonClick" text="Button" />
             <Label />
+
             <Button fx:id="htmlToText" onAction="#htmlToTextButtonClick" text="HTML to Text" />
             <Label text="  " />
+
             <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel" />
+
+            <Button fx:id="enhanceTextButton" text="Enhance Selected Text" onAction="#onEnhanceButton" />
+
         </HBox>
 
         <TextArea fx:id="todeletejustdisplay" maxWidth="400" prefHeight="100" text="This will be deleted!         Just demonstrates what the html is saved as under a string variable." />
