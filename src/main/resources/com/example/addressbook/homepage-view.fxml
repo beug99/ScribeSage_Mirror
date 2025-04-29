@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="472.0" prefWidth="814.0" spacing="12.0" styleClass="#FFFFF" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
+<VBox prefHeight="498.0" prefWidth="814.0" spacing="12.0" styleClass="#FFFFF" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
    <AnchorPane maxWidth="-Infinity" prefHeight="42.0" prefWidth="198.0">
       <children>
           <HBox fx:id="profileBar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="200.0">
@@ -21,53 +21,76 @@
           </HBox>
       </children>
    </AnchorPane>
-   <HBox prefHeight="156.0" prefWidth="814.0">
+   <HBox prefHeight="120.0" prefWidth="814.0">
       <children>
-         <VBox prefHeight="156.0" prefWidth="355.0">
-            <children>
-               <Label text="Choose a note" />
-               <ListView prefHeight="200.0" prefWidth="280.0" />
-            </children>
+          <VBox fx:id="navMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="188.0" stylesheets="@../../../css/navmenu.css" visible="false">
+              <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                      <children>
+                          <ImageView fitHeight="39.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../../../Images/Edit_button.png" />
+                              </image>
+                     </ImageView>
+                          <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
+                              <font>
+                                  <Font name="System Bold" size="12.0" />
+                              </font>
+                          </Label>
+                      </children>
+               </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                      <children>
+                          <ImageView fitHeight="42.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../../../Images/Settings.png" />
+                              </image>
+                     </ImageView>
+                          <Label prefHeight="18.0" prefWidth="114.0" text="Settings">
+                              <font>
+                                  <Font name="System Bold" size="12.0" />
+                              </font>
+                     </Label>
+                      </children>
+               </HBox>
+                  <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">                <children>
+                          <ImageView fitHeight="38.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../../../Images/Logout_button.png" />
+                              </image>
+                          </ImageView>
+                          <Label prefHeight="18.0" prefWidth="152.0" text="Logout">
+                              <font>
+                                  <Font name="System Bold" size="12.0" />
+                              </font>
+                     </Label>
+                      </children>
+               </HBox>
+              </children>
          </VBox>
-         <VBox prefHeight="200.0" prefWidth="100.0" />
-          <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#onCreateNew" text="Create New" />
       </children>
    </HBox>
-    <VBox fx:id="navMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="188.0" stylesheets="@../../../css/navmenu.css" visible="false">
-        <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                <children>
-                    <ImageView fitHeight="39.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../Images/Edit_button.png" />
-                        </image></ImageView>
-                    <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
-                        <font>
-                            <Font name="System Bold" size="12.0" />
-                        </font>
-                    </Label>
-                </children></HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                <children>
-                    <ImageView fitHeight="42.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../Images/Settings.png" />
-                        </image></ImageView>
-                    <Label prefHeight="18.0" prefWidth="114.0" text="Settings">
-                        <font>
-                            <Font name="System Bold" size="12.0" />
-                        </font></Label>
-                </children></HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">                <children>
-                    <ImageView fitHeight="38.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../Images/Logout_button.png" />
-                        </image>
-                    </ImageView>
-                    <Label prefHeight="18.0" prefWidth="152.0" text="Logout">
-                        <font>
-                            <Font name="System Bold" size="12.0" />
-                        </font></Label>
-                </children></HBox>
-        </children></VBox>
+   <Label prefHeight="21.0" prefWidth="796.0" text="                                                                                                 Choose a note">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+ <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="0.0" prefHeight="196.0" prefWidth="814.0">
+      <children>
+       <AnchorPane layoutX="1.0" layoutY="172.0" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="95.0" prefWidth="814.0">
+            <children>
+                <Button fx:id="createNewButton" layoutX="364.0" layoutY="1.0" mnemonicParsing="false" onAction="#onCreateNew" prefHeight="2.0" prefWidth="86.0" text="Create New" />
+            </children></AnchorPane>
+         <ListView layoutX="134.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="564.0" />
+         <SplitPane layoutX="375.0" layoutY="173.0" orientation="VERTICAL" prefHeight="0.0" prefWidth="83.0" />
+      </children>
+   </AnchorPane>
+   <HBox prefHeight="0.0" prefWidth="814.0">
+      <children>
+         <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+               <VBox prefHeight="156.0" prefWidth="355.0" />
+            </children></VBox>
+      </children>
+   </HBox>
 </VBox>
