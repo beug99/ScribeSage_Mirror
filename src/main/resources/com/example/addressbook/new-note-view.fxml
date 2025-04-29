@@ -39,14 +39,10 @@
 
             <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save" />
             <Label text="  " />
-            <Button fx:id= "loadButton" onAction="#onLoadButtonClick" text="Button" />
-            <Label />
-            <Button fx:id="htmlToText" onAction="#htmlToTextButtonClick" text="HTML to Text" />
-            <Label text="  " />
+<!--            <Button fx:id= "loadButton" onAction="#onLoadButtonClick" text="Button" />-->
+<!--            <Label text="  " />-->
             <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel" />
         </HBox>
-
-        <TextArea fx:id="todeletejustdisplay" maxWidth="400" prefHeight="100" text="This will be deleted!         Just demonstrates what the html is saved as under a string variable." />
 
         <VBox fx:id="vBoxForHtmlGui" alignment="CENTER">
             <padding>
