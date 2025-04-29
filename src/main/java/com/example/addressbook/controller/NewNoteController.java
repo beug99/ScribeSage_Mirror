@@ -30,6 +30,7 @@ public class NewNoteController extends CreateNoteController {
     private Note currentNote;
 
     public NewNoteController() {
+        super();
         noteDOA = new SqliteNoteDAO();
     }
 

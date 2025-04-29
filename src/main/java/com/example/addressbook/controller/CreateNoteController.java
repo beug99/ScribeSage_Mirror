@@ -30,7 +30,7 @@ public class CreateNoteController {
 
     private INoteDAO noteDAO;
 
-    private CreateNoteController() {
+    CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
     }
 
