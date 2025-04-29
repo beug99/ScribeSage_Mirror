@@ -24,6 +24,7 @@ public class NewNoteController extends CreateNoteController {
     public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
+    public TextArea todeletejustdisplay;
 
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
@@ -71,13 +72,15 @@ public class NewNoteController extends CreateNoteController {
         String updatedContent = htmlEditorGui.getHtmlText();
         currentNote.setNoteText(updatedContent);
         noteDOA.updateNote(currentNote);
+
+        todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
     }
 
-//    @FXML
-//    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
-//        System.out.println("Load button pressed");
-//        //TODO Load another view with sole purpose to display notes associated with owner
-//    }
+    @FXML
+    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
+        System.out.println("Load button pressed");
+        //TODO Load another view with sole purpose to display notes associated with owner
+    }
 
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException  {
@@ -93,6 +96,22 @@ public class NewNoteController extends CreateNoteController {
     public void searchBarButtonClick(ActionEvent actionEvent) {
         //TODO Create a search function - for a later sprint
 
+    }
+
+
+    // ------------------------------ //
+    // ------------------------------ //
+    //The below will be deleted - just there to demonstrate conversion ATM
+    // ------------------------------ //
+    @FXML
+    public Button htmlToText = new Button("Convert HTML to Text");
+
+    // ------------------------------ //
+    //The below two will be deleted - just there to demonstrate conversion ATM
+    @FXML
+    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException
+    {
+        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
     }
 
 }
