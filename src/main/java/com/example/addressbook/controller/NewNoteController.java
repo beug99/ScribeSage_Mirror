@@ -1,6 +1,8 @@
 package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.model.Note;
+import com.example.addressbook.model.SqliteNoteDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,15 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
 
+    private SqliteNoteDAO noteDOA;
+    private Note currentNote;
+
+    public NewNoteController() {
+        super();
+        noteDOA = new SqliteNoteDAO();
+    }
+
+
     @FXML
     public void setLabelText(String text) {
         //This sets the note name displayed to the note name just created
@@ -31,25 +42,54 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
+    public void setCurrentNote(Note note) {
+        currentNote = note;
+        System.out.println("Note set in NewNoteController: " + currentNote.getNoteName());
+        if (currentNoteName != null && htmlEditorGui != null) {
+            currentNoteName.setText(currentNote.getNoteName());
+            htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            System.out.println("UI updated from setCurrentNote().");
+        }
+
+    }
+
+    @FXML
+    public void initialize() {
+        System.out.println("Initialising NewNoteController");
+        if(currentNote != null) {
+            currentNoteName.setText(currentNote.getNoteName());
+            htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
+        } else {
+            System.out.println("Current Note is null");
+        }
+     }
+
+
+    @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
-        //TODO This code needs to be changed to save the data to a DB
-        //TODO It currently just displays the html string in textarea so
-        //TODO Yas know what it does - setText(htmlEditorGui.getHtmlText()) will probs
-        //TODO Be the way to save it to the string/Note DB
+        System.out.println("Attempting to save: Note ID_" + currentNote.getId() + " Note name_" + currentNote.getNoteName());
+        String updatedContent = htmlEditorGui.getHtmlText();
+        currentNote.setNoteText(updatedContent);
+        noteDOA.updateNote(currentNote);
 
         todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
     }
 
     @FXML
+    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
+        System.out.println("Load button pressed");
+        //TODO Load another view with sole purpose to display notes associated with owner
+    }
+
+    @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException  {
-        // ------------------------- //
-        //TODO I will change the FXML file to the home page once I've merged the project
-        //TODO Currently just goes back to previous page
-        // ------------------------- //
+
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+
     }
 
     @FXML

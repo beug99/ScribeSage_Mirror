@@ -1,15 +1,21 @@
 package com.example.addressbook.controller;
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.Session;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.Node;
+
+import java.io.File;
 import java.io.IOException;
 
 
@@ -26,6 +32,7 @@ public class CreateNoteController {
     private TextField noteTagsTextField;
     @FXML
     private ListView<Note> noteListView;
+
     private INoteDAO noteDAO;
 
 
@@ -40,7 +47,7 @@ public class CreateNoteController {
 
         NewNoteController labelForFXML = null;
         if (noteNameTextField != null && noteTagsTextField != null) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note");
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
@@ -51,6 +58,7 @@ public class CreateNoteController {
             stage.setScene(scene);
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
+            labelForFXML.setCurrentNote(newNote);
         }
     }
 
@@ -58,8 +66,8 @@ public class CreateNoteController {
     public void onHomeClick(ActionEvent actionEvent) throws IOException {
         //Will change the FXML file to the home page once I've merged the project
 
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
     }
@@ -78,6 +86,21 @@ public class CreateNoteController {
     }
 
     public void onUploadCanvasClick(ActionEvent actionEvent) {
+        FileChooser chooseFile = new FileChooser();
+        chooseFile.setTitle("Upload Canvas Material");
+        chooseFile.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Supported Files", "*.pdf", "*.mp4","*.mp3","*.docx","*.txt"),
+            new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+            new FileChooser.ExtensionFilter("MP4 Files", "*.mp4"),
+            new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
+            new FileChooser.ExtensionFilter("DOCX Files", "*.docx"),
+            new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
+        File selectedFile = chooseFile.showOpenDialog(((Node) actionEvent.getSource()).getScene().getWindow());
+        if(selectedFile != null) {
+            // Handle files (copy, link to note, etc.)
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+        }
     }
 
     public void onAINoteSummariseClick(ActionEvent actionEvent) {

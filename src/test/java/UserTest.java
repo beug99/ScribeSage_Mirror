@@ -12,14 +12,16 @@ public class UserTest {
     private static final String LAST_NAME_TWO = "Doe";
     private static final String EMAIL = "john@gmail.com";
     private static final String EMAIL_TWO = "jane@gmail.com";
+    private static final String PASSWORD = "ooga";
+    private static final String PASSSWORD_TWO = "booga";
 
     private User contact;
     private User contactTwo;
 
     @BeforeEach
     public void setUp() {
-        contact = new User(FIRST_NAME, LAST_NAME, EMAIL);
-        contactTwo = new User(FIRST_NAME_TWO, LAST_NAME_TWO, EMAIL_TWO);
+        contact = new User(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD);
+        contactTwo = new User(FIRST_NAME_TWO, LAST_NAME_TWO, EMAIL_TWO, PASSSWORD_TWO);
     }
 
     @Test

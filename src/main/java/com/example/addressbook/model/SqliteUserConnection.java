@@ -3,9 +3,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/// could be combined with SqliteNoteConnection.java?
+
 public class SqliteUserConnection {
     private static Connection instance = null;
-    private static SQLException lastException = null; // storing last exception for testing
+    private static SQLException lastException = null;
 
     private SqliteUserConnection(String url) {
         try {
@@ -22,11 +24,10 @@ public class SqliteUserConnection {
         }
         return instance;
     }
-
     // testing method
     public static void resetConnection(String url) {
         instance = null;
-        lastException = null;
+        Object lastException = null;
         new SqliteUserConnection(url);
     }
 
