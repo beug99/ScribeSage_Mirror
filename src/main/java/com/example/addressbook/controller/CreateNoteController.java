@@ -11,7 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.Node;
+
+import java.io.File;
 import java.io.IOException;
 
 
@@ -30,6 +34,7 @@ public class CreateNoteController {
     private ListView<Note> noteListView;
 
     private INoteDAO noteDAO;
+
 
     public CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
@@ -61,8 +66,8 @@ public class CreateNoteController {
     public void onHomeClick(ActionEvent actionEvent) throws IOException {
         //Will change the FXML file to the home page once I've merged the project
 
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
+        Stage stage = (Stage) homeButton.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
     }
@@ -81,6 +86,21 @@ public class CreateNoteController {
     }
 
     public void onUploadCanvasClick(ActionEvent actionEvent) {
+        FileChooser chooseFile = new FileChooser();
+        chooseFile.setTitle("Upload Canvas Material");
+        chooseFile.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Supported Files", "*.pdf", "*.mp4","*.mp3","*.docx","*.txt"),
+            new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+            new FileChooser.ExtensionFilter("MP4 Files", "*.mp4"),
+            new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
+            new FileChooser.ExtensionFilter("DOCX Files", "*.docx"),
+            new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
+        File selectedFile = chooseFile.showOpenDialog(((Node) actionEvent.getSource()).getScene().getWindow());
+        if(selectedFile != null) {
+            // Handle files (copy, link to note, etc.)
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+        }
     }
 
     public void onAINoteSummariseClick(ActionEvent actionEvent) {
