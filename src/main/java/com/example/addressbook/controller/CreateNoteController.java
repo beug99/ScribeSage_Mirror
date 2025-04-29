@@ -1,5 +1,6 @@
 package com.example.addressbook.controller;
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.Session;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
@@ -40,7 +41,7 @@ public class CreateNoteController {
 
         NewNoteController labelForFXML = null;
         if (noteNameTextField != null && noteTagsTextField != null) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note");
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
