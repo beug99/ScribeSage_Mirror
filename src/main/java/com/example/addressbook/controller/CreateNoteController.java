@@ -4,6 +4,7 @@ import com.example.addressbook.Session;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +31,7 @@ public class CreateNoteController {
 
     private INoteDAO noteDAO;
 
-    CreateNoteController() {
+    public CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
     }
 

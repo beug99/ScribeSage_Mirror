@@ -1,11 +1,13 @@
 package com.example.addressbook.controller;
 
+import com.example.addressbook.controller.CreateNoteController;
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -190,7 +192,8 @@ public class HomePageController {
         navMenu.setVisible(!navMenu.isVisible());
     }
 
-    public void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/create-note-view.fxml"));
         Parent root = loader.load();
 
@@ -199,4 +202,5 @@ public class HomePageController {
         stage.setScene(scene);
         stage.show();
     }
+
 }
