@@ -84,12 +84,9 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException  {
-        // ------------------------- //
-        //TODO I will change the FXML file to the home page once I've merged the project
-        //TODO Currently just goes back to previous page
-        // ------------------------- //
+
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("create-note-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
     }
