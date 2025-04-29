@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="498.0" prefWidth="814.0" spacing="12.0" style="-fx-background-color: white;" styleClass="#F5F5F5" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
+<VBox prefHeight="498.0" prefWidth="814.0" spacing="12.0" style="-fx-background-color: #FEFEFA;" stylesheets="@../../../css/navmenu.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
    <AnchorPane maxWidth="-Infinity" prefHeight="42.0" prefWidth="198.0">
       <children>
           <HBox fx:id="profileBar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="200.0">
@@ -81,7 +81,7 @@
             <children>
                 <Button fx:id="createNewButton" layoutX="364.0" layoutY="1.0" mnemonicParsing="false" onAction="#onCreateNew" prefHeight="2.0" prefWidth="86.0" style="-fx-background-color: #0099ff; -fx-text-fill: white; -fx-font-weight: bold;" text="Create New" />
             </children></AnchorPane>
-         <ListView layoutX="134.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="564.0" style="-fx-border-color: #0099ff;" />
+         <ListView layoutX="134.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="564.0" style="-fx-border-color: #0099ff; -fx-background-color: #FFFFFF;" />
       </children>
    </AnchorPane>
    <HBox prefHeight="0.0" prefWidth="814.0">
