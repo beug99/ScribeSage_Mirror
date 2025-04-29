@@ -42,7 +42,7 @@ public class SignUpController {
             alert.showAndWait();
         }
         else {
-            userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText()));
+            userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), password.getText()));
 
             Stage stage = (Stage) signUp.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));

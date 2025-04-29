@@ -86,7 +86,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String lastName = resultSet.getString("lastName");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
-                User user = new User(firstName, lastName, email);
+                User user = new User(firstName, lastName, email, password);
                 user.setId(id);
                 return user;
             }
@@ -110,7 +110,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
 
-                User user = new User(firstName, lastName, email);
+                User user = new User(firstName, lastName, email, password);
                 user.setId(id);
                 users.add(user);
             }
@@ -223,7 +223,8 @@ public class SqliteUserDAO implements IUserDAO {
                 User user = new User(
                         rs.getString("firstName"),
                         rs.getString("lastName"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("password")
                 );
                 user.setId(rs.getInt("id"));
                 return user;

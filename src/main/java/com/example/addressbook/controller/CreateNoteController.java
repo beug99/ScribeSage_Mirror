@@ -27,10 +27,10 @@ public class CreateNoteController {
     private TextField noteTagsTextField;
     @FXML
     private ListView<Note> noteListView;
+
     private INoteDAO noteDAO;
 
-
-    public CreateNoteController() {
+    private CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
     }
 
@@ -52,6 +52,7 @@ public class CreateNoteController {
             stage.setScene(scene);
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
+            labelForFXML.setCurrentNote(newNote);
         }
     }
 
