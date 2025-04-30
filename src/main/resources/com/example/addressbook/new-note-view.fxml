@@ -15,51 +15,49 @@
             <columnConstraints>
                 <ColumnConstraints minWidth="0.0" />
                 <ColumnConstraints hgrow="ALWAYS" />
-            <ColumnConstraints />
+                <ColumnConstraints />
             </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
 
-            <HBox>
-                <Label text="Name:   " GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.vgrow="NEVER" />
+            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Name:   " GridPane.vgrow="NEVER" />
                 <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
             </HBox>
 
             <Button fx:id="homeButton" onAction="#onHomeButtonClick" text="Home" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-            <TextField fx:id="searchBarID" text="Search Note" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="searchBarID" promptText="Search Note" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <Button fx:id="searchBarButton" onAction="#searchBarButtonClick" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
         </GridPane>
 
-        <HBox>
+        <HBox spacing="10">
             <padding>
                 <Insets bottom="15" top="15" />
             </padding>
-            <!-- instead of having the blank labels, add padding between buttons in the hbox -->
             <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save" />
-            <Label text="  " />
-
-            <Button fx:id= "loadButton" onAction="#onLoadButtonClick" text="Button" />
-            <Label />
-
+            <Button fx:id="loadButton" onAction="#onLoadButtonClick" text="Load" />
             <Button fx:id="htmlToText" onAction="#htmlToTextButtonClick" text="HTML to Text" />
-            <Label text="  " />
-
             <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel" />
 
-            <Button fx:id="enhanceTextButton" text="Enhance Selected Text" onAction="#onEnhanceButton" />
+            <!-- Added StackPane to overlay progress indicator on button -->
+            <StackPane>
+                <Button fx:id="enhanceTextButton" text="Enhance Selected Text" onAction="#onEnhanceButton" />
+                <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
+            </StackPane>
 
+            <Button fx:id="getHighlightedButton" text="Show Selected" onAction="#onGetHighlighted" />
         </HBox>
 
-        <TextArea fx:id="todeletejustdisplay" maxWidth="400" prefHeight="100" text="This will be deleted!         Just demonstrates what the html is saved as under a string variable." />
+        <TextArea fx:id="todeletejustdisplay" maxWidth="400" prefHeight="100"
+                  promptText="This will be deleted! Just demonstrates what the html is saved as under a string variable." />
 
-        <VBox fx:id="vBoxForHtmlGui" alignment="CENTER">
+        <VBox fx:id="vBoxForHtmlGui" alignment="CENTER" VBox.vgrow="ALWAYS">
             <padding>
                 <Insets bottom="15" top="15" />
             </padding>
-            <HTMLEditor fx:id="htmlEditorGui" />
+            <HTMLEditor fx:id="htmlEditorGui" prefHeight="400" htmlText="&lt;html&gt;&lt;body&gt;&lt;p&gt;Start writing your note here...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;" />
         </VBox>
     </VBox>
-
 </AnchorPane>
