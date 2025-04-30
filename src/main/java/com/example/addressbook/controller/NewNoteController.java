@@ -93,6 +93,7 @@ public class NewNoteController extends CreateNoteController {
                     "  var el = document.createElement('span');" +
                     "  el.innerHTML = '" + escaped + "';" +
                     "  range.insertNode(el);" +
+                    "  sel.removeAllRanges();"+
                     "}";
             engine.executeScript(script);
         }

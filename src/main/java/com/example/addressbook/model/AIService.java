@@ -64,8 +64,9 @@ public class AIService {
                     .put("content", "You are a helpful assistant that enhances writing. Improve clarity, style, and readability while maintaining the original meaning."));
             messages.add(mapper.createObjectNode()
                     .put("role", "user")
-                    .put("content", "Enhance this text for clarity and style: '" + input + "'"));
-
+                    .put("content", "Enhance these lecture notes for clarity and style. " + "Add" +
+                            " information where it gives" +"context and adds to the quality of the note. Use html formatting " +
+                            ", keeping the same font, layout, size, etc: '" + input + "'"));
             // AI receives json body text as input so need to parse string to json
             ObjectNode jsonBody = mapper.createObjectNode();
             jsonBody.put("model", DEFAULT_MODEL);
@@ -87,7 +88,6 @@ public class AIService {
             // saves response from http (if there's an issue (there were lots) and prints it)
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return parseCompletionFromResponse(response.body());
-
         } catch (Exception e) {
             e.printStackTrace();
             return "sorry, I couldn't enhance the text due to a technical issue: " + e.getMessage();
