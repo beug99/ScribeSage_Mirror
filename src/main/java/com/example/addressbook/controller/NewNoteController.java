@@ -37,38 +37,55 @@ public class NewNoteController extends CreateNoteController {
     public TextArea todeletejustdisplay;
 
     @FXML
-    private HTMLEditor htmlEditor;
+    private Button enhanceTextButton;
     @FXML
-    private Button aiSendPrompt;
-    @FXML
-    private ProgressIndicator progressIndicator;
+    private ProgressIndicator progressIndicator; // Add this to FXML
 
     private AIService aiService;
     private ExecutorService executorService;
-
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
 
+    public NewNoteController() {
+        super();
+        aiService = new AIService();
+        noteDOA = new SqliteNoteDAO();
+        // Create a thread pool for background tasks
+        executorService = Executors.newFixedThreadPool(2);
+    }
 
-    // gets highlighted text
+    /**
+     * Gets currently selected text from the HTML editor
+     */
     public String getSelectedHTMLText() {
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
         if (webView != null) {
             WebEngine engine = webView.getEngine();
-            Object result = engine.executeScript("window.getSelection().toString");
+            Object result = engine.executeScript("window.getSelection().toString()");
             if (result != null) {
-                return result.toString(); // Safe casting
+                return result.toString();
             }
         }
         return "";
     }
 
-    // replaced selected text with AI enhanced version
+    /**
+     * Replaces the selected text in the HTML editor with new content
+     */
     public void replaceSelectedHTMLText(String replacement) {
+        if (replacement == null || replacement.isEmpty()) {
+            return;
+        }
+
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
         if (webView != null) {
             WebEngine engine = webView.getEngine();
-            String escaped = replacement.replace("'", "\\'").replace("\n", "\\n");
+            // Properly escape the replacement text to avoid JavaScript injection issues
+            String escaped = replacement.replace("\\", "\\\\")
+                    .replace("'", "\\'")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r");
+
             String script = "var sel = window.getSelection();" +
                     "if (sel.rangeCount > 0) {" +
                     "  var range = sel.getRangeAt(0);" +
@@ -85,34 +102,73 @@ public class NewNoteController extends CreateNoteController {
     public void onEnhanceButton(ActionEvent event) {
         String selected = getSelectedHTMLText();
         if (selected == null || selected.trim().isEmpty()) {
-            Alert alert = new Alert(AlertType.WARNING, "Select some text, Silly!");
-            alert.setHeaderText(null);
-            alert.showAndWait();
+            showAlert(AlertType.WARNING, "No text selected",
+                    "Please select some text to enhance.");
             return;
         }
-        String enhanced = aiService.enhanceText(selected); // get ai Service
-        replaceSelectedHTMLText(enhanced);
+        // disable the enhance button and show progress indicator
+        enhanceTextButton.setDisable(true);
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(true);
+        }
+
+        // create a task to run the AI service in background
+        Task<String> task = new Task<>() {
+            @Override
+            protected String call() {
+                return aiService.enhanceText(selected);
+            }
+
+            @Override
+            protected void succeeded() {
+                String enhanced = getValue();
+                Platform.runLater(() -> {
+                    replaceSelectedHTMLText(enhanced);
+                    enhanceTextButton.setDisable(false);
+                    if (progressIndicator != null) {
+                        progressIndicator.setVisible(false);
+                    }
+                });
+            }
+
+            @Override
+            protected void failed() {
+                Throwable exception = getException();
+                Platform.runLater(() -> {
+                    showAlert(AlertType.ERROR, "Enhancement Failed",
+                            "Could not enhance text: " +
+                                    (exception != null ? exception.getMessage() : "Unknown error"));
+                    enhanceTextButton.setDisable(false);
+                    if (progressIndicator != null) {
+                        progressIndicator.setVisible(false);
+                    }
+                });
+            }
+        };
+        // Run the task in the background
+        executorService.submit(task);
     }
 
-    @FXML
-    public void onGetHighlighted(ActionEvent event){
-        String selectedText = getSelectedHTMLText();
-        System.out.println("Selected text: " + selectedText);
-        // Example: Show in alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Selected text:\n" + selectedText);
+    private void showAlert(AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 
-    public NewNoteController() {
-        super();
-        aiService = new AIService();
-        noteDOA = new SqliteNoteDAO();
+    @FXML
+    public void onGetHighlighted(ActionEvent event) {
+        String selectedText = getSelectedHTMLText();
+        if (selectedText != null && !selectedText.isEmpty()) {
+            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
+        } else {
+            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
+        }
     }
 
     @FXML
     public void setLabelText(String text) {
-        //This sets the note name displayed to the note name just created
         currentNoteName.setText(text);
     }
 
@@ -125,29 +181,48 @@ public class NewNoteController extends CreateNoteController {
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
             System.out.println("UI updated from setCurrentNote().");
         }
-
     }
 
     @FXML
     public void initialize() {
-        System.out.println("Initialising NewNoteController");
-        if(currentNote != null) {
+        System.out.println("Initializing NewNoteController");
+
+        // Hide progress indicator initially
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(false);
+        }
+
+        if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
             System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
         } else {
             System.out.println("Current Note is null");
         }
-     }
+    }
 
     @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
+        if (currentNote == null) {
+            showAlert(AlertType.ERROR, "Save Error", "No note is currently loaded.");
+            return;
+        }
+
         System.out.println("Attempting to save: Note ID_" + currentNote.getId() + " Note name_" + currentNote.getNoteName());
         String updatedContent = htmlEditorGui.getHtmlText();
         currentNote.setNoteText(updatedContent);
-        noteDOA.updateNote(currentNote);
 
-        todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
+        try {
+            noteDOA.updateNote(currentNote);
+            if (todeletejustdisplay != null) {
+                todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
+            }
+            showAlert(AlertType.INFORMATION, "Note Saved", "Your note has been saved successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Save Failed",
+                    "Could not save the note: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -157,34 +232,20 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException  {
-
+    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) homeButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
-
     }
 
     @FXML
     public void searchBarButtonClick(ActionEvent actionEvent) {
         //TODO Create a search function - for a later sprint
-
     }
 
-    // ------------------------------ //
-    // ------------------------------ //
-    //The below will be deleted - just there to demonstrate conversion ATM
-    // ------------------------------ //
     @FXML
-    public Button htmlToText = new Button("Convert HTML to Text");
-
-    // ------------------------------ //
-    //The below two will be deleted - just there to demonstrate conversion ATM
-    @FXML
-    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException
-    {
+    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
         htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
     }
-
 }
