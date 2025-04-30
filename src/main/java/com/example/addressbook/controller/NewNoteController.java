@@ -1,6 +1,7 @@
 package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.Session;
 import com.example.addressbook.model.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
@@ -9,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
@@ -17,12 +21,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.scene.control.skin.*;
+
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import javafx.scene.paint.Color;
 
 public class NewNoteController extends CreateNoteController {
 
@@ -35,6 +41,7 @@ public class NewNoteController extends CreateNoteController {
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
+    public Label nameLabel;
 
     @FXML
     private Button enhanceTextButton;
@@ -186,8 +193,10 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void initialize() {
-        System.out.println("Initializing NewNoteController");
+        String fullName = Session.getFirstName() + " " + Session.getLastName();
+        nameLabel.setText(fullName);
 
+        System.out.println("Initializing NewNoteController");
         // Hide progress indicator initially
         if (progressIndicator != null) {
             progressIndicator.setVisible(false);
@@ -196,10 +205,12 @@ public class NewNoteController extends CreateNoteController {
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            htmlEditorGui.setStyle("");
             System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
         } else {
             System.out.println("Current Note is null");
         }
+
     }
 
     @FXML
@@ -248,5 +259,9 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
         htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
+    }
+
+    public void toggleNavMenu(MouseEvent mouseEvent) {
+
     }
 }
