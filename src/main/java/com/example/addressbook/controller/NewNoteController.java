@@ -42,7 +42,6 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
-
     @FXML
     private Button enhanceTextButton;
     @FXML
@@ -61,9 +60,6 @@ public class NewNoteController extends CreateNoteController {
         executorService = Executors.newFixedThreadPool(2);
     }
 
-    /**
-     * Gets currently selected text from the HTML editor
-     */
     public String getSelectedHTMLText() {
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
         if (webView != null) {
@@ -76,9 +72,6 @@ public class NewNoteController extends CreateNoteController {
         return "";
     }
 
-    /**
-     * Replaces the selected text in the HTML editor with new content
-     */
     public void replaceSelectedHTMLText(String replacement) {
         if (replacement == null || replacement.isEmpty()) {
             return;
@@ -153,7 +146,7 @@ public class NewNoteController extends CreateNoteController {
                 });
             }
         };
-        // Run the task in the background
+        // run the task in the background
         executorService.submit(task);
     }
 
@@ -249,6 +242,8 @@ public class NewNoteController extends CreateNoteController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @FXML

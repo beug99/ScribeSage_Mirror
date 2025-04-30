@@ -2,6 +2,7 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,10 +32,19 @@ public class SignUpController {
     private PasswordField password;
     @FXML
     private Button signUp;
+    @FXML
+    private Button homeButton;
 
-    /**
-     * Method for adding user info from sign up fields into database once "sign-up" button is pressed
-     */
+    @FXML
+    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) homeButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
     @FXML
     private void onSignUp() throws IOException {
         // fields are blank
@@ -71,6 +81,8 @@ public class SignUpController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
         }
     }
 

@@ -3,35 +3,61 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="291.0" prefWidth="258.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
+<AnchorPane prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: white;" stylesheets="@../../../css/newnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" onAction="#onBackToHome" style="-fx-background-color: transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 14;" text="🏠 Home" />
+
     <VBox alignment="CENTER" spacing="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
-
-        <HBox alignment="TOP_LEFT" />
-
         <!-- Profile Icon -->
-        <ImageView fitHeight="79.0" fitWidth="116.0" preserveRatio="true">
+        <ImageView fitHeight="80.0" fitWidth="80.0" preserveRatio="true">
             <image>
                 <Image url="@../../../Images/UserIcon.png" />
             </image>
         </ImageView>
 
         <!-- Full Name -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <TextField fx:id="nameField" editable="false" prefHeight="26.0" prefWidth="197.0" styleClass="info-box" />
-        </HBox>
+        <VBox spacing="5.0">
+            <Label text="Full Name" />
+            <TextField fx:id="nameField" editable="false" prefWidth="290.0" styleClass="info-box" />
+        </VBox>
 
         <!-- Email -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <TextField fx:id="emailField" editable="false" styleClass="info-box" />
-            <Button onAction="#onChangeEmail" text="✏️" />
-        </HBox>
+        <VBox spacing="5.0">
+            <Label text="Update Email" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <TextField fx:id="emailField" editable="false" prefWidth="250.0" styleClass="info-box" HBox.hgrow="ALWAYS" />
+                <Button minWidth="30.0" onAction="#onChangeEmail" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../Images/Edit_button.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
 
         <!-- Password -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <PasswordField fx:id="passwordField" editable="false" styleClass="info-box" />
-            <Button onAction="#onChangePassword" text="✏️" />
-        </HBox>
+        <VBox spacing="5.0">
+            <Label text="Update Password" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <PasswordField fx:id="passwordField" editable="false" prefWidth="250.0" styleClass="info-box" HBox.hgrow="ALWAYS" />
+                <Button minWidth="30.0" onAction="#onChangePassword" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../Images/Edit_button.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <padding>
+            <Insets bottom="20.0" />
+        </padding>
     </VBox>
-      <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" onAction="#onBackToHome" style="-fx-background-color: transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 14;" text="🏠 Home" />
 </AnchorPane>

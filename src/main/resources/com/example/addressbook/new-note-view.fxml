@@ -86,11 +86,7 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
-            <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-
+            
             <!-- Added StackPane to overlay progress indicator on button -->
             <StackPane>
                 <Button fx:id="enhanceTextButton" onAction="#onEnhanceButton" text="Enhance Selected Text">
@@ -99,11 +95,6 @@
                   </font></Button>
                 <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
             </StackPane>
-
-            <Button fx:id="getHighlightedButton" onAction="#onGetHighlighted" text="Show Selected">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
         </HBox>
 
         <VBox fx:id="vBoxForHtmlGui" alignment="CENTER" VBox.vgrow="ALWAYS">

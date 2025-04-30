@@ -34,7 +34,10 @@ public class HomePageController {
     private ListView<String> notesListView;
     @FXML
     private Label nameLabel;
-
+    @FXML
+    private Button delete;
+    @FXML
+    private Button load;
     private INoteDAO noteDAO;
     private ObservableList<Note> notesObservableList;
     private ObservableList<String> noteNamesObservableList;
@@ -76,6 +79,8 @@ public class HomePageController {
 
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @FXML
@@ -84,6 +89,8 @@ public class HomePageController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     // Loads a selected note from the LoadNote listener
@@ -102,6 +109,7 @@ public class HomePageController {
             Stage stage = (Stage) notesListView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         } else {
             System.out.println("No note selected to load.");
@@ -157,37 +165,6 @@ public class HomePageController {
         }
     }
 
-
-    /**
-     * old idea: user notess via name only displays name
-     * was going to use note name and user email to fetch but eh
-     * better to store note objects for better and more flexible handling
-     * for future sprints
-
-    private void loadUserNotes() {
-        try {
-            List<Note> userNotes = noteDAO.getNotesByOwner(Session.getLoggedInEmail());
-            ObservableList<String> noteNames = FXCollections.observableArrayList();
-
-            for (Note note : userNotes) {
-                noteNames.add(note.getNoteName());
-            }
-
-            notesListView.setItems(noteNames);
-
-            notesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    // DO STUFF
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to load user notes.");
-        }
-    }
-*/
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
@@ -200,6 +177,7 @@ public class HomePageController {
         Stage stage = (Stage) createNewButton.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 

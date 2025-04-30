@@ -17,7 +17,6 @@ import javafx.scene.Node;
 import java.io.File;
 import java.io.IOException;
 
-
 public class CreateNoteController {
     public Label folderName;
     public Button createNoteButton;
@@ -53,7 +52,8 @@ public class CreateNoteController {
             Stage stage = (Stage) createNoteButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-
+            stage.centerOnScreen();
+            stage.show();
 
             stage.setScene(scene);
             labelForFXML = fxmlLoader.getController();
@@ -77,6 +77,8 @@ public class CreateNoteController {
         Stage stage = (Stage) homeButton.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @FXML
