@@ -1,0 +1,36 @@
+.button{
+    -fx-background-color: #6F71AC;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+
+}
+#names{
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.html-editor
+{
+    -fx-font: 12 cambria;
+    -fx-border-color: #7D8CDC;
+    -fx-border-style: solid;
+    -fx-border-width: 2;
+}
+
+.html-editor .button, .html-editor .toggle-button
+{
+    -fx-background-color: #AAB2DA;
+}
+
+.html-editor-background
+{
+    -fx-color-label-visible: true;
+}
+
+.html-editor-foreground
+{
+    -fx-color-label-visible: true;
+}
+
