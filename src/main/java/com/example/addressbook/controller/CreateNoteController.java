@@ -4,7 +4,6 @@ import com.example.addressbook.Session;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
-import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,6 +53,7 @@ public class CreateNoteController {
             Stage stage = (Stage) createNoteButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+
 
             stage.setScene(scene);
             labelForFXML = fxmlLoader.getController();

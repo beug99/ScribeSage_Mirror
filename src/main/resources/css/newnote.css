@@ -1,15 +1,25 @@
 .button{
     -fx-background-color: #6F71AC;
+    // C3842B//#a56f24 good orange - dark//
     -fx-background-radius: 5;
     -fx-background-insets: 0;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
 
 }
+#rootBox{
+    -fx-background-color: white;
+    // dark grey #6E6E6E//
+}
+#searchBarId{
+    -fx-font-size: 14px;
+}
+
 #names{
-    -fx-font-size: 15px;
+    -fx-font-size: 17px;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 .html-editor
 {
@@ -17,20 +27,27 @@
     -fx-border-color: #7D8CDC;
     -fx-border-style: solid;
     -fx-border-width: 2;
+    -fx-background-color: lightgray;
 }
 
 .html-editor .button, .html-editor .toggle-button
 {
-    -fx-background-color: #AAB2DA;
+    -fx-background-color: lightgray;
 }
 
 .html-editor-background
 {
-    -fx-color-label-visible: true;
+    -fx-color-label-visible: false;
+    -fx-background-color: lightgray;
 }
 
 .html-editor-foreground
 {
     -fx-color-label-visible: true;
+    -fx-background-color: lightgray;
 }
+.html-editor
+{
+    -fx-background-color: lightgray;
 
+}

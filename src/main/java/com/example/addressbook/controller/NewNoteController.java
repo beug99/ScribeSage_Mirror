@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
@@ -19,12 +21,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.scene.control.skin.*;
+
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import javafx.scene.paint.Color;
 
 public class NewNoteController extends CreateNoteController {
 
@@ -200,6 +204,7 @@ public class NewNoteController extends CreateNoteController {
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            htmlEditorGui.setStyle("");
             System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
         } else {
             System.out.println("Current Note is null");
