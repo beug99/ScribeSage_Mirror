@@ -45,7 +45,7 @@ public class CreateNoteController {
         //Opens the New Note scene under with the note name that was entered
 
         NewNoteController labelForFXML = null;
-        if (noteNameTextField != null && noteTagsTextField != null) {
+        if (!noteNameTextField.getText().isEmpty()) {
             Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
@@ -59,6 +59,13 @@ public class CreateNoteController {
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
             labelForFXML.setCurrentNote(newNote);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Create Note Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("You must give your note a name!");
+            alert.showAndWait();
         }
     }
 
