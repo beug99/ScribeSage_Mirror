@@ -35,17 +35,16 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
-
     @FXML
     private Button enhanceTextButton;
     @FXML
     private ProgressIndicator progressIndicator; // Add this to FXML
-
     private AIService aiService;
     private ExecutorService executorService;
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
 
+    // connection to SQL
     public NewNoteController() {
         super();
         aiService = new AIService();
@@ -54,9 +53,7 @@ public class NewNoteController extends CreateNoteController {
         executorService = Executors.newFixedThreadPool(2);
     }
 
-    /**
-     * Gets currently selected text from the HTML editor
-     */
+    // gets the html text the user selects
     public String getSelectedHTMLText() {
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
         if (webView != null) {
@@ -68,10 +65,7 @@ public class NewNoteController extends CreateNoteController {
         }
         return "";
     }
-
-    /**
-     * Replaces the selected text in the HTML editor with new content
-     */
+    // replaces selected text
     public void replaceSelectedHTMLText(String replacement) {
         if (replacement == null || replacement.isEmpty()) {
             return;
@@ -86,6 +80,7 @@ public class NewNoteController extends CreateNoteController {
                     .replace("\n", "\\n")
                     .replace("\r", "\\r");
 
+            // javascript for pasting enhanced text back into note
             String script = "var sel = window.getSelection();" +
                     "if (sel.rangeCount > 0) {" +
                     "  var range = sel.getRangeAt(0);" +
@@ -93,11 +88,13 @@ public class NewNoteController extends CreateNoteController {
                     "  var el = document.createElement('span');" +
                     "  el.innerHTML = '" + escaped + "';" +
                     "  range.insertNode(el);" +
+                    "  sel.removeAllRanges();"+
                     "}";
             engine.executeScript(script);
         }
     }
 
+    // handles enhancement button
     @FXML
     public void onEnhanceButton(ActionEvent event) {
         String selected = getSelectedHTMLText();
@@ -145,7 +142,7 @@ public class NewNoteController extends CreateNoteController {
                 });
             }
         };
-        // Run the task in the background
+        // run the task in the background
         executorService.submit(task);
     }
 
@@ -155,16 +152,6 @@ public class NewNoteController extends CreateNoteController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-    @FXML
-    public void onGetHighlighted(ActionEvent event) {
-        String selectedText = getSelectedHTMLText();
-        if (selectedText != null && !selectedText.isEmpty()) {
-            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
-        } else {
-            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
-        }
     }
 
     @FXML
@@ -241,6 +228,8 @@ public class NewNoteController extends CreateNoteController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @FXML
@@ -254,6 +243,6 @@ public class NewNoteController extends CreateNoteController {
     }
 
     public void toggleNavMenu(MouseEvent mouseEvent) {
-
+        // to be implemented
     }
 }

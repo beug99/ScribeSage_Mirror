@@ -10,8 +10,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import static java.sql.DriverManager.println;
-
 public class LoginController {
     @FXML
     private Button logIn;
@@ -20,17 +18,18 @@ public class LoginController {
     @FXML
     private PasswordField password;
 
-    @FXML
-    private Button signUp;
-
+    // controls sign up button
     @FXML
     protected void onSignUp() throws IOException {
         Stage stage = (Stage) logIn.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
+    // controls log in button
     @FXML
     private void onLogIn() throws IOException{
         String emailInput = this.eMail.getText();
@@ -56,6 +55,8 @@ public class LoginController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
 
         } else {
             // show error message for failed log in attempts

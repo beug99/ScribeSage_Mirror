@@ -124,7 +124,6 @@ public class SqliteNoteDAO implements INoteDAO {
         return notes;
     }
 
-
     @Override
     public List<Note> getAllNotes() {
         List<Note> notes = new ArrayList<>();

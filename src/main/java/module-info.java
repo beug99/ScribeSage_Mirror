@@ -7,6 +7,7 @@ module com.example.addressbook {
     requires com.fasterxml.jackson.databind;
     requires java.sql;
     requires java.desktop;
+    requires password4j;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;
