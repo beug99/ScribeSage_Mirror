@@ -9,12 +9,14 @@ public class Note {
     private String noteTags;
     private String noteText;
     private String noteOwner;
+    private Integer folderId;
 
-    public Note(String noteName, String noteTags, String noteText, String noteOwner){
+    public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId){
         this.noteName = noteName;
         this.noteTags = noteTags;
         this.noteText = noteText;
         this.noteOwner = noteOwner;
+        this.folderId = folderId;
     }
 
     public int getId() {
@@ -53,8 +55,8 @@ public class Note {
 
     public void setNoteOwner(String owner) { this.noteOwner = owner;}
 
-    private Integer folderId;
     public Integer getFolderId() { return folderId; }
+
     public void setFolderId(Integer folderId) { this.folderId = folderId; }
 
 }

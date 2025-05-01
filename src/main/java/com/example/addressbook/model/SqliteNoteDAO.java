@@ -25,7 +25,8 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteName VARCHAR NOT NULL,"
                     + "noteTags VARCHAR NOT NULL,"
                     + "noteText VARCHAR NOT NULL,"
-                    + "noteOwner VARCHAR NOT NULL"
+                    + "noteOwner VARCHAR NOT NULL,"
+                    + "folderId INTEGER"
                     + ")";
             statement.execute(query);
             logSQLexecution(statement);
@@ -90,8 +91,9 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 return note;
             }
@@ -115,8 +117,9 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }
@@ -140,9 +143,10 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
                 logSQLexecution(statement);
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }

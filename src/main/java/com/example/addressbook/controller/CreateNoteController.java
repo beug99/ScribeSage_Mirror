@@ -47,7 +47,7 @@ public class CreateNoteController {
 
         NewNoteController labelForFXML = null;
         if (noteNameTextField != null && noteTagsTextField != null) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail(), null);
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
