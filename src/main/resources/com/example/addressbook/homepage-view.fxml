@@ -55,6 +55,32 @@
                 <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
             </padding>
 
+<!--            SHELLS TESTING-->
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="10" bottom="10.0"/>
+                </padding>
+                <Button text="Name" fx:id="sortAlphabetically" onAction="#onSortAlphabetically" prefWidth="80"
+                        style="-fx-background-color:
+                transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 12; -fx-border-color: lightgray;
+                -fx-border-width: 1;     -fx-border-radius: 5;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" >
+                            <Image url="@../../../Images/sort.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button text="Date" fx:id="sortDate" onAction="#onSortDate" prefWidth="80" style="-fx-background-color:
+                transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 12; -fx-border-color: lightgray;
+                -fx-border-width: 1;     -fx-border-radius: 5;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" >
+                            <Image url="@../../../Images/sort.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+
             <!-- notes list view -->
             <ListView fx:id="notesListView" prefHeight="400.0" VBox.vgrow="ALWAYS"
                       style="-fx-background-color: transparent; -fx-border-color: transparent;">

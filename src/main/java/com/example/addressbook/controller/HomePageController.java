@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -19,11 +20,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class HomePageController {
     @FXML
     public HBox profileBar;
+    @FXML
+    public Button sortAlphabetically;
+    public Button sortDate;
     @FXML
     private Label updateDetailsLabel;
     @FXML
@@ -32,6 +37,7 @@ public class HomePageController {
     private VBox navMenu;
     @FXML
     private ListView<String> notesListView;
+
     @FXML
     private Label nameLabel;
     private INoteDAO noteDAO;
@@ -55,6 +61,7 @@ public class HomePageController {
         nameLabel.setText(fullName);
 
         loadUserNotes();
+
 
         Platform.runLater(() -> {
             navMenu.getScene().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
@@ -84,6 +91,20 @@ public class HomePageController {
         stage.centerOnScreen();
         stage.show();
     }
+
+    // Controller for sorting list alphabetically
+    @FXML
+    private void onSortAlphabetically()throws IOException {
+        Collections.sort(notesListView.getItems());
+    }
+
+    // Controller for sorting list by date
+    @FXML
+    private void onSortDate()throws IOException {
+//        Collections.sort(notesListView, );
+    }
+    
+    
 
     // controller for logging out
     @FXML
@@ -138,14 +159,13 @@ public class HomePageController {
 
             // Populates the observable list with note objects
             notesObservableList = FXCollections.observableArrayList(userNotes);
-
             // Represent note objects via name (what appears visually)
             noteNamesObservableList = FXCollections.observableArrayList();
             for (Note note : notesObservableList) {
                 noteNamesObservableList.add(note.getNoteName());
             }
+            notesListView.setEditable(true);
             notesListView.setItems(noteNamesObservableList);
-
             // Listener for when user selects a note to Load or Delete
             notesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
