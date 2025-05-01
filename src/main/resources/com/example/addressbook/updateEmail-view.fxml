@@ -15,12 +15,12 @@
 
         <VBox spacing="5.0">
             <Label text="Current Password:" />
-            <PasswordField fx:id="currentPassword" />
+            <PasswordField fx:id="currentPassword" style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <VBox spacing="5.0">
             <Label text="New Email:" />
-            <TextField fx:id="newEmailField" promptText="Enter new email" />
+            <TextField fx:id="newEmailField" promptText="Enter new email" style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <Button fx:id="confirmEmailUpdate" onAction="#onConfirmUpdateEmail" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Update" />
