@@ -7,7 +7,6 @@
 
 <StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
 
-    <!-- AnchorPane to manage top-level layout -->
     <AnchorPane prefHeight="600.0" prefWidth="900.0">
 
         <!-- Profile bar (at the top) -->
@@ -24,11 +23,9 @@
             </Label>
         </HBox>
 
-        <!-- Main layout (notes list and buttons) -->
         <VBox fx:id="mainLayout" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="900.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
             <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Your Notes:" />
 
-            <!-- ⬇ Replace ListView with this -->
             <HBox alignment="CENTER">
                 <ListView fx:id="notesListView" maxWidth="650.0" prefHeight="300.0" prefWidth="650.0" style="-fx-border-color: #6a5acd;" VBox.vgrow="ALWAYS" />
             </HBox>
@@ -40,7 +37,7 @@
             </HBox>
         </VBox>
 
-        <!-- Nav menu that drops down below the profile bar -->
+        <!-- Nav menu  -->
         <VBox fx:id="navMenu" prefHeight="166.0" prefWidth="188.0" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);" stylesheets="@../../../css/navmenu.css" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0">
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
