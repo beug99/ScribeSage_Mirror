@@ -2,20 +2,54 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<AnchorPane id="rootCreateNoteBox" stylesheets="@../../../css/createnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
+    <VBox>
+        <VBox>
+            <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="0.0" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="20" top="10.0" />
+                </padding>
+                <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0">
+                    <image>
+                        <Image url="@../../../Images/UserIcon.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name" GridPane.columnIndex="1">            <font>
+                    <Font name="System Bold" size="16.0" />
+                </font>
+                </Label>
+                <Button fx:id="homeButton" onAction="#onHomeButtonClick" prefWidth="80" text="Home" GridPane.columnIndex="2" />
+                <rowConstraints>
+                    <RowConstraints />
+                </rowConstraints>
 
+            </GridPane>
+
+            <HBox>
+                <padding>
+                    <Insets left="20" right="20" bottom="20"/>
+                </padding>
+                <Line endX="500" fill="#4D4B4B" stroke="#6e6e6e" strokeWidth="2.5" />
+            </HBox>
+
+        </VBox>
     <GridPane hgap="5.0" vgap="5.0">
         <columnConstraints>
             <ColumnConstraints minWidth="70" />
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
         <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Button fx:id="homeButton" onAction="#onHomeClick" GridPane.halignment="RIGHT" text="Home" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <padding>
             <Insets bottom="20.0" />
         </padding>
@@ -88,5 +122,6 @@
                 onAction="#onCreateButtonClick"
         />
     </HBox>
+    </VBox>
 
-</VBox>
+</AnchorPane>

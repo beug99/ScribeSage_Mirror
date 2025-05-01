@@ -10,13 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.io.File;
 import java.io.IOException;
-
 
 public class CreateNoteController {
     public Label folderName;
@@ -63,7 +63,7 @@ public class CreateNoteController {
     }
 
     @FXML
-    public void onHomeClick(ActionEvent actionEvent) throws IOException {
+    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
         //Will change the FXML file to the home page once I've merged the project
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
@@ -110,4 +110,6 @@ public class CreateNoteController {
     }
 
 
+    public void toggleNavMenu(MouseEvent mouseEvent) {
+    }
 }
