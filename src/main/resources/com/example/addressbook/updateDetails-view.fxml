@@ -3,35 +3,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="291.0" prefWidth="258.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
-    <VBox alignment="CENTER" spacing="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+<AnchorPane minWidth="-Infinity" prefHeight="368.0" prefWidth="301.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
 
-        <HBox alignment="TOP_LEFT" />
-
-        <!-- Profile Icon -->
-        <ImageView fitHeight="79.0" fitWidth="116.0" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/UserIcon.png" />
-            </image>
-        </ImageView>
-
-        <!-- Full Name -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <TextField fx:id="nameField" editable="false" prefHeight="26.0" prefWidth="197.0" styleClass="info-box" />
-        </HBox>
-
-        <!-- Email -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <TextField fx:id="emailField" editable="false" styleClass="info-box" />
-            <Button onAction="#onChangeEmail" text="✏️" />
-        </HBox>
-
-        <!-- Password -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <PasswordField fx:id="passwordField" editable="false" styleClass="info-box" />
-            <Button onAction="#onChangePassword" text="✏️" />
-        </HBox>
-    </VBox>
-      <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" onAction="#onBackToHome" style="-fx-background-color: transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 14;" text="🏠 Home" />
+    <!-- Home Button in top left -->
+    <Button fx:id="backButton" layoutX="10.0" layoutY="14.0" onAction="#onBackToHome" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11; -fx-padding: 6 16 6 16; -fx-background-radius: 8;" text="Home">
+      <font>
+         <Font size="10.0" />
+      </font></Button>
+    <ImageView fitHeight="135.0" fitWidth="151.0" layoutX="68.0" layoutY="32.0" preserveRatio="true">
+        <image>
+            <Image url="@../../../Images/Icon%20purple.png" />
+        </image>
+    </ImageView>
+    <Label layoutX="21.0" layoutY="279.0" minWidth="-Infinity" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Password:" />
+    <PasswordField fx:id="passwordField" editable="false" layoutX="22.0" layoutY="302.0" minWidth="-Infinity" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #cccccc;" />
+    <Button layoutX="230.0" layoutY="303.0" onAction="#onChangePassword" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Change" />
+    <Label layoutX="23.0" layoutY="202.0" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Email:" />
+    <TextField fx:id="emailField" editable="false" layoutX="24.0" layoutY="224.0" minWidth="-Infinity" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #cccccc;" />
+    <Button layoutX="230.0" layoutY="225.0" onAction="#onChangeEmail" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Change" />
+    <Label layoutX="103.0" layoutY="157.0" minWidth="-Infinity" prefHeight="20.0" prefWidth="103.0" style="-fx-font-weight: bold; -fx-font-size: 14;" />
+    <Label fx:id="nameLabel" alignment="CENTER" layoutX="72.0" layoutY="164.0" prefWidth="140" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="User's Name" />
 </AnchorPane>
