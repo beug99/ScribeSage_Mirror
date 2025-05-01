@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class UpdatePasswordController {
@@ -21,7 +23,11 @@ public class UpdatePasswordController {
     private Button updatePWordConfirm;
 
     @FXML
-    private void onUpdatePassword() throws IOException{
+    private Button backButton;
+
+
+    @FXML
+    private void onUpdatePassword() throws IOException {
         String oldPassword = this.oldPassword.getText();
         String newPassword = this.newPassword.getText();
         String email = Session.getLoggedInEmail();
@@ -29,7 +35,7 @@ public class UpdatePasswordController {
         if (SqliteUserDAO.updatePassword(email, oldPassword, newPassword)) {
             // check if oldPassword matches latest password used in authenticateUser method (current user password)
             Stage stage = (Stage) updatePWordConfirm.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updateDetails-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         } else {
@@ -42,4 +48,19 @@ public class UpdatePasswordController {
             alert.showAndWait();
         }
     }
+
+    @FXML
+    private void onBackToDetails(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.setScene(new Scene(loader.load()));
+    }
+
+
+    public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+        }
+
 }

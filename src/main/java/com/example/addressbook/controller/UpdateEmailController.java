@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class UpdateEmailController {
@@ -16,6 +17,12 @@ public class UpdateEmailController {
     @FXML private PasswordField currentPassword;
     @FXML private TextField newEmailField;
     @FXML private Button confirmEmailUpdate;
+    @FXML private Button backButton;
+
+
+
+
+
 
     @FXML
     private void onConfirmUpdateEmail() throws IOException {
@@ -45,4 +52,18 @@ public class UpdateEmailController {
             alert.showAndWait();
         }
     }
+
+    @FXML
+    private void onBackToDetails(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.setScene(new Scene(loader.load()));
+    }
+
+    public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException  {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+        }
+
 }

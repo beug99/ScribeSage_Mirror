@@ -8,7 +8,7 @@
 <AnchorPane minWidth="-Infinity" prefHeight="368.0" prefWidth="301.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
 
     <!-- Home Button in top left -->
-    <Button fx:id="backButton" layoutX="10.0" layoutY="14.0" onAction="#onBackToHome" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11; -fx-padding: 6 16 6 16; -fx-background-radius: 8;" text="Home">
+    <Button fx:id="backButton" layoutX="10.0" layoutY="14.0" onAction="#onBackToHome" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12; -fx-padding: 6 16 6 16; -fx-background-radius: 8;" text="Home">
       <font>
          <Font size="10.0" />
       </font></Button>
