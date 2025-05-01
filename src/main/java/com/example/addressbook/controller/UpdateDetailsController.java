@@ -13,14 +13,14 @@ import java.io.IOException;
 
 public class UpdateDetailsController {
 
-    @FXML private TextField nameField;
+    @FXML private Label nameLabel;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private Button backButton;
 
 
     public void initialize() {
-        nameField.setText(Session.getFirstName() + " " + Session.getLastName());
+        nameLabel.setText(Session.getFirstName() + " " + Session.getLastName());
         emailField.setText(Session.getLoggedInEmail());
         passwordField.setText("**********"); // Just display, not the actual password
     }
