@@ -62,6 +62,9 @@ public class UpdateEmailController {
             Stage stage = (Stage) confirmEmailUpdate.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("updateDetails-view.fxml"));
             stage.setScene(new Scene(loader.load()));
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Update Failed");
@@ -76,12 +79,17 @@ public class UpdateEmailController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException  {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
         }
-
 }

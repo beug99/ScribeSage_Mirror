@@ -71,6 +71,10 @@ public class SignUpController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.setResizable(false);
+
+            stage.show();
         }
     }
 

@@ -29,6 +29,10 @@ public class LoginController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+
+        stage.show();
     }
 
     @FXML
@@ -56,6 +60,10 @@ public class LoginController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.setResizable(false);
+
+            stage.show();
 
         } else {
             // show error message for failed log in attempts

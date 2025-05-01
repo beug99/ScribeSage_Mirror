@@ -38,6 +38,10 @@ public class UpdatePasswordController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updateDetails-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
+
         } else {
             // show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -54,6 +58,9 @@ public class UpdatePasswordController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
 
@@ -61,6 +68,9 @@ public class UpdatePasswordController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
         }
 
 }

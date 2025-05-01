@@ -8,113 +8,111 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane id="rootBox" stylesheets="@../../../css/newnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.NewNoteController">
-    <VBox>
-    <VBox>
-        <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
-            <columnConstraints>
-                <ColumnConstraints minWidth="0.0" />
-                <ColumnConstraints hgrow="ALWAYS" />
-                <ColumnConstraints />
-            </columnConstraints>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="20" top="10.0" />
-            </padding>
-            <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0">
-                <image>
-                    <Image url="@../../../Images/Icon%20purple.png" />
-                </image>
-            </ImageView>
-            <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name" GridPane.columnIndex="1">            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-            </Label>
-            <Button fx:id="homeButton" onAction="#onHomeButtonClick" prefWidth="80" text="Home" GridPane.columnIndex="2" />
-            <rowConstraints>
-               <RowConstraints />
-            </rowConstraints>
+<AnchorPane id="rootBox" stylesheets="@../../../css/newnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.NewNoteController"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        </GridPane>
+    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- Header Section -->
+        <VBox>
+            <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="50.0" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                    <ColumnConstraints minWidth="80.0" />
+                </columnConstraints>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="20" top="10.0" />
+                </padding>
+                <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0">
+                    <image>
+                        <Image url="@../../../Images/Icon%20purple.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name" GridPane.columnIndex="1">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <Button fx:id="homeButton" onAction="#onHomeButtonClick" prefWidth="80" text="Home" GridPane.columnIndex="2" />
+                <rowConstraints>
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
 
-        <HBox>
-            <padding>
-                <Insets left="20" right="20" />
-            </padding>
-            <Line endX="800" fill="#4D4B4B" stroke="#6e6e6e" strokeWidth="2.5" />
-        </HBox>
-
-    </VBox>
-
-    <VBox>
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="25.0" />
-        </padding>
-
-<!--        NOTE NAME - SEARCH BUTTON AND SEARCH BAR-->
-        <GridPane hgap="0" vgap="15.0">
-            <columnConstraints>
-                <ColumnConstraints minWidth="0.0" />
-                <ColumnConstraints hgrow="ALWAYS" />
-                <ColumnConstraints />
-            </columnConstraints>
-
-            <HBox id="names" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label text="Name:   " GridPane.vgrow="NEVER" />
-                <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
+            <HBox>
+                <padding>
+                    <Insets left="20" right="20" />
+                </padding>
+                <Line endX="800" fill="#4D4B4B" stroke="#6e6e6e" strokeWidth="2.5" />
             </HBox>
-
-            <HBox alignment="TOP_RIGHT" spacing="10" GridPane.columnIndex="1">
-                <TextField fx:id="searchBarID" maxHeight="150" maxWidth="400" promptText="Search Note" />
-                <Button fx:id="searchBarButton" onAction="#searchBarButtonClick" prefWidth="80" text="Search" />
-            </HBox>
-            <rowConstraints>
-               <RowConstraints />
-            </rowConstraints>
-
-        </GridPane>
-
-<!--        SAVE BUTTONS - AI BUTTONS-->
-        <HBox spacing="10">
-            <padding>
-                <Insets bottom="10" top="25" />
-            </padding>
-            <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save Note">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-            <Button fx:id="loadButton" onAction="#onLoadButtonClick" text="Load">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-            <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-
-            <!-- Added StackPane to overlay progress indicator on button -->
-            <StackPane>
-                <Button fx:id="enhanceTextButton" onAction="#onEnhanceButton" text="Enhance Selected Text">
-                  <font>
-                     <Font size="14.0" />
-                  </font></Button>
-                <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
-            </StackPane>
-
-            <Button fx:id="getHighlightedButton" onAction="#onGetHighlighted" text="Show Selected">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-        </HBox>
-
-        <VBox fx:id="vBoxForHtmlGui" alignment="CENTER" VBox.vgrow="ALWAYS">
-            <padding>
-                <Insets bottom="15" top="15" />
-            </padding>
-            <HTMLEditor fx:id="htmlEditorGui" htmlText="&lt;html&gt;&lt;body&gt;&lt;p&gt;Start writing your note here...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="400">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets></HTMLEditor>
         </VBox>
-    </VBox>
+
+        <!-- Main Content Section -->
+        <VBox VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="25.0" />
+            </padding>
+
+            <!-- NOTE NAME - SEARCH BUTTON AND SEARCH BAR -->
+            <GridPane hgap="0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="200.0" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+
+                <HBox id="names" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Name:   " GridPane.vgrow="NEVER" />
+                    <Label fx:id="currentNoteName" text="Name Filled When Note Made" />
+                </HBox>
+
+                <HBox alignment="TOP_RIGHT" spacing="10" GridPane.columnIndex="1">
+                    <TextField fx:id="searchBarID" maxHeight="150" prefWidth="250" promptText="Search Note" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="searchBarButton" onAction="#searchBarButtonClick" prefWidth="80" text="Search" />
+                </HBox>
+                <rowConstraints>
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+
+            <!-- SAVE BUTTONS - AI BUTTONS -->
+            <HBox spacing="10">
+                <padding>
+                    <Insets bottom="10" top="25" />
+                </padding>
+                <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save Note">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="loadButton" onAction="#onLoadButtonClick" text="Load">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+
+                <!-- Added StackPane to overlay progress indicator on button -->
+                <StackPane>
+                    <Button fx:id="enhanceTextButton" onAction="#onEnhanceButton" text="Enhance Selected Text">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                    <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
+                </StackPane>
+            </HBox>
+
+            <!-- HTML EDITOR - Set to grow within available space -->
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="15" top="15" />
+                </padding>
+                <HTMLEditor fx:id="htmlEditorGui"
+                            htmlText="&lt;html&gt;&lt;body style='margin:0;padding:5px;height:100%;background-color:white;'&gt;&lt;p&gt;Start writing your note here...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+                            AnchorPane.bottomAnchor="0.0"
+                            AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0"
+                            AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+        </VBox>
     </VBox>
 </AnchorPane>

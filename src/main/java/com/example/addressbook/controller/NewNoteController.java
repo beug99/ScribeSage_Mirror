@@ -5,6 +5,7 @@ import com.example.addressbook.Session;
 import com.example.addressbook.model.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class NewNoteController extends CreateNoteController {
 
@@ -193,24 +195,49 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void initialize() {
+        // set user full name on label
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
 
         System.out.println("Initializing NewNoteController");
-        // Hide progress indicator initially
+
         if (progressIndicator != null) {
             progressIndicator.setVisible(false);
         }
 
+        // load note content if available
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
-            htmlEditorGui.setStyle("");
             System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
         } else {
             System.out.println("Current Note is null");
+            // Initialize with proper HTML structure
+            htmlEditorGui.setHtmlText("<html><body style='margin:0;padding:5px;height:100%;background-color:white;'><p>Start writing your note here...</p></body></html>");
         }
 
+
+        htmlEditorGui.prefWidthProperty().bind(htmlEditorGui.getParent().layoutBoundsProperty().map(bounds -> bounds.getWidth()));
+        htmlEditorGui.prefHeightProperty().bind(htmlEditorGui.getParent().layoutBoundsProperty().map(bounds -> bounds.getHeight()));
+
+        // ensure HTMLEditor redraws properly on resize
+        Platform.runLater(() -> {
+            Scene scene = htmlEditorGui.getScene();
+            if (scene != null) {
+                scene.widthProperty().addListener((obs, oldVal, newVal) -> refreshHTMLEditor());
+                scene.heightProperty().addListener((obs, oldVal, newVal) -> refreshHTMLEditor());
+
+                // Initial refresh
+                refreshHTMLEditor();
+
+                // Add listener to parent size changes
+                htmlEditorGui.getParent().layoutBoundsProperty().addListener((obs, oldVal, newVal) -> {
+                    if (oldVal.getHeight() != newVal.getHeight() || oldVal.getWidth() != newVal.getWidth()) {
+                        refreshHTMLEditor();
+                    }
+                });
+            }
+        });
     }
 
     @FXML
@@ -249,6 +276,41 @@ public class NewNoteController extends CreateNoteController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+
+        stage.show();
+    }
+
+    private void refreshHTMLEditor() {
+        // Store current content
+        String currentContent = htmlEditorGui.getHtmlText();
+
+        // Get the WebView within the HTMLEditor
+        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
+        if (webView != null) {
+            // Ensure the WebView fills its container
+            webView.setPrefHeight(htmlEditorGui.getHeight() - 80); // Subtract toolbar height
+            webView.setMinHeight(200); // Set minimum height
+
+            // Set the background color explicitly
+            webView.setStyle("-fx-background-color: white;");
+
+            // Apply the changes
+            Platform.runLater(() -> {
+                // Force redraw with current content
+                htmlEditorGui.setHtmlText(currentContent);
+
+                // Execute JavaScript to ensure body fills the available space
+                WebEngine engine = webView.getEngine();
+                engine.executeScript(
+                        "document.body.style.backgroundColor = 'white';" +
+                                "document.body.style.height = '100%';" +
+                                "document.body.style.margin = '0';" +
+                                "document.body.style.padding = '5px';"
+                );
+            });
+        }
     }
 
     @FXML

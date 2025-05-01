@@ -53,9 +53,10 @@ public class CreateNoteController {
             Stage stage = (Stage) createNoteButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-
-
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
             labelForFXML.setCurrentNote(newNote);
@@ -77,6 +78,9 @@ public class CreateNoteController {
         Stage stage = (Stage) homeButton.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML
@@ -87,6 +91,9 @@ public class CreateNoteController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/addressbook/homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void onUploadSparseClick(ActionEvent actionEvent) {

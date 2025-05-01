@@ -23,6 +23,10 @@ public class WelcomeController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+
+        stage.show();
     }
 
     @FXML
@@ -31,5 +35,9 @@ public class WelcomeController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+
+        stage.show();
     }
 }

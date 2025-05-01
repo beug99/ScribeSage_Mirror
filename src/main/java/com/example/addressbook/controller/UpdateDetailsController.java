@@ -32,6 +32,10 @@ public class UpdateDetailsController {
 
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+
+        stage.show();
     }
 
 
@@ -40,6 +44,9 @@ public class UpdateDetailsController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateEmail-view.fxml"));
         Stage stage = (Stage) emailField.getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML
@@ -47,6 +54,9 @@ public class UpdateDetailsController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updatePassword-view.fxml"));
         Stage stage = (Stage) passwordField.getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
 }
