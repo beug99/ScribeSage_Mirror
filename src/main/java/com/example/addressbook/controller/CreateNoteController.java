@@ -30,14 +30,14 @@ public class CreateNoteController {
     private TextField noteTagsTextField;
     @FXML
     private ListView<Note> noteListView;
-
+    @FXML
     private INoteDAO noteDAO;
-
 
     public CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
     }
 
+    // create a note via button
     @FXML
     public void onCreateButtonClick(ActionEvent actionEvent) throws IOException {
         //When clicked, create instance of a new note, adds initial note to DB
@@ -60,6 +60,7 @@ public class CreateNoteController {
             labelForFXML.setLabelText(currentNote);
             labelForFXML.setCurrentNote(newNote);
         }
+        // if note does not have a name
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Create Note Failed");
@@ -71,8 +72,6 @@ public class CreateNoteController {
 
     @FXML
     public void onHomeClick(ActionEvent actionEvent) throws IOException {
-        //Will change the FXML file to the home page once I've merged the project
-
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Stage stage = (Stage) homeButton.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -81,19 +80,16 @@ public class CreateNoteController {
         stage.show();
     }
 
+    //returns to homepage if cancelled
     @FXML
     public void onCancelButtonClick() throws IOException {
-        //This just re-loads the page a fresh, no text, no buttons clicked etc
-
         Stage stage = (Stage) cancelButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/addressbook/homepage-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
     }
 
-    public void onUploadSparseClick(ActionEvent actionEvent) {
-    }
-
+    // upload to canvas functionality
     public void onUploadCanvasClick(ActionEvent actionEvent) {
         FileChooser chooseFile = new FileChooser();
         chooseFile.setTitle("Upload Canvas Material");
@@ -113,10 +109,15 @@ public class CreateNoteController {
     }
 
     public void onAINoteSummariseClick(ActionEvent actionEvent) {
+        // to be implemented
+    }
+
+    public void onUploadSparseClick(ActionEvent actionEvent) {
+        // to be implemented
     }
 
     public void onChangeFolderClick(ActionEvent actionEvent) {
+        // to be implemented
     }
-
 
 }

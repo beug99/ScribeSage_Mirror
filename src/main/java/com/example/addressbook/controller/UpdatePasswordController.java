@@ -14,10 +14,8 @@ import java.io.IOException;
 public class UpdatePasswordController {
     @FXML
     private PasswordField oldPassword;
-
     @FXML
     private PasswordField newPassword;
-
     @FXML
     private Button updatePWordConfirm;
     @FXML

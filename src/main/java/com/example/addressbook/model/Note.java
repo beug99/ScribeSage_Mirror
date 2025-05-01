@@ -1,8 +1,6 @@
 package com.example.addressbook.model;
 
-import java.io.File;
 import java.time.LocalDate;
-
 
 public class Note {
     private int noteID;

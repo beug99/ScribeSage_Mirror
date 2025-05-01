@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class UpdateDetailsController {
-
     @FXML private TextField nameField;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
@@ -35,7 +34,6 @@ public class UpdateDetailsController {
         stage.show();
     }
 
-
     @FXML
     private void onChangeEmail() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateEmail-view.fxml"));
@@ -53,5 +51,4 @@ public class UpdateDetailsController {
         stage.centerOnScreen();
         stage.show();
     }
-
 }
