@@ -23,7 +23,8 @@ public class SqliteFolderDAO implements IFolderDAO {
             String query = "CREATE TABLE IF NOT EXISTS folders (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name TEXT NOT NULL," +
-                    "userId INTEGER NOT NULL" +
+                    "userId INTEGER NOT NULL," +
+                    "folderId INTEGER NOT NULL" +
                     ")";
             statement.execute(query);
         } catch (Exception e) {
