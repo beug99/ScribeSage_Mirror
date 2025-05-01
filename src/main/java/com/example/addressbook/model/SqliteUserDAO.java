@@ -188,11 +188,11 @@ public class SqliteUserDAO implements IUserDAO {
         boolean isUpdated = false;
 
         try {
-            // Check if the current email and password match
+            // Check if the current email exists
             PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT password FROM users WHERE email = ?");
-            getStmt.setString(1, currentEmail);
-            getStmt.setString(2, password);
+                    "SELECT password FROM users WHERE email = ?"
+            );
+            getStmt.setString(1, currentEmail); // placeholder
 
             ResultSet resultSet = getStmt.executeQuery();
 
@@ -203,7 +203,8 @@ public class SqliteUserDAO implements IUserDAO {
                 if (PasswordHasher.verifyPassword(password, storedHash)) {
                     // If valid, update the email
                     PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                            "UPDATE users SET email = ? WHERE email = ?");
+                            "UPDATE users SET email = ? WHERE email = ?"
+                    );
                     updateStmt.setString(1, newEmail);
                     updateStmt.setString(2, currentEmail);
                     int rowsAffected = updateStmt.executeUpdate();
@@ -212,14 +213,17 @@ public class SqliteUserDAO implements IUserDAO {
                     updateStmt.close();
                 }
             }
+
             resultSet.close();
             getStmt.close();
+
         } catch (SQLException e) {
             System.err.println("Email update error: " + e.getMessage());
         }
 
         return isUpdated;
     }
+
 
     public static User getUserByEmail(String email) {
         try {
