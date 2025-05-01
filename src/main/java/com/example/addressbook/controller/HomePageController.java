@@ -10,7 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class HomePageController {
     @FXML
@@ -34,15 +38,23 @@ public class HomePageController {
     private ListView<String> notesListView;
     @FXML
     private Label nameLabel;
+    @FXML
+    private TreeView<String> folderTreeView;
+    @FXML
+    private Button createFolderButton;
 
     private INoteDAO noteDAO;
     private ObservableList<Note> notesObservableList;
     private ObservableList<String> noteNamesObservableList;
     private Note selectedNote;
 
+    // folder lists
+    private List<Folder> folderList = new ArrayList<>();
+    private IFolderDAO folderDAO;
 
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
+        folderDAO = new SqliteFolderDAO();
     }
 
     private void setSelectedNote(Note note) {
@@ -59,7 +71,7 @@ public class HomePageController {
 
         Platform.runLater(() -> {
             navMenu.getScene().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
-                // Only hide the menu if it's open and the click is outside the menu and profile bar
+                // only hide the menu if it's open and the click is outside the menu and profile bar
                 if (navMenu.isVisible() &&
                         !navMenu.localToScene(navMenu.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY()) &&
                         !profileBar.localToScene(profileBar.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY())) {
@@ -68,7 +80,63 @@ public class HomePageController {
                 }
             });
         });
+
+        // handler for drag and drop on folders
+        notesListView.setOnDragDetected(event -> {
+            String selectedNoteName = notesListView.getSelectionModel().getSelectedItem();
+            if (selectedNoteName != null) {
+                for (Note note : notesObservableList) {
+                    if (note.getNoteName().equals(selectedNoteName)) {
+                        Dragboard db = notesListView.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(String.valueOf(note.getId())); // Use note ID
+                        db.setContent(content);
+                        event.consume();
+                        break;
+                    }
+                }
+            }
+        });
+
+        folderTreeView.setOnDragOver(event -> {
+            if (event.getGestureSource() != folderTreeView && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        
+        folderTreeView.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                try {
+                    int noteId = Integer.parseInt(db.getString());
+                    Note note = noteDAO.getNoteById(noteId);
+                    TreeItem<String> targetItem = folderTreeView.getSelectionModel().getSelectedItem();
+                    if (targetItem != null) {
+                        String folderName = targetItem.getValue();
+                        Folder targetFolder = null;
+                        for (Folder folder : folderList) {
+                            if (folder.getFolderName().equals(folderName)) {
+                                targetFolder = folder;
+                                break;
+                            }
+                        }
+                        if (note != null && targetFolder != null) {
+                            addNoteToFolder(note, targetFolder);
+                            populateFolderTreeView();
+                            success = true;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
     }
+
     @FXML
     private void onUpdateDetails() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
@@ -203,4 +271,57 @@ public class HomePageController {
         stage.show();
     }
 
+    // populating folder views
+    private void populateFolderTreeView() {
+        TreeItem<String> rootItem = new TreeItem<>("Folders");
+        rootItem.setExpanded(true);
+    
+        for (Folder folder : folderList) {
+            TreeItem<String> folderItem = new TreeItem<>(folder.getFolderName());
+            if (folder.getNotes() != null) {
+                for (Note note : folder.getNotes()) {
+                    folderItem.getChildren().add(new TreeItem<>(note.getNoteName()));
+                }
+            }
+            rootItem.getChildren().add(folderItem);
+        }
+        folderTreeView.setRoot(rootItem);
+        folderTreeView.setShowRoot(false); // optional
+    }
+
+    // Create Folder
+    @FXML
+    private void onCreateFolder(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Create New Folder");
+        dialog.setHeaderText("Enter folder name:");
+        dialog.setContentText("Folder name:");
+
+        dialog.showAndWait().ifPresent(folderName -> {
+            createFolder(folderName);
+            populateFolderTreeView();
+        });
+    }
+
+    private void createFolder(String folderName) {
+        // input validation
+        if (folderName == null || folderName.trim().isEmpty()) return; 
+        // duplicate checks
+        for (Folder folder : folderList) {
+            if (folder.getFolderName().equalsIgnoreCase(folderName.trim())) 
+            return;
+        }
+        // folder creation
+        Folder newFolder = new Folder(folderName.trim());
+        // db & local updates
+        folderDAO.addFolder(newFolder);
+        folderList.add(newFolder);
+    }
+
+    // add note to folder
+    public void addNoteToFolder(Note note, Folder folder) {
+        folder.getNotes().add(note);
+        note.setFolderId(folder.getFolderId());
+        noteDAO.updateNote(note);
+    } 
 }

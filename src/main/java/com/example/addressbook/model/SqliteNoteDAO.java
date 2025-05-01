@@ -42,11 +42,12 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void addNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText, noteOwner) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText, noteOwner) VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
+//            statement.setObject(5, note.getFolderId());
 
             statement.executeUpdate();
             logSQLexecution(statement);
@@ -63,12 +64,13 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void updateNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ? folderId = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
-            statement.setInt(5, note.getId());
+            statement.setObject(5, note.getFolderId());
+            statement.setInt(6, note.getId());
             statement.executeUpdate();
             logSQLexecution(statement);
         } catch (Exception e) {

@@ -26,8 +26,6 @@ public class Session {
 
     public static String getLastName() { return lastName; }
 
-
-
     public static void clear(){
         loggedInEmail = null;
         firstName = null;

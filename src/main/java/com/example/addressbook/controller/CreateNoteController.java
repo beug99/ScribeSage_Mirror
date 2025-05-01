@@ -82,6 +82,7 @@ public class CreateNoteController {
         stage.setScene(scene);
     }
 
+    // may use in future
     public void onUploadSparseClick(ActionEvent actionEvent) {
     }
 

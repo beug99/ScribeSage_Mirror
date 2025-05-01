@@ -3,7 +3,6 @@ package com.example.addressbook.model;
 import java.awt.*;
 import java.io.File;
 
-
 public class Note {
     private int noteID;
     private String noteName;
@@ -53,5 +52,9 @@ public class Note {
     public String getNoteOwner() { return noteOwner;}
 
     public void setNoteOwner(String owner) { this.noteOwner = owner;}
+
+    private Integer folderId;
+    public Integer getFolderId() { return folderId; }
+    public void setFolderId(Integer folderId) { this.folderId = folderId; }
 
 }
