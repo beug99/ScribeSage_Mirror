@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.addressbook.controller.SignUpController">
-    <VBox alignment="CENTER" spacing = "15.0" AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-        <Label text="Enter Your Details Below" textFill="#0099ff">
+<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.addressbook.controller.SignUpController">
+    <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <Label text="Enter Your Details Below">
             <font>
-                <Font name="Arial Bold" size="20"/>
+                <Font name="Arial Bold" size="20" />
             </font>
         </Label>
 
-        <VBox spacing = "5.0">
-            <Label text = "First Name:" textFill = "#0099ff"/>
-            <TextField fx:id="firstName" promptText="Enter first name..."/>
+        <VBox spacing="5.0">
+            <Label text="First Name:" />
+            <TextField fx:id="firstName" promptText="Enter first name..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
-        <VBox spacing = "5.0">
-            <Label text = "Last Name:" textFill = "#0099ff"/>
-            <TextField fx:id="lastName" promptText="Enter last name..."/>
+        <VBox spacing="5.0">
+            <Label text="Last Name:" />
+            <TextField fx:id="lastName" promptText="Enter last name..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
-        <VBox spacing = "5.0">
-            <Label text = "Email address:" textFill = "#0099ff"/>
-            <TextField fx:id="eMail" promptText="Enter email address..."/>
+        <VBox spacing="5.0">
+            <Label text="Email address:" />
+            <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
-        <VBox spacing = "5.0">
-            <Label text = "Password:" textFill = "#0099ff"/>
-            <PasswordField fx:id="password" promptText="Enter password..."/>
+        <VBox spacing="5.0">
+            <Label text="Password:" />
+            <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
-        <Button text = "Confirm Sign-up" fx:id="signUp" style="-fx-background-color: #0099ff;
-        -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="200" onAction = "#onSignUp"/>
+        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Sign-up" />
 
     </VBox>
 </AnchorPane>
-
