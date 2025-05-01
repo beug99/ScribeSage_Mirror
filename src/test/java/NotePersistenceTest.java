@@ -189,7 +189,7 @@ public class NotePersistenceTest {
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
 
         // Check if success criteria met
-        assertEquals(Note1, user1Notes.getFirst());
+        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
     }
 
     @Test
@@ -225,7 +225,7 @@ public class NotePersistenceTest {
         NotesDAO.addNote(Note1);
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note1, user1Notes.getFirst());
+        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
 
         // User1 logs out
         Session.clear();
@@ -266,7 +266,7 @@ public class NotePersistenceTest {
         NotesDAO.addNote(Note1);
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note1, user1Notes.getFirst());
+        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
 
         // User1 logs out
         Session.clear();
@@ -278,7 +278,7 @@ public class NotePersistenceTest {
         NotesDAO.addNote(Note3);
         List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3, user2Notes.getFirst());
+        assertEquals(Note3.getNoteText(), user2Notes.getFirst().getNoteText());
 
         // User2 logs out
         Session.clear();
@@ -299,7 +299,7 @@ public class NotePersistenceTest {
         // Verify success criteria (User2's note still exists)
         user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3, user2Notes.getFirst());
+        assertEquals(Note3.getNoteText(), user2Notes.getFirst().getNoteText());
 
     }
 

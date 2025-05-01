@@ -2,15 +2,23 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
+import com.example.addressbook.model.INoteDAO;
+import com.example.addressbook.model.Note;
+import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.model.INoteDAO;
+import com.example.addressbook.model.SqliteNoteDAO;
 import com.example.addressbook.model.SqliteUserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 
 public class UpdateEmailController {
 
@@ -18,11 +26,12 @@ public class UpdateEmailController {
     @FXML private TextField newEmailField;
     @FXML private Button confirmEmailUpdate;
     @FXML private Button backButton;
+    @FXML private INoteDAO noteDAO;
 
-
-
-
-
+    public UpdateEmailController()
+    {
+        noteDAO = new SqliteNoteDAO();
+    }
 
     @FXML
     private void onConfirmUpdateEmail() throws IOException {
@@ -33,7 +42,16 @@ public class UpdateEmailController {
         boolean success = SqliteUserDAO.updateEmail(currentEmail, currentPwd, newEmail);
 
         if (success) {
-            Session.setLoggedInEmail(newEmail); // update session
+            // Update session
+            Session.setLoggedInEmail(newEmail);
+
+            // Update user's note owner's new email
+            List<Note> currentNotes = noteDAO.getNotesByOwner(currentEmail);
+            for (Note note : currentNotes) {
+                note.setNoteOwner(newEmail);
+                noteDAO.updateNote(note);
+            }
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(null);
