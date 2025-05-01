@@ -44,9 +44,9 @@
         <VBox fx:id="navMenu" prefHeight="166.0" prefWidth="188.0" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);" stylesheets="@../../../css/navmenu.css" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0">
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                    <ImageView fitHeight="39.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../../../Images/Edit_button.png" />
+                            <Image url="@../../../Images/Update%20Details%20purple.png" />
                         </image>
                     </ImageView>
                     <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
@@ -54,16 +54,16 @@
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                    <ImageView fitHeight="42.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@../../../Images/Settings.png" /></image>
+                    <ImageView fitHeight="28.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <image><Image url="@../../../Images/Settings%20purple.png" /></image>
                     </ImageView>
                     <Label prefHeight="18.0" prefWidth="114.0" text="Settings">
                         <font><Font name="System Bold" size="12.0" /></font>
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">
-                    <ImageView fitHeight="38.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@../../../Images/Logout_button.png" /></image>
+                    <ImageView fitHeight="31.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                        <image><Image url="@../../../Images/Log%20out%20purple.png" /></image>
                     </ImageView>
                     <Label prefHeight="18.0" prefWidth="152.0" text="Logout">
                         <font><Font name="System Bold" size="12.0" /></font>
