@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.addressbook.controller.UpdateEmailController">
-    <VBox alignment="CENTER" spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateEmailController">
+    <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
 
-        <Label text="Update Your Email" textFill="#0099ff">
+        <Label text="Update Your Email">
             <font>
-                <Font name="Arial Bold" size="20"/>
+                <Font name="Arial Bold" size="20" />
             </font>
         </Label>
 
         <VBox spacing="5.0">
-            <Label text="Current Password:" textFill="#0099ff"/>
-            <PasswordField fx:id="currentPassword"/>
+            <Label text="Current Password:" />
+            <PasswordField fx:id="currentPassword" />
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="New Email:" textFill="#0099ff"/>
-            <TextField fx:id="newEmailField" promptText="Enter new email"/>
+            <Label text="New Email:" />
+            <TextField fx:id="newEmailField" promptText="Enter new email" />
         </VBox>
 
-        <Button text="Confirm Update" fx:id="confirmEmailUpdate" onAction="#onConfirmUpdateEmail" prefWidth="200"
-                style="-fx-background-color: #0099ff; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button fx:id="confirmEmailUpdate" onAction="#onConfirmUpdateEmail" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Update" />
     </VBox>
 </AnchorPane>
