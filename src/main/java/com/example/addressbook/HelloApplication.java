@@ -16,11 +16,10 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle(TITLE);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
-
     public static void main(String[] args) {
         launch();
     }
 }
-

@@ -1,11 +1,13 @@
 package com.example.addressbook.controller;
 
+import com.example.addressbook.controller.CreateNoteController;
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -32,13 +34,12 @@ public class HomePageController {
     private ListView<String> notesListView;
     @FXML
     private Label nameLabel;
-
     private INoteDAO noteDAO;
     private ObservableList<Note> notesObservableList;
     private ObservableList<String> noteNamesObservableList;
     private Note selectedNote;
 
-
+    // connect
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
     }
@@ -48,7 +49,7 @@ public class HomePageController {
         System.out.println("Selected note: " + note.getNoteName() + " ID:" + note.getId() + " Owner: " + note.getNoteOwner());
     }
 
-
+    // initialise navigation menu
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
@@ -67,32 +68,42 @@ public class HomePageController {
             });
         });
     }
+
+    // shows navigation menu, invisible by default
+    public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
+        navMenu.setVisible(!navMenu.isVisible());
+    }
+
+    // controller for update details button
     @FXML
     private void onUpdateDetails() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
+    // controller for logging out
     @FXML
     private void onLogOut() throws IOException {
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/addressbook/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
-    // Loads a selected note from the LoadNote listener
+    // loads a selected note from the LoadNote listener
     @FXML
     private void onLoadNote() throws IOException {
         if (selectedNote != null) {
-
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/new-note-view.fxml"));
             Parent root = fxmlLoader.load();
 
-            // Sets Note and Note name for NoteController
+            // sets Note and Note name for NoteController
             NewNoteController noteController = fxmlLoader.getController();
             noteController.setCurrentNote(selectedNote);
             noteController.setLabelText(selectedNote.getNoteName());
@@ -100,7 +111,9 @@ public class HomePageController {
             Stage stage = (Stage) notesListView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
+
         } else {
             System.out.println("No note selected to load.");
         }
@@ -155,48 +168,16 @@ public class HomePageController {
         }
     }
 
-
-    /**
-     * old idea: user notess via name only displays name
-     * was going to use note name and user email to fetch but eh
-     * better to store note objects for better and more flexible handling
-     * for future sprints
-
-    private void loadUserNotes() {
-        try {
-            List<Note> userNotes = noteDAO.getNotesByOwner(Session.getLoggedInEmail());
-            ObservableList<String> noteNames = FXCollections.observableArrayList();
-
-            for (Note note : userNotes) {
-                noteNames.add(note.getNoteName());
-            }
-
-            notesListView.setItems(noteNames);
-
-            notesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    // DO STUFF
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to load user notes.");
-        }
-    }
-*/
-    public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
-        navMenu.setVisible(!navMenu.isVisible());
-    }
-
-    public void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/create-note-view.fxml"));
         Parent root = loader.load();
 
         Stage stage = (Stage) createNewButton.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
+
 }

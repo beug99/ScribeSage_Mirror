@@ -1,10 +1,13 @@
 module com.example.addressbook {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.desktop;
-    requires java.sql;
 
     requires javafx.web;
+    requires java.net.http;
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
+    requires java.desktop;
+    requires password4j;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;
