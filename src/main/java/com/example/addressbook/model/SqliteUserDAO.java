@@ -42,7 +42,7 @@ public class SqliteUserDAO implements IUserDAO {
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                user.setId(generatedKeys.getInt(1));
+                user.setUserId(generatedKeys.getInt(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class SqliteUserDAO implements IUserDAO {
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getEmail());
-            statement.setInt(5, user.getId());
+            statement.setInt(5, user.getUserId());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +68,7 @@ public class SqliteUserDAO implements IUserDAO {
     public void deleteUser(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM contacts WHERE id = ?");
-            statement.setInt(1, user.getId());
+            statement.setInt(1, user.getUserId());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,7 +87,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
                 User user = new User(firstName, lastName, email, password);
-                user.setId(id);
+                user.setUserId(id);
                 return user;
             }
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String password = resultSet.getString("password");
 
                 User user = new User(firstName, lastName, email, password);
-                user.setId(id);
+                user.setUserId(id);
                 users.add(user);
             }
         } catch (Exception e) {
@@ -226,7 +226,7 @@ public class SqliteUserDAO implements IUserDAO {
                         rs.getString("email"),
                         rs.getString("password")
                 );
-                user.setId(rs.getInt("id"));
+                user.setUserId(rs.getInt("id"));
                 return user;
             }
         } catch (SQLException e) {

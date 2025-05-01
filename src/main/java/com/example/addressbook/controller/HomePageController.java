@@ -298,12 +298,13 @@ public class HomePageController {
         dialog.setContentText("Folder name:");
 
         dialog.showAndWait().ifPresent(folderName -> {
-            createFolder(folderName);
+            String loggedInEmail = Session.getLoggedInEmail();
+            createFolder(folderName, loggedInEmail);
             populateFolderTreeView();
         });
     }
 
-    private void createFolder(String folderName) {
+    private void createFolder(String folderName, String loggedInEmail) {
         // input validation
         if (folderName == null || folderName.trim().isEmpty()) return; 
         // duplicate checks

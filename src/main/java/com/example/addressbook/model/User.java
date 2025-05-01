@@ -1,12 +1,12 @@
 package com.example.addressbook.model;
 
 public class User {
-    private int id;
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-
+    
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -14,13 +14,11 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setUserId(int id) { this.userId = userId; }
 
     public String getFirstName() {
         return firstName;
@@ -53,6 +51,4 @@ public class User {
     public String getPassword() { return password; }
 
     public void setPassword(String password) { this.password = password; }
-
-
 }
