@@ -31,7 +31,9 @@ public class SqliteUserConnection {
         new SqliteUserConnection(url);
     }
 
+    // get the exception and store it for debugging
     public static SQLException getLastException() {
+        lastException = new SQLException();
         return lastException;
     }
 }

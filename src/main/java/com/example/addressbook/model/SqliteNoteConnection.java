@@ -30,7 +30,14 @@ public class SqliteNoteConnection {
         new SqliteNoteConnection(url);
     }
 
+    // get the exception and store it for debugging
     public static SQLException getLastException() {
+        lastException = new SQLException();
         return lastException;
+    }
+
+    // close connection
+    public static void closeConnection(String url){
+        SqliteNoteConnection.closeConnection("notes.db");
     }
 }
