@@ -28,6 +28,7 @@ public class SignUpController {
     private PasswordField password;
     @FXML
     private Button signUp;
+    private User userId;
 
     /**
      * Method for adding user info from sign up fields into database once "sign-up" button is pressed
@@ -42,7 +43,7 @@ public class SignUpController {
             alert.showAndWait();
         }
         else {
-            userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), password.getText()));
+            userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), password.getText(), userId.getUserId()));
 
             Stage stage = (Stage) signUp.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));

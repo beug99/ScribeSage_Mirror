@@ -22,7 +22,8 @@ public class SqliteUserDAO implements IUserDAO {
                     + "firstName VARCHAR NOT NULL,"
                     + "lastName VARCHAR NOT NULL,"
                     + "email VARCHAR NOT NULL,"
-                    + "password VARCHAR NOT NULL"
+                    + "password VARCHAR NOT NULL,"
+                    + "userId INTEGER AUTOINCREMENT"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -33,11 +34,12 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public void addUser(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password, userId) VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getPassword());
+            statement.setInt(5, user.getUserId());
             statement.executeUpdate();
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -52,7 +54,7 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public void updateUser(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE contacts SET firstName = ?, lastName = ?, phone = ?, email = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE users SET firstName = ?, lastName = ?, password = ?, email = ?, userId = ? WHERE id = ?");
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getPassword());
@@ -86,7 +88,8 @@ public class SqliteUserDAO implements IUserDAO {
                 String lastName = resultSet.getString("lastName");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
-                User user = new User(firstName, lastName, email, password);
+                Integer userId = resultSet.getInt("userId");
+                User user = new User(firstName, lastName, email, password, userId);
                 user.setUserId(id);
                 return user;
             }
@@ -109,8 +112,9 @@ public class SqliteUserDAO implements IUserDAO {
                 String lastName = resultSet.getString("lastName");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
+                Integer userId = resultSet.getInt("userId");
 
-                User user = new User(firstName, lastName, email, password);
+                User user = new User(firstName, lastName, email, password, userId);
                 user.setUserId(id);
                 users.add(user);
             }
@@ -224,7 +228,8 @@ public class SqliteUserDAO implements IUserDAO {
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getInt("id")
                 );
                 user.setUserId(rs.getInt("id"));
                 return user;

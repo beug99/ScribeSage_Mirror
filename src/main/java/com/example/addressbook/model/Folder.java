@@ -5,8 +5,8 @@ import java.util.List;
 public class Folder {
     private Integer FolderId;
     private String folderName;
-    private Integer userId;
     private List<Note> notes;
+    private Integer userId;
 
     public Folder(String folderName) {
         this.folderName = folderName;
@@ -18,16 +18,17 @@ public class Folder {
     public void setFolderId(Integer id) 
         { this.FolderId = id; }
 
+    public Integer getUserId() 
+        { return userId; }
+
+    public void setUserId(Integer userId) 
+        { this.userId = userId; }
+
     public String getFolderName() 
         { return folderName; }
 
     public void setFolderName(String folderName) 
         { this.folderName = folderName; }
-
-    public Integer getUserId() 
-        { return userId; }
-
-    public void setUserId(Integer userId) { this.userId = userId; }
 
     public List<Note> getNotes() 
         { return notes; }
