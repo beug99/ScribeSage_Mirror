@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class UpdateEmailController {
 
@@ -39,51 +40,48 @@ public class UpdateEmailController {
         String newEmail = newEmailField.getText();
         String currentEmail = Session.getLoggedInEmail();
 
+        // Validate new email format before proceeding
+        if (!isValidEmail(newEmail)) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
         boolean success = SqliteUserDAO.updateEmail(currentEmail, currentPwd, newEmail);
 
         if (success) {
-            // Update session
+            // Update session email
             Session.setLoggedInEmail(newEmail);
 
-            // Update user's note owner's new email
+            // Update associated notes
             List<Note> currentNotes = noteDAO.getNotesByOwner(currentEmail);
-            for (Note note : currentNotes) {
-                note.setNoteOwner(newEmail);
-                noteDAO.updateNote(note);
+            if (currentNotes != null) {
+                for (Note note : currentNotes) {
+                    note.setNoteOwner(newEmail);
+                    noteDAO.updateNote(note);
+                }
             }
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Your email was updated successfully!");
-            alert.showAndWait();
-
-            // Optionally return to profile view
-            Stage stage = (Stage) confirmEmailUpdate.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("updateDetails-view.fxml"));
-            stage.setScene(new Scene(loader.load()));
-            stage.centerOnScreen();
-            stage.setResizable(false);
-            stage.show();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Your email was updated successfully!");
+            switchScene("updateDetails-view.fxml");
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Update Failed");
-            alert.setHeaderText(null);
-            alert.setContentText("Incorrect password or failed update. Please try again.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Update Failed", "Incorrect password or failed update. Please try again.");
         }
     }
 
-    @FXML
-    private void onBackToDetails(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+    private void switchScene(String fxmlFile) throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/" + fxmlFile));
         stage.setScene(new Scene(loader.load()));
         stage.centerOnScreen();
         stage.setResizable(false);
         stage.show();
     }
 
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
     public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException  {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
             Stage stage = (Stage) backButton.getScene().getWindow();
@@ -92,4 +90,13 @@ public class UpdateEmailController {
             stage.setResizable(false);
             stage.show();
         }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 }
