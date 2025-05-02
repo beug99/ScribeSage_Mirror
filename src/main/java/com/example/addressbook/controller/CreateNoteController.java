@@ -54,6 +54,7 @@ public class CreateNoteController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
+            stage.setResizable(true);
             stage.centerOnScreen();
             stage.show();
 

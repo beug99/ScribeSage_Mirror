@@ -12,7 +12,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     public SqliteNoteDAO() {
-        connection = DatabaseConnection.getInstance("notes.db");
+        connection = SqliteNoteConnection.getInstance("notes.db");
         createTable();
     }
 
@@ -28,13 +28,13 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteOwner VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void logSQLexecution(Statement statement) {
+    private void logSQLexecution(String statement) {
         System.out.println("SQL executed: " + statement);
     }
 
@@ -49,7 +49,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(4, Session.getLoggedInEmail());
 
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -70,7 +70,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(4, Session.getLoggedInEmail());
             statement.setInt(5, note.getId());
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             if (resultSet.next()) {
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
@@ -96,6 +96,7 @@ public class SqliteNoteDAO implements INoteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Note not found");
         return null;
     }
 
@@ -106,7 +107,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE noteOwner = ?");
             statement.setString(1, owner);
             ResultSet resultSet = statement.executeQuery();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String noteName = resultSet.getString("noteName");
@@ -138,7 +139,7 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
-                logSQLexecution(statement);
+                logSQLexecution(statement.toString());
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner);
                 note.setId(id);
@@ -156,7 +157,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
             statement.setInt(1, selectedNote.getId());
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
