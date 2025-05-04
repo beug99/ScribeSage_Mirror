@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class HomePageController {
@@ -34,6 +35,10 @@ public class HomePageController {
     private ListView<String> notesListView;
     @FXML
     private Label nameLabel;
+    @FXML
+    public Button sortAlphabetically;
+    @FXML
+    public Button sortDate;
 
     private INoteDAO noteDAO;
     private ObservableList<Note> notesObservableList;
@@ -166,6 +171,19 @@ public class HomePageController {
             e.printStackTrace();
         }
     }
+
+    // Controller for sorting list alphabetically
+    @FXML
+    private void onSortAlphabetically()throws IOException {
+        Collections.sort(notesListView.getItems());
+    }
+
+    // Controller for sorting list by date
+    @FXML
+    private void onSortDate()throws IOException {
+//        Collections.sort(notesListView, );
+    }
+
 
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
