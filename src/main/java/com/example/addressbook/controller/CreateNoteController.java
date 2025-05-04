@@ -10,13 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.io.File;
 import java.io.IOException;
+
 
 public class CreateNoteController {
     public Label folderName;
@@ -45,7 +45,7 @@ public class CreateNoteController {
         //Opens the New Note scene under with the note name that was entered
 
         NewNoteController labelForFXML = null;
-        if (noteNameTextField != null && noteTagsTextField != null) {
+        if (!noteNameTextField.getText().isEmpty()) {
             Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
@@ -53,23 +53,35 @@ public class CreateNoteController {
             Stage stage = (Stage) createNoteButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-
-
             stage.setScene(scene);
+            stage.setResizable(true);
+            stage.centerOnScreen();
+            stage.show();
+
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
             labelForFXML.setCurrentNote(newNote);
         }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Create Note Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("You must give your note a name!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
-    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onHomeClick(ActionEvent actionEvent) throws IOException {
         //Will change the FXML file to the home page once I've merged the project
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Stage stage = (Stage) homeButton.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML
@@ -80,6 +92,9 @@ public class CreateNoteController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/addressbook/homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void onUploadSparseClick(ActionEvent actionEvent) {
@@ -110,6 +125,4 @@ public class CreateNoteController {
     }
 
 
-    public void toggleNavMenu(MouseEvent mouseEvent) {
-    }
 }

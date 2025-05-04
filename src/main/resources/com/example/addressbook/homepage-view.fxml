@@ -4,149 +4,69 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #F5F5F5;"
-            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.addressbook.controller.HomePageController">
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
 
-    <!-- Main Content Container -->
-    <VBox layoutX="25.0" layoutY="25.0" prefHeight="550.0" prefWidth="750.0"
-          style="-fx-background-color: white; -fx-background-radius: 5;" AnchorPane.leftAnchor="25.0"
-          AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" AnchorPane.bottomAnchor="25.0">
+    <AnchorPane prefHeight="600.0" prefWidth="900.0">
 
-        <!-- Top Profile Bar -->
-        <HBox fx:id="profileBar" alignment="CENTER_LEFT" onMouseClicked="#toggleNavMenu" prefHeight="60.0"
-              prefWidth="750.0"
-              style="-fx-border-color: transparent transparent #EEEEEE transparent; -fx-border-width: 0 0 1 0;">
-            <padding>
-                <Insets left="20.0"/>
-            </padding>
-            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+        <!-- Profile bar (at the top) -->
+        <HBox fx:id="profileBar" alignment="CENTER_LEFT" onMouseClicked="#toggleNavMenu" spacing="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <ImageView fitHeight="49.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../../../Images/UserIcon.png"/>
+                    <Image url="@../../../Images/Icon%20purple.png" />
                 </image>
             </ImageView>
-
-            <Label fx:id="nameLabel" prefHeight="40.0" text="Christopher Milne" style="-fx-cursor: hand;">
+            <Label fx:id="nameLabel" text="First and last name">
                 <font>
-                    <Font name="System Bold" size="16.0"/>
+                    <Font name="System Bold" size="16.0" />
                 </font>
-                <HBox.margin>
-                    <Insets left="10.0"/>
-                </HBox.margin>
             </Label>
-
-            <!-- spacer to push buttons to the right -->
-            <Region fx:id="spacer" HBox.hgrow="ALWAYS"/>
-
-            <!-- Load and Delete Buttons on the right -->
-            <Button fx:id="load" onAction="#onLoadNote"
-                    style="-fx-background-color: transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 14;"
-                    text="Load"/>
-            <Button fx:id="delete" onAction="#onDeleteNote"
-                    style="-fx-background-color: transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 14;"
-                    text="Delete"/>
         </HBox>
 
-        <!-- Notes Area -->
-        <VBox spacing="10.0" VBox.vgrow="ALWAYS">
-            <padding>
-                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-            </padding>
+        <VBox fx:id="mainLayout" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="900.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Your Notes:" />
 
-<!--            SHELLS TESTING-->
-            <HBox spacing="10">
-                <padding>
-                    <Insets left="10" bottom="10.0"/>
-                </padding>
-                <Button text="Name" fx:id="sortAlphabetically" onAction="#onSortAlphabetically" prefWidth="80"
-                        style="-fx-background-color:
-                transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 12; -fx-border-color: lightgray;
-                -fx-border-width: 1;     -fx-border-radius: 5;">
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" >
-                            <Image url="@../../../Images/sort.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button text="Date" fx:id="sortDate" onAction="#onSortDate" prefWidth="80" style="-fx-background-color:
-                transparent; -fx-text-fill: #0099ff; -fx-font-weight: bold; -fx-font-size: 12; -fx-border-color: lightgray;
-                -fx-border-width: 1;     -fx-border-radius: 5;">
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" >
-                            <Image url="@../../../Images/sort.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
+            <HBox alignment="CENTER">
+                <ListView fx:id="notesListView" maxWidth="650.0" prefHeight="300.0" prefWidth="650.0" style="-fx-border-color: #6a5acd;" VBox.vgrow="ALWAYS" />
             </HBox>
 
-            <!-- notes list view -->
-            <ListView fx:id="notesListView" prefHeight="400.0" VBox.vgrow="ALWAYS"
-                      style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                <placeholder>
-                    <Label text="No notes found"/>
-                </placeholder>
-            </ListView>
-
-            <!-- Create New Button -->
-            <HBox alignment="CENTER">
-                <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#onCreateNew" prefHeight="50.0"
-                        prefWidth="300.0" text="Create New"
-                        style="-fx-background-color: #001523; -fx-text-fill: white; -fx-background-radius: 5;">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Button>
+            <HBox alignment="CENTER" spacing="20.0">
+                <Button fx:id="deleteNoteButton" onAction="#onDeleteNote" prefWidth="120.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Delete Selected" />
+                <Button fx:id="createNewButton" onAction="#onCreateNew" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Create New" />
+                <Button fx:id="loadNoteButton" onAction="#onLoadNote" prefWidth="120.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Load Selected" />
             </HBox>
         </VBox>
-    </VBox>
 
-    <!-- Navigation Menu Dropdown -->
-    <VBox fx:id="navMenu" layoutX="23.5" layoutY="60.0" prefWidth="250.0"
-          style="-fx-background-color: white; -fx-border-color: #EEEEEE; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-radius: 5;"
-          visible="false" AnchorPane.topAnchor="85.0">
-        <padding>
-            <Insets top="10.0" bottom="10.0"/>
-        </padding>
-
-        <!-- Settings Option -->
-        <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand; -fx-padding: 10 15 10 15;">
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../Images/Settings.png"/>
-            </ImageView>
-            <Label text="Settings" style="-fx-text-fill: #0088CC;">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-        </HBox>
-
-        <!-- Update Details Option -->
-        <HBox alignment="CENTER_LEFT" spacing="15.0"
-              style="-fx-cursor: hand; -fx-padding: 10 15 10 15; -fx-border-color: transparent transparent #EEEEEE transparent; -fx-border-width: 0 0 1 0;">
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../Images/Edit_button.png"/>
-            </ImageView>
-            <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" text="Update Details"
-                   style="-fx-text-fill: #0088CC;">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-        </HBox>
-
-        <!-- Log Out Option -->
-        <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="15.0"
-              style="-fx-cursor: hand; -fx-padding: 10 15 10 15;">
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../Images/Logout_button.png"/>
-            </ImageView>
-            <Label text="Log Out" style="-fx-text-fill: #0088CC;">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-        </HBox>
-    </VBox>
-</AnchorPane>
+        <!-- Nav menu  -->
+        <VBox fx:id="navMenu" prefHeight="166.0" prefWidth="188.0" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);" stylesheets="@../../../css/navmenu.css" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                    <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../Images/Update%20Details%20purple.png" />
+                        </image>
+                    </ImageView>
+                    <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
+                        <font><Font name="System Bold" size="12.0" /></font>
+                    </Label>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
+                    <ImageView fitHeight="28.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <image><Image url="@../../../Images/Settings%20purple.png" /></image>
+                    </ImageView>
+                    <Label prefHeight="18.0" prefWidth="114.0" text="Settings">
+                        <font><Font name="System Bold" size="12.0" /></font>
+                    </Label>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">
+                    <ImageView fitHeight="31.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                        <image><Image url="@../../../Images/Log%20out%20purple.png" /></image>
+                    </ImageView>
+                    <Label prefHeight="18.0" prefWidth="152.0" text="Logout">
+                        <font><Font name="System Bold" size="12.0" /></font>
+                    </Label>
+                </HBox>
+            </children>
+        </VBox>
+    </AnchorPane>
+</StackPane>

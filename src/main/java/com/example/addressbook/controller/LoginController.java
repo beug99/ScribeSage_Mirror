@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+import static java.sql.DriverManager.println;
+
 public class LoginController {
     @FXML
     private Button logIn;
@@ -18,7 +20,9 @@ public class LoginController {
     @FXML
     private PasswordField password;
 
-    // controls sign up button
+    @FXML
+    private Button signUp;
+
     @FXML
     protected void onSignUp() throws IOException {
         Stage stage = (Stage) logIn.getScene().getWindow();
@@ -26,10 +30,11 @@ public class LoginController {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(false);
+
         stage.show();
     }
 
-    // controls log in button
     @FXML
     private void onLogIn() throws IOException{
         String emailInput = this.eMail.getText();
@@ -56,6 +61,8 @@ public class LoginController {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(false);
+
             stage.show();
 
         } else {

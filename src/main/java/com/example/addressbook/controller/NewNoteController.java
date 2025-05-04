@@ -5,12 +5,15 @@ import com.example.addressbook.Session;
 import com.example.addressbook.model.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
@@ -22,7 +25,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -35,16 +37,17 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
+
     @FXML
     private Button enhanceTextButton;
     @FXML
     private ProgressIndicator progressIndicator; // Add this to FXML
+
     private AIService aiService;
     private ExecutorService executorService;
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
 
-    // connection to SQL
     public NewNoteController() {
         super();
         aiService = new AIService();
@@ -53,7 +56,9 @@ public class NewNoteController extends CreateNoteController {
         executorService = Executors.newFixedThreadPool(2);
     }
 
-    // gets the html text the user selects
+    /**
+     * Gets currently selected text from the HTML editor
+     */
     public String getSelectedHTMLText() {
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
         if (webView != null) {
@@ -65,7 +70,10 @@ public class NewNoteController extends CreateNoteController {
         }
         return "";
     }
-    // replaces selected text
+
+    /**
+     * Replaces the selected text in the HTML editor with new content
+     */
     public void replaceSelectedHTMLText(String replacement) {
         if (replacement == null || replacement.isEmpty()) {
             return;
@@ -80,7 +88,6 @@ public class NewNoteController extends CreateNoteController {
                     .replace("\n", "\\n")
                     .replace("\r", "\\r");
 
-            // javascript for pasting enhanced text back into note
             String script = "var sel = window.getSelection();" +
                     "if (sel.rangeCount > 0) {" +
                     "  var range = sel.getRangeAt(0);" +
@@ -94,7 +101,6 @@ public class NewNoteController extends CreateNoteController {
         }
     }
 
-    // handles enhancement button
     @FXML
     public void onEnhanceButton(ActionEvent event) {
         String selected = getSelectedHTMLText();
@@ -142,7 +148,7 @@ public class NewNoteController extends CreateNoteController {
                 });
             }
         };
-        // run the task in the background
+        // Run the task in the background
         executorService.submit(task);
     }
 
@@ -152,6 +158,16 @@ public class NewNoteController extends CreateNoteController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void onGetHighlighted(ActionEvent event) {
+        String selectedText = getSelectedHTMLText();
+        if (selectedText != null && !selectedText.isEmpty()) {
+            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
+        } else {
+            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
+        }
     }
 
     @FXML
@@ -229,7 +245,40 @@ public class NewNoteController extends CreateNoteController {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(false);
+
         stage.show();
+    }
+
+    private void refreshHTMLEditor() {
+        // Store current content
+        String currentContent = htmlEditorGui.getHtmlText();
+
+        // Get the WebView within the HTMLEditor
+        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
+        if (webView != null) {
+            // Ensure the WebView fills its container
+            webView.setPrefHeight(htmlEditorGui.getHeight() - 80); // Subtract toolbar height
+            webView.setMinHeight(200); // Set minimum height
+
+            // Set the background color explicitly
+            webView.setStyle("-fx-background-color: white;");
+
+            // Apply the changes
+            Platform.runLater(() -> {
+                // Force redraw with current content
+                htmlEditorGui.setHtmlText(currentContent);
+
+                // Execute JavaScript to ensure body fills the available space
+                WebEngine engine = webView.getEngine();
+                engine.executeScript(
+                        "document.body.style.backgroundColor = 'white';" +
+                                "document.body.style.height = '100%';" +
+                                "document.body.style.margin = '0';" +
+                                "document.body.style.padding = '5px';"
+                );
+            });
+        }
     }
 
     @FXML
@@ -243,6 +292,6 @@ public class NewNoteController extends CreateNoteController {
     }
 
     public void toggleNavMenu(MouseEvent mouseEvent) {
-        // to be implemented
+
     }
 }

@@ -32,7 +32,6 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
-    // adds a user to the database, with hashed password
     @Override
     public void addUser(User user) {
         try {
@@ -52,7 +51,6 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
-    // updates user in database if details change
     @Override
     public void updateUser(User user) {
         try {
@@ -68,7 +66,6 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
-    // removes user from database
     @Override
     public void deleteUser(User user) {
         try {
@@ -80,7 +77,6 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
-    // retrieves a user from the database
     @Override
     public User getUser(int id) {
         try {
@@ -102,7 +98,6 @@ public class SqliteUserDAO implements IUserDAO {
         return null;
     }
 
-    // retrieves every user in database
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -150,9 +145,9 @@ public class SqliteUserDAO implements IUserDAO {
         }
         return isAuthenticated;
     }
-
     public static boolean updatePassword(String email, String oldPassword, String newPassword) {
         boolean isUpdated = false;
+
         try {
             // get password hash
             PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
@@ -164,7 +159,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String storedHash = resultSet.getString("password");
 
                 // verifying old password using password4j
-                if (PasswordHasher.verifyPassword(oldPassword, newPassword)) {
+                if (PasswordHasher.verifyPassword(oldPassword, storedHash)) {
                     String newHashedPassword = PasswordHasher.hashPassword(newPassword);
 
                     // updated database
@@ -178,11 +173,13 @@ public class SqliteUserDAO implements IUserDAO {
                     updateStmt.close();
                 }
             }
+
             resultSet.close();
             getStmt.close();
         } catch (SQLException e) {
             System.err.println("Password update error: " + e.getMessage());
         }
+
         return isUpdated;
     }
 
@@ -191,11 +188,12 @@ public class SqliteUserDAO implements IUserDAO {
         boolean isUpdated = false;
 
         try {
-            // Check if the current email and password match
+            // Check if the current email exists
             PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT password FROM users WHERE email = ?");
-            getStmt.setString(1, currentEmail);
-            getStmt.setString(2, password);
+                    "SELECT password FROM users WHERE email = ?"
+            );
+            getStmt.setString(1, currentEmail); // placeholder
+
             ResultSet resultSet = getStmt.executeQuery();
 
             if (resultSet.next()) {
@@ -205,21 +203,27 @@ public class SqliteUserDAO implements IUserDAO {
                 if (PasswordHasher.verifyPassword(password, storedHash)) {
                     // If valid, update the email
                     PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                            "UPDATE users SET email = ? WHERE email = ?");
+                            "UPDATE users SET email = ? WHERE email = ?"
+                    );
                     updateStmt.setString(1, newEmail);
                     updateStmt.setString(2, currentEmail);
                     int rowsAffected = updateStmt.executeUpdate();
                     isUpdated = (rowsAffected > 0);
+
                     updateStmt.close();
                 }
             }
+
             resultSet.close();
             getStmt.close();
+
         } catch (SQLException e) {
             System.err.println("Email update error: " + e.getMessage());
         }
+
         return isUpdated;
     }
+
 
     public static User getUserByEmail(String email) {
         try {
@@ -243,4 +247,5 @@ public class SqliteUserDAO implements IUserDAO {
         }
         return null;
     }
+
 }

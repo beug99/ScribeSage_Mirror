@@ -22,22 +22,27 @@
 }
 .html-editor
 {
-    -fx-font: 12 cambria;
+    -fx-font: 12px cambria;
     -fx-border-color: #7D8CDC;
     -fx-border-style: solid;
     -fx-border-width: 2;
     -fx-background-color: lightgray;
 }
 
-.html-editor .button, .html-editor .toggle-button
+.html-editor
 {
     -fx-background-color: lightgray;
 }
 
 .html-editor-background
 {
-    -fx-color-label-visible: false;
-    -fx-background-color: lightgray;
+    -fx-background-color: white;
+        -fx-border-color: #cccccc;
+        -fx-border-width: 1px;
+}
+
+.html-editor .web-view {
+    -fx-background-color: white;
 }
 
 .html-editor-foreground
@@ -45,8 +50,23 @@
     -fx-color-label-visible: true;
     -fx-background-color: lightgray;
 }
-.html-editor
-{
-    -fx-background-color: lightgray;
+.html-editor .web-view {
+    -fx-background-color: white;
+    -fx-min-height: 200px;
+}
 
+.html-editor .web-view .scroll-pane {
+    -fx-background-color: white;
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.html-editor .web-view .scroll-pane .viewport {
+    -fx-background-color: white;
+}
+
+.html-editor .web-view .scroll-pane .content {
+    -fx-background-color: white;
 }

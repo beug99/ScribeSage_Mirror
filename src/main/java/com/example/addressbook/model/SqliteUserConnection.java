@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/// could be combined with SqliteNoteConnection.java?
+
 public class SqliteUserConnection {
     private static Connection instance = null;
     private static SQLException lastException = null;
@@ -29,7 +31,9 @@ public class SqliteUserConnection {
         new SqliteUserConnection(url);
     }
 
+    // get the exception and store it for debugging
     public static SQLException getLastException() {
+        lastException = new SQLException();
         return lastException;
     }
 }

@@ -10,8 +10,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class WelcomeController {
+
     @FXML
     private Button logIn;
+
     @FXML
     private Button signUp;
 
@@ -22,6 +24,8 @@ public class WelcomeController {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(false);
+
         stage.show();
     }
 
@@ -32,6 +36,8 @@ public class WelcomeController {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(false);
+
         stage.show();
     }
 }

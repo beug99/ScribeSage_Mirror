@@ -17,8 +17,10 @@ public class HelloApplication extends Application {
         stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(false);
         stage.show();
     }
+
     public static void main(String[] args) {
         launch();
     }

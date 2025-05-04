@@ -2,7 +2,6 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.model.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -32,19 +31,10 @@ public class SignUpController {
     private PasswordField password;
     @FXML
     private Button signUp;
-    @FXML
-    private Button homeButton;
 
-    @FXML
-    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
+    /**
+     * Method for adding user info from sign up fields into database once "sign-up" button is pressed
+     */
     @FXML
     private void onSignUp() throws IOException {
         // fields are blank
@@ -82,21 +72,22 @@ public class SignUpController {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(false);
+
             stage.show();
         }
     }
 
-    // validates email using regex pattern
     private boolean isValidEmail(String email) {
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
 
-    // validates passwords using regex pattern
     private boolean isValidPassword(String password) {
         String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
         return pattern.matcher(password).matches();
     }
+
 }

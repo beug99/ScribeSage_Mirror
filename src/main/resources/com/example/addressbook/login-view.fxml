@@ -2,41 +2,38 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.addressbook.controller.LoginController">
-    <VBox alignment="CENTER" spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.LoginController">
+    <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
 
         <!-- support contact link could go here? -->
 
-        <Label text="ScribeSage" textFill="#0099ff">
+        <Label text="ScribeSage">
             <font>
-                <Font name="Arial Bold" size="28"/>
+                <Font name="Arial Bold" size="28" />
             </font>
         </Label>
 
         <!-- email -->
         <VBox spacing="5.0">
-            <Label text="Email Address:" textFill="#0099ff"/>
-            <TextField fx:id="eMail" promptText="Enter email address..."/>
+            <Label text="Email Address:" />
+            <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <!-- password -->
         <VBox spacing="5.0">
-            <Label text="Password:" textFill="#0099ff"/>
-            <PasswordField fx:id="password" promptText="Enter password..."/>
+            <Label text="Password:" />
+            <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <!-- log in -->
-        <Button text="Log In" fx:id="logIn" prefWidth="200" style="-fx-background-color: #0099ff;
-        -fx-text-fill: white; -fx-font-weight: bold;" onAction="#onLogIn"/>
+        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
 
+        <!-- forgot password maybe? -->
         <!-- sign up button -->
-        <Label text="Don't have an account?"/>
-        <Button text="Sign up" onAction="#onSignUp" fx:id="signUp" prefWidth="200" style="-fx-background-color: #0099ff;
-        -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Don't have an account?" />
+        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
 
     </VBox>
 </AnchorPane>

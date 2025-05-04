@@ -2,57 +2,26 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
 
-<AnchorPane id="rootCreateNoteBox" stylesheets="@../../../css/createnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
-    <VBox>
-        <VBox>
-            <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
-                <columnConstraints>
-                    <ColumnConstraints minWidth="0.0" />
-                    <ColumnConstraints hgrow="ALWAYS" />
-                    <ColumnConstraints />
-                </columnConstraints>
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="20" top="10.0" />
-                </padding>
-                <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0">
-                    <image>
-                        <Image url="@../../../Images/UserIcon.png" />
-                    </image>
-                </ImageView>
-                <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name" GridPane.columnIndex="1">            <font>
-                    <Font name="System Bold" size="16.0" />
-                </font>
-                </Label>
-                <Button fx:id="homeButton" onAction="#onHomeButtonClick" prefWidth="80" text="Home" GridPane.columnIndex="2" />
-                <rowConstraints>
-                    <RowConstraints />
-                </rowConstraints>
+<VBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
 
-            </GridPane>
-
-            <HBox>
-                <padding>
-                    <Insets left="20" right="20" bottom="20"/>
-                </padding>
-                <Line endX="500" fill="#4D4B4B" stroke="#6e6e6e" strokeWidth="2.5" />
-            </HBox>
-
-        </VBox>
     <GridPane hgap="5.0" vgap="5.0">
         <columnConstraints>
             <ColumnConstraints minWidth="70" />
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
-        <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Button fx:id="homeButton" onAction="#onHomeClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Home" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
         <padding>
             <Insets bottom="20.0" />
         </padding>
+      <rowConstraints>
+         <RowConstraints />
+      </rowConstraints>
     </GridPane>
 
     <GridPane hgap="5.0" vgap="5.0">
@@ -64,8 +33,8 @@
         <Label text="Note Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <Label text="Tags:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-        <TextField fx:id="noteNameTextField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="noteNameTextField" maxWidth="Infinity" style="-fx-border-color: #6a5acd;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="noteTagsTextField" style="-fx-border-color: #6a5acd;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <rowConstraints>
             <RowConstraints />
             <RowConstraints />
@@ -89,10 +58,10 @@
         <Label text="AI Note Summariser:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
         <Label fx:id="folderName" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Button maxWidth="Infinity" onAction="#onChangeFolderClick" text="Choose Folder" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Button maxWidth="Infinity" onAction="#onChangeFolderClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Choose Folder" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-        <Button maxWidth="Infinity" onAction="#onUploadSparseClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-        <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Button maxWidth="Infinity" onAction="#onUploadSparseClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="2" />
         <CheckBox maxWidth="Infinity" onAction="#onAINoteSummariseClick" GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <rowConstraints>
             <RowConstraints />
@@ -103,25 +72,18 @@
 
     </GridPane>
 
+    <HBox alignment="BOTTOM_RIGHT" spacing="10.0" style="-fx-background-color: white;">
+        <padding>
+            <Insets top="50.0" />
+        </padding>
+
+        <Button fx:id="cancelButton" onAction="#onCancelButtonClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Cancel" />
+        <Button fx:id="createNoteButton" onAction="#onCreateButtonClick" style="-fx-background-color: #6a5acd; -fx-font-weight: bold; -fx-text-fill: white;" text="Create" />
+    </HBox>
+
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
-        <padding>
-            <Insets top="50.0" />
-        </padding>
-
-        <Button fx:id="cancelButton"
-                text="Cancel"
-                onAction="#onCancelButtonClick"
-        />
-        <Button fx:id="createNoteButton"
-                text="Create"
-                onAction="#onCreateButtonClick"
-        />
-    </HBox>
-    </VBox>
-
-</AnchorPane>
+</VBox>
