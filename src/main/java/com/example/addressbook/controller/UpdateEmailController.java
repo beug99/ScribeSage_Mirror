@@ -2,6 +2,7 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
@@ -25,7 +26,6 @@ public class UpdateEmailController {
 
     @FXML private PasswordField currentPassword;
     @FXML private TextField newEmailField;
-    @FXML private Button confirmEmailUpdate;
     @FXML private Button backButton;
     @FXML private INoteDAO noteDAO;
 
@@ -60,21 +60,13 @@ public class UpdateEmailController {
                     noteDAO.updateNote(note);
                 }
             }
-
             showAlert(Alert.AlertType.INFORMATION, "Success", "Your email was updated successfully!");
-            switchScene("updateDetails-view.fxml");
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
+
         } else {
             showAlert(Alert.AlertType.ERROR, "Update Failed", "Incorrect password or failed update. Please try again.");
         }
-    }
-
-    private void switchScene(String fxmlFile) throws IOException {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/" + fxmlFile));
-        stage.setScene(new Scene(loader.load()));
-        stage.centerOnScreen();
-        stage.setResizable(false);
-        stage.show();
     }
 
     private boolean isValidEmail(String email) {
@@ -82,13 +74,9 @@ public class UpdateEmailController {
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
-    public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException  {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+    public void onBackToDetails() throws IOException  {
             Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-            stage.centerOnScreen();
-            stage.setResizable(false);
-            stage.show();
+            SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
         }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

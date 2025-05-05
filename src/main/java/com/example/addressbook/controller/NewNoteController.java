@@ -2,6 +2,7 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
@@ -220,7 +221,7 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onLoadButtonClick(){
         System.out.println("Load button pressed");
         //TODO Load another view with sole purpose to display notes associated with owner
     }
@@ -228,44 +229,7 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void onHomeButtonClick() throws IOException {
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setResizable(false);
-
-        stage.show();
-    }
-
-    private void refreshHTMLEditor() {
-        // Store current content
-        String currentContent = htmlEditorGui.getHtmlText();
-
-        // Get the WebView within the HTMLEditor
-        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
-        if (webView != null) {
-            // Ensure the WebView fills its container
-            webView.setPrefHeight(htmlEditorGui.getHeight() - 80); // Subtract toolbar height
-            webView.setMinHeight(200); // Set minimum height
-
-            // Set the background color explicitly
-            webView.setStyle("-fx-background-color: white;");
-
-            // Apply the changes
-            Platform.runLater(() -> {
-                // Force redraw with current content
-                htmlEditorGui.setHtmlText(currentContent);
-
-                // Execute JavaScript to ensure body fills the available space
-                WebEngine engine = webView.getEngine();
-                engine.executeScript(
-                        "document.body.style.backgroundColor = 'white';" +
-                                "document.body.style.height = '100%';" +
-                                "document.body.style.margin = '0';" +
-                                "document.body.style.padding = '5px';"
-                );
-            });
-        }
+        SceneLoader.switchScene(stage, "homepage-view.fxml", false);
     }
 
     @FXML

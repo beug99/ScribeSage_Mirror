@@ -1,10 +1,9 @@
 package com.example.addressbook.controller;
 
-import com.example.addressbook.HelloApplication;
+import com.example.addressbook.helper.PasswordHasher;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
@@ -62,18 +61,12 @@ public class SignUpController {
             alert.showAndWait();
         }
         else {
-            // hash password before storing it using Password4j
+            // hash password before storing it using password4j
             String hashedPassword = PasswordHasher.hashPassword(password.getText());
             userDAO.addUser(new User(firstName.getText(), lastName.getText(), eMail.getText(), hashedPassword));
 
             Stage stage = (Stage) signUp.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setResizable(false);
-
-            stage.show();
+            SceneLoader.switchScene(stage, "login-view.fxml", false);
         }
     }
 
