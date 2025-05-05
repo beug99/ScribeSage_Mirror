@@ -12,8 +12,8 @@ public class SceneLoader {
     public static <T> T switchScene(Stage stage, String fxmlFilePath, boolean resizeAble) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFilePath));
         Parent root = fxmlLoader.load();
-
         Scene scene = new Scene(root);
+        stage.setTitle("ScribeSage");
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setResizable(resizeAble);
