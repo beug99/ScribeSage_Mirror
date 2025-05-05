@@ -32,12 +32,10 @@ public class NewNoteController extends CreateNoteController {
     public Button homeButton;
     public TextField searchBarID;
     public Button saveButton;
-    public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
-
     @FXML
     private Button enhanceTextButton;
     @FXML
@@ -161,16 +159,6 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onGetHighlighted(ActionEvent event) {
-        String selectedText = getSelectedHTMLText();
-        if (selectedText != null && !selectedText.isEmpty()) {
-            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
-        } else {
-            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
-        }
-    }
-
-    @FXML
     public void setLabelText(String text) {
         currentNoteName.setText(text);
     }
@@ -209,12 +197,11 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onSaveButtonClick() {
         if (currentNote == null) {
             showAlert(AlertType.ERROR, "Save Error", "No note is currently loaded.");
             return;
         }
-
         System.out.println("Attempting to save: Note ID_" + currentNote.getId() + " Note name_" + currentNote.getNoteName());
         String updatedContent = htmlEditorGui.getHtmlText();
         currentNote.setNoteText(updatedContent);
@@ -239,7 +226,7 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onHomeButtonClick() throws IOException {
         Stage stage = (Stage) homeButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -282,16 +269,7 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void searchBarButtonClick(ActionEvent actionEvent) {
+    public void searchBarButtonClick() {
         //TODO Create a search function - for a later sprint
-    }
-
-    @FXML
-    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
-        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
-    }
-
-    public void toggleNavMenu(MouseEvent mouseEvent) {
-
     }
 }

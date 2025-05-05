@@ -14,7 +14,7 @@
     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- Header Section -->
         <VBox>
-            <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
+            <GridPane fx:id="profileBar">
                 <columnConstraints>
                     <ColumnConstraints minWidth="50.0" />
                     <ColumnConstraints hgrow="ALWAYS" />

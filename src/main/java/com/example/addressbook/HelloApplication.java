@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import com.password4j.Argon2Function;
+import com.password4j.Password;
+import com.password4j.types.Argon2;
 import java.io.IOException;
 
 public class HelloApplication extends Application {

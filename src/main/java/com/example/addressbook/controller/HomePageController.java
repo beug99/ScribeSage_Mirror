@@ -1,20 +1,15 @@
 package com.example.addressbook.controller;
 
-import com.example.addressbook.controller.CreateNoteController;
-import com.example.addressbook.HelloApplication;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -35,11 +30,13 @@ public class HomePageController {
     @FXML
     private Label nameLabel;
 
+    @FXML
+    private MouseEvent mouseEvent;
+
     private INoteDAO noteDAO;
     private ObservableList<Note> notesObservableList;
     private ObservableList<String> noteNamesObservableList;
     private Note selectedNote;
-
 
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
@@ -49,7 +46,6 @@ public class HomePageController {
         selectedNote = note;
         System.out.println("Selected note: " + note.getNoteName() + " ID:" + note.getId() + " Owner: " + note.getNoteOwner());
     }
-
 
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
@@ -63,56 +59,33 @@ public class HomePageController {
                 if (navMenu.isVisible() &&
                         !navMenu.localToScene(navMenu.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY()) &&
                         !profileBar.localToScene(profileBar.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY())) {
-
-                    navMenu.setVisible(false);
+                    navMenu.setVisible(false); // make the navigation bar hidden by default
                 }
             });
         });
     }
     @FXML
     private void onUpdateDetails() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setResizable(false);
-
-        stage.show();
+        SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
     }
 
     @FXML
     private void onLogOut() throws IOException {
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setResizable(false);
-
-        stage.show();
-
+        SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
     // loads a selected note from the LoadNote listener
     @FXML
     private void onLoadNote() throws IOException {
         if (selectedNote != null) {
+            Stage stage = (Stage) notesListView.getScene().getWindow();
+            NewNoteController noteController = SceneLoader.switchScene(stage, "new-note-view.fxml", true);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/addressbook/new-note-view.fxml"));
-            Parent root = fxmlLoader.load();
-
-            NewNoteController noteController = fxmlLoader.getController();
             noteController.setCurrentNote(selectedNote);
             noteController.setLabelText(selectedNote.getNoteName());
-
-            Stage stage = (Stage) notesListView.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(true);
-            stage.centerOnScreen();
-            stage.show();
+        // if no note selected
         } else {
             System.out.println("No note selected to load.");
         }
@@ -134,17 +107,14 @@ public class HomePageController {
         try {
             // Load notes associated with user email from notes db
             List<Note> userNotes = noteDAO.getNotesByOwner(Session.getLoggedInEmail());
-
             // Populates the observable list with note objects
             notesObservableList = FXCollections.observableArrayList(userNotes);
-
             // Represent note objects via name (what appears visually)
             noteNamesObservableList = FXCollections.observableArrayList();
             for (Note note : notesObservableList) {
                 noteNamesObservableList.add(note.getNoteName());
             }
             notesListView.setItems(noteNamesObservableList);
-
             // Listener for when user selects a note to Load or Delete
             notesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -167,21 +137,15 @@ public class HomePageController {
         }
     }
 
+    @FXML
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
 
     @FXML
     private void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/create-note-view.fxml"));
-        Parent root = loader.load();
-
         Stage stage = (Stage) createNewButton.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-
-        stage.show();
+        SceneLoader.switchScene(stage, "create-note-view.fxml", false);
     }
 
 }

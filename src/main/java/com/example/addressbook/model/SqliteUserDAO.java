@@ -1,7 +1,5 @@
 package com.example.addressbook.model;
 
-import com.example.addressbook.controller.PasswordHasher;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

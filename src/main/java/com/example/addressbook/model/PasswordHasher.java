@@ -1,4 +1,4 @@
-package com.example.addressbook.controller;
+package com.example.addressbook.model;
 
 import com.password4j.Password;
 import com.password4j.BadParametersException;
