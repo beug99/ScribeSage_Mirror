@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
+
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -40,7 +42,11 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     private Button enhanceTextButton;
     @FXML
-    private ProgressIndicator progressIndicator; // Add this to FXML
+    private Button summariseTextButton;
+    @FXML
+    private ProgressIndicator enhanceProgress;
+    @FXML
+    private ProgressIndicator summariseProgress;
 
     private AIService aiService;
     private ExecutorService executorService;
@@ -101,54 +107,35 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onEnhanceButton(ActionEvent event) {
+    public void onEnhanceButton(){
         String selected = getSelectedHTMLText();
-        if (selected == null || selected.trim().isEmpty()) {
-            showAlert(AlertType.WARNING, "No text selected",
-                    "Please select some text to enhance.");
+        if (selected == null || selected.trim().isEmpty()){
+            showAlert(AlertType.WARNING, "No text selected", "Please select some text to enhance");
             return;
         }
-        // disable the enhance button and show progress indicator
-        enhanceTextButton.setDisable(true);
-        if (progressIndicator != null) {
-            progressIndicator.setVisible(true);
+        runAIProcess(
+            () -> aiService.enhanceText(selected),
+            enhanceTextButton,
+            enhanceProgress,
+            "Enhancement Failed",
+            "Could not enhance text"
+        );
+    }
+
+    @FXML
+    public void onSummariseButton(){
+        String selected = getSelectedHTMLText();
+        if (selected == null || selected.trim().isEmpty()){
+            showAlert(AlertType.WARNING, "No text selected", "Please select some text to summarise");
+            return;
         }
-
-        // create a task to run the AI service in background
-        Task<String> task = new Task<>() {
-            @Override
-            protected String call() {
-                return aiService.enhanceText(selected);
-            }
-
-            @Override
-            protected void succeeded() {
-                String enhanced = getValue();
-                Platform.runLater(() -> {
-                    replaceSelectedHTMLText(enhanced);
-                    enhanceTextButton.setDisable(false);
-                    if (progressIndicator != null) {
-                        progressIndicator.setVisible(false);
-                    }
-                });
-            }
-
-            @Override
-            protected void failed() {
-                Throwable exception = getException();
-                Platform.runLater(() -> {
-                    showAlert(AlertType.ERROR, "Enhancement Failed",
-                            "Could not enhance text: " +
-                                    (exception != null ? exception.getMessage() : "Unknown error"));
-                    enhanceTextButton.setDisable(false);
-                    if (progressIndicator != null) {
-                        progressIndicator.setVisible(false);
-                    }
-                });
-            }
-        };
-        // Run the task in the background
-        executorService.submit(task);
+        runAIProcess(
+                () -> aiService.summariseText(selected),
+                summariseTextButton,
+                summariseProgress,
+                "Summary Failed",
+                "Could not summarise text"
+        );
     }
 
     private void showAlert(AlertType type, String title, String content) {
@@ -182,9 +169,11 @@ public class NewNoteController extends CreateNoteController {
 
         System.out.println("Initializing NewNoteController");
         // Hide progress indicator initially
-        if (progressIndicator != null) {
-            progressIndicator.setVisible(false);
+        if (enhanceProgress != null || summariseProgress != null) {
+            enhanceProgress.setVisible(false);
+            summariseProgress.setVisible(false);
         }
+
 
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
@@ -235,5 +224,63 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void searchBarButtonClick() {
         //TODO Create a search function - for a later sprint
+    }
+
+    // reusable method for running aiProcesses when a button is pressed
+    @FXML
+    public void runAIProcess(
+            Supplier<String> aiFunction,
+            Button triggerButton,
+            ProgressIndicator progressIndicator,
+            String errorTitle,
+            String errorMessage
+    ) {
+        String selected = getSelectedHTMLText();
+        if (selected == null || selected.trim().isEmpty()) {
+            showAlert(AlertType.WARNING, "No text selected",
+                    "Please select some text to enhance.");
+            return;
+        }
+        // disable the enhance button and show progress indicator
+        triggerButton.setDisable(true);
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(true);
+        }
+
+        // create a task to run the AI service in background
+        Task<String> task = new Task<>() {
+            @Override
+            protected String call() {
+                return aiFunction.get();
+            }
+
+            @Override
+            protected void succeeded() {
+                String result = getValue();
+                Platform.runLater(() -> {
+                    replaceSelectedHTMLText(result);
+                    triggerButton.setDisable(false);
+                    if (progressIndicator != null) {
+                        progressIndicator.setVisible(false);
+                    }
+                });
+            }
+
+            @Override
+            protected void failed() {
+                Throwable exception = getException();
+                Platform.runLater(() -> {
+                    showAlert(AlertType.ERROR, errorTitle,
+                            errorMessage +
+                                    (exception != null ? exception.getMessage() : "Unknown error"));
+                    triggerButton.setDisable(false);
+                    if (progressIndicator != null) {
+                        progressIndicator.setVisible(false);
+                    }
+                });
+            }
+        };
+        // Run the task in the background
+        executorService.submit(task);
     }
 }

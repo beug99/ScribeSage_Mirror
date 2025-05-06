@@ -97,8 +97,19 @@
                             <Font size="14.0" />
                         </font>
                     </Button>
-                    <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
+                    <ProgressIndicator fx:id="enhanceProgress" maxHeight="20" maxWidth="20" visible="false" />
                 </StackPane>
+
+                <!-- Added StackPane to overlay progress indicator on button -->
+                <StackPane>
+                    <Button fx:id="summariseTextButton" onAction="#onSummariseButton" text="Summarise Selected Text">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                    <ProgressIndicator fx:id="summariseProgress" maxHeight="20" maxWidth="20" visible="false" />
+                </StackPane>
+
             </HBox>
 
             <!-- HTML EDITOR - Set to grow within available space -->
