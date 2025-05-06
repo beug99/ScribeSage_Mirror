@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Stop;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
@@ -231,6 +232,7 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
+        StopAutoSave(); // Otherwise it will keep running in the background, even after you x out
         Stage stage = (Stage) homeButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -286,24 +288,27 @@ public class NewNoteController extends CreateNoteController {
      * Starts a timer to save the note every 5 minutes
      */
     private void StartAutoSave() {
+        StopAutoSave();
         System.out.println("Auto Saving Enabled");
         autoSaveTimer = new Timer();
         autoSaveTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 System.out.println("Autosaving...");
-                saveNote();
+                Platform.runLater(() -> saveNote());
             }
-        }, 300000);
+        }, 5000); // 5 mins = 300000 | It's currently set to 5 seconds
     }
 
     /**
      * Ends and deletes the save so it can be created again when the autosave is started
      */
     private void StopAutoSave() {
-        autoSaveTimer.cancel();
-        autoSaveTimer = null;
-        System.out.println("Autosaving Disabled");
+        if(autoSaveTimer != null) {
+            autoSaveTimer.cancel();
+            autoSaveTimer = null;
+            System.out.println("Autosaving Disabled");
+        }
     }
 
     /**
