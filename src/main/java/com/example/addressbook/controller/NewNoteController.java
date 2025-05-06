@@ -25,6 +25,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -37,16 +41,16 @@ public class NewNoteController extends CreateNoteController {
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
-
-    @FXML
-    private Button enhanceTextButton;
-    @FXML
-    private ProgressIndicator progressIndicator; // Add this to FXML
+    public CheckBox enableAutoSaveCheckbox;
+    public Button enhanceTextButton;
+    public ProgressIndicator progressIndicator; // Add to FXML
 
     private AIService aiService;
     private ExecutorService executorService;
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
+    private boolean autoSavingEnabled = false;
+    private Timer autoSaveTimer;
 
     public NewNoteController() {
         super();
@@ -54,6 +58,39 @@ public class NewNoteController extends CreateNoteController {
         noteDOA = new SqliteNoteDAO();
         // Create a thread pool for background tasks
         executorService = Executors.newFixedThreadPool(2);
+    }
+
+    @FXML
+    public void initialize() {
+        String fullName = Session.getFirstName() + " " + Session.getLastName();
+        nameLabel.setText(fullName);
+
+        System.out.println("Initializing NewNoteController");
+        // Hide progress indicator initially
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(false);
+        }
+
+        if (currentNote != null) {
+            currentNoteName.setText(currentNote.getNoteName());
+            htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            htmlEditorGui.setStyle("");
+            System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
+            // Auto save on note initialization
+            saveNote();
+        } else {
+            System.out.println("Current Note is null");
+        }
+
+        // Listener for enabling/disabling autosave
+        enableAutoSaveCheckbox.selectedProperty().addListener((observable, oldVal, newVal) ->{
+            autoSavingEnabled = newVal;
+            if (autoSavingEnabled) {
+                StartAutoSave();
+            } else {
+                StopAutoSave();
+            }
+        });
     }
 
     /**
@@ -101,6 +138,9 @@ public class NewNoteController extends CreateNoteController {
         }
     }
 
+    /**
+     * Uses the intergraded AI to enhance the text
+     */
     @FXML
     public void onEnhanceButton(ActionEvent event) {
         String selected = getSelectedHTMLText();
@@ -152,14 +192,6 @@ public class NewNoteController extends CreateNoteController {
         executorService.submit(task);
     }
 
-    private void showAlert(AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
     @FXML
     public void onGetHighlighted(ActionEvent event) {
         String selectedText = getSelectedHTMLText();
@@ -187,49 +219,8 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void initialize() {
-        String fullName = Session.getFirstName() + " " + Session.getLastName();
-        nameLabel.setText(fullName);
-
-        System.out.println("Initializing NewNoteController");
-        // Hide progress indicator initially
-        if (progressIndicator != null) {
-            progressIndicator.setVisible(false);
-        }
-
-        if (currentNote != null) {
-            currentNoteName.setText(currentNote.getNoteName());
-            htmlEditorGui.setHtmlText(currentNote.getNoteText());
-            htmlEditorGui.setStyle("");
-            System.out.println("Trying to put note content in text field: " + currentNote.getNoteText());
-        } else {
-            System.out.println("Current Note is null");
-        }
-
-    }
-
-    @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
-        if (currentNote == null) {
-            showAlert(AlertType.ERROR, "Save Error", "No note is currently loaded.");
-            return;
-        }
-
-        System.out.println("Attempting to save: Note ID_" + currentNote.getId() + " Note name_" + currentNote.getNoteName());
-        String updatedContent = htmlEditorGui.getHtmlText();
-        currentNote.setNoteText(updatedContent);
-
-        try {
-            noteDOA.updateNote(currentNote);
-            if (todeletejustdisplay != null) {
-                todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
-            }
-            showAlert(AlertType.INFORMATION, "Note Saved", "Your note has been saved successfully.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(AlertType.ERROR, "Save Failed",
-                    "Could not save the note: " + e.getMessage());
-        }
+        saveNote();
     }
 
     @FXML
@@ -248,6 +239,16 @@ public class NewNoteController extends CreateNoteController {
         stage.setResizable(false);
 
         stage.show();
+    }
+
+    @FXML
+    public void searchBarButtonClick(ActionEvent actionEvent) {
+        //TODO Create a search function - for a later sprint
+    }
+
+    @FXML
+    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
+        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
     }
 
     private void refreshHTMLEditor() {
@@ -281,17 +282,66 @@ public class NewNoteController extends CreateNoteController {
         }
     }
 
-    @FXML
-    public void searchBarButtonClick(ActionEvent actionEvent) {
-        //TODO Create a search function - for a later sprint
+    /**
+     * Starts a timer to save the note every 5 minutes
+     */
+    private void StartAutoSave() {
+        System.out.println("Auto Saving Enabled");
+        autoSaveTimer = new Timer();
+        autoSaveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Autosaving...");
+                saveNote();
+            }
+        }, 300000);
     }
 
-    @FXML
-    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
-        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
+    /**
+     * Ends and deletes the save so it can be created again when the autosave is started
+     */
+    private void StopAutoSave() {
+        autoSaveTimer.cancel();
+        autoSaveTimer = null;
+        System.out.println("Autosaving Disabled");
+    }
+
+    /**
+     * Saves the state of the current note to the notes DB
+     */
+    private void saveNote() {
+        if (currentNote == null) {
+            showAlert(AlertType.ERROR, "Save Error", "No note is currently loaded.");
+            return;
+        }
+        String updatedContent = htmlEditorGui.getHtmlText();
+        currentNote.setNoteText(updatedContent);
+
+        try {
+            noteDOA.updateNote(currentNote);
+            if (todeletejustdisplay != null) {
+                todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
+            }
+            showAlert(AlertType.INFORMATION, "Note Saved", "Your note has been saved successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Save Failed",
+                    "Could not save the note: " + e.getMessage());
+        }
+
     }
 
     public void toggleNavMenu(MouseEvent mouseEvent) {
 
+    }
+    /**
+     * Private method to show alerts
+     */
+    private void showAlert(AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
