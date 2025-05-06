@@ -222,7 +222,9 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
-        saveNote();
+        if(saveNote()) {
+            showAlert(AlertType.INFORMATION, "Note Saved", "Your note has been saved successfully.");
+        }
     }
 
     @FXML
@@ -314,10 +316,10 @@ public class NewNoteController extends CreateNoteController {
     /**
      * Saves the state of the current note to the notes DB
      */
-    private void saveNote() {
+    private boolean saveNote() {
         if (currentNote == null) {
             showAlert(AlertType.ERROR, "Save Error", "No note is currently loaded.");
-            return;
+            return false;
         }
         String updatedContent = htmlEditorGui.getHtmlText();
         currentNote.setNoteText(updatedContent);
@@ -327,13 +329,13 @@ public class NewNoteController extends CreateNoteController {
             if (todeletejustdisplay != null) {
                 todeletejustdisplay.setText(htmlEditorGui.getHtmlText());
             }
-            showAlert(AlertType.INFORMATION, "Note Saved", "Your note has been saved successfully.");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(AlertType.ERROR, "Save Failed",
                     "Could not save the note: " + e.getMessage());
         }
-
+        return false;
     }
 
     public void toggleNavMenu(MouseEvent mouseEvent) {
