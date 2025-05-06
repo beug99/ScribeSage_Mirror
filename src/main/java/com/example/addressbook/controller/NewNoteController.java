@@ -24,11 +24,11 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
-import java.util.TimerTask;
-
+import static java.util.concurrent.TimeUnit.*;
 
 public class NewNoteController extends CreateNoteController {
 
@@ -52,6 +52,7 @@ public class NewNoteController extends CreateNoteController {
     private Note currentNote;
     private boolean autoSavingEnabled = false;
     private Timer autoSaveTimer;
+    private int AutoSaveInterval = 5; // How often the autosave runs in minutes
 
     public NewNoteController() {
         super();
@@ -288,16 +289,15 @@ public class NewNoteController extends CreateNoteController {
      * Starts a timer to save the note every 5 minutes
      */
     private void StartAutoSave() {
-        StopAutoSave();
         System.out.println("Auto Saving Enabled");
-        autoSaveTimer = new Timer();
+        autoSaveTimer = new Timer(true); // isDaemon will terminate when app gets x'd
         autoSaveTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 System.out.println("Autosaving...");
                 Platform.runLater(() -> saveNote());
             }
-        }, 5000); // 5 mins = 300000 | It's currently set to 5 seconds
+        }, 1000, MILLISECONDS.convert(AutoSaveInterval, MINUTES)); //
     }
 
     /**
