@@ -25,7 +25,7 @@
                 </padding>
                 <ImageView fitHeight="41.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0">
                     <image>
-                        <Image url="@../../../Images/Icon%20purple.png" />
+                        <Image url="@../../../Images/Icon purple.png" />
                     </image>
                 </ImageView>
                 <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="143.0" text="First and last name" GridPane.columnIndex="1">
