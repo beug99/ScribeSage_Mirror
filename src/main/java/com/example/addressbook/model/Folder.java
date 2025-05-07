@@ -6,7 +6,7 @@ public class Folder {
     private Integer FolderId;
     private String folderName;
     private List<Note> notes;
-    private Integer userId;
+    private String email;
 
     public Folder(String folderName) {
         this.folderName = folderName;
@@ -18,11 +18,13 @@ public class Folder {
     public void setFolderId(Integer id) 
         { this.FolderId = id; }
 
-    public Integer getUserId() 
-        { return userId; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setUserId(Integer userId) 
-        { this.userId = userId; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFolderName() 
         { return folderName; }

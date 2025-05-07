@@ -7,13 +7,11 @@ public class Session {
     private static String loggedInEmail;
     private static String firstName;
     private static String lastName;
-    private static Integer userId;
 
-    public static void setUser(String email, String fName, String lName, Integer id) {
+    public static void setUser(String email, String fName, String lName) {
         loggedInEmail = email;
         firstName = fName;
         lastName = lName;
-        userId = id;
     }
 
     public static void setLoggedInEmail(String email) {
@@ -22,14 +20,6 @@ public class Session {
 
     public static String getLoggedInEmail() {
         return Session.loggedInEmail;
-    }
-
-    public static void setUserId(Integer id) {
-        Session.userId = id;
-    }
-
-    public static Integer getUserId() {
-        return Session.userId;
     }
     
     public static String getFirstName() { return firstName; }
@@ -40,7 +30,6 @@ public class Session {
         loggedInEmail = null;
         firstName = null;
         lastName = null;
-        userId = null;
     }
 }
 

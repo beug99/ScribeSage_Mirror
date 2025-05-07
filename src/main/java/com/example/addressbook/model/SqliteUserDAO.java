@@ -22,8 +22,7 @@ public class SqliteUserDAO implements IUserDAO {
                     + "firstName VARCHAR NOT NULL,"
                     + "lastName VARCHAR NOT NULL,"
                     + "email VARCHAR NOT NULL,"
-                    + "password VARCHAR NOT NULL,"
-                    + "userId INTEGER AUTOINCREMENT"
+                    + "password VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -34,17 +33,16 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public void addUser(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password, userId) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)");
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getPassword());
-            statement.setInt(5, user.getUserId());
             statement.executeUpdate();
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                user.setUserId(generatedKeys.getInt(1));
+                user.setId(generatedKeys.getInt(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,12 +52,12 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public void updateUser(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE users SET firstName = ?, lastName = ?, password = ?, email = ?, userId = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE users SET firstName = ?, lastName = ?, password = ?, email = ? WHERE id = ?");
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getEmail());
-            statement.setInt(5, user.getUserId());
+            statement.setInt(5, user.getId());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +68,7 @@ public class SqliteUserDAO implements IUserDAO {
     public void deleteUser(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM contacts WHERE id = ?");
-            statement.setInt(1, user.getUserId());
+            statement.setInt(1, user.getId());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,9 +86,8 @@ public class SqliteUserDAO implements IUserDAO {
                 String lastName = resultSet.getString("lastName");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
-                Integer userId = resultSet.getInt("userId");
-                User user = new User(firstName, lastName, email, password, userId);
-                user.setUserId(id);
+                User user = new User(firstName, lastName, email, password);
+                user.setId(id);
                 return user;
             }
         } catch (Exception e) {
@@ -112,10 +109,9 @@ public class SqliteUserDAO implements IUserDAO {
                 String lastName = resultSet.getString("lastName");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
-                Integer userId = resultSet.getInt("userId");
 
-                User user = new User(firstName, lastName, email, password, userId);
-                user.setUserId(id);
+                User user = new User(firstName, lastName, email, password);
+                user.setId(id);
                 users.add(user);
             }
         } catch (Exception e) {
@@ -143,6 +139,40 @@ public class SqliteUserDAO implements IUserDAO {
             System.err.println("Authentication error: " + e.getMessage());
         }
         return isAuthenticated;
+    }
+
+    public static boolean updatePassword(String email, String oldPassword, String newPassword) {
+        boolean isUpdated = false;
+
+        try {
+            // check if the old password matches input
+            PreparedStatement checkStmt = SqliteUserConnection.getInstance().prepareStatement(
+                    "SELECT * FROM users WHERE email = ? AND password = ?");
+            checkStmt.setString(1, email);
+            checkStmt.setString(2, oldPassword);
+
+            ResultSet resultSet = checkStmt.executeQuery();
+
+            if (resultSet.next()) {
+                // if password is correct, proceed to update
+                PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
+                        "UPDATE users SET password = ? WHERE email = ?");
+                updateStmt.setString(1, newPassword);
+                updateStmt.setString(2, email);
+                int rowsAffected = updateStmt.executeUpdate();
+                isUpdated = (rowsAffected > 0);
+
+                updateStmt.close();
+            }
+
+            resultSet.close();
+            checkStmt.close();
+
+        } catch (SQLException e) {
+            System.err.println("Password update error: " + e.getMessage());
+        }
+
+        return isUpdated;
     }
 
     public static boolean updateEmail(String currentEmail, String password, String newEmail) {
@@ -179,43 +209,6 @@ public class SqliteUserDAO implements IUserDAO {
         return isUpdated;
     }
 
-
-
-    public static boolean updatePassword(String email, String oldPassword, String newPassword) {
-        boolean isUpdated = false;
-
-        try {
-            // check if the old password matches input
-            PreparedStatement checkStmt = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT * FROM users WHERE email = ? AND password = ?");
-            checkStmt.setString(1, email);
-            checkStmt.setString(2, oldPassword);
-
-            ResultSet resultSet = checkStmt.executeQuery();
-
-            if (resultSet.next()) {
-                // if password is correct, proceed to update
-                PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                        "UPDATE users SET password = ? WHERE email = ?");
-                updateStmt.setString(1, newPassword);
-                updateStmt.setString(2, email);
-                int rowsAffected = updateStmt.executeUpdate();
-                isUpdated = (rowsAffected > 0);
-
-                updateStmt.close();
-            }
-
-            resultSet.close();
-            checkStmt.close();
-
-        } catch (SQLException e) {
-            System.err.println("Password update error: " + e.getMessage());
-        }
-
-        return isUpdated;
-    }
-
-
     public static User getUserByEmail(String email) {
         try {
             Connection conn = SqliteUserConnection.getInstance();
@@ -228,10 +221,9 @@ public class SqliteUserDAO implements IUserDAO {
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getInt("id")
+                        rs.getString("password")
                 );
-                user.setUserId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
                 return user;
             }
         } catch (SQLException e) {

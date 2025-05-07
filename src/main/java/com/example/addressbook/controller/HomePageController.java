@@ -298,13 +298,13 @@ public class HomePageController {
         dialog.setContentText("Folder name:");
 
         dialog.showAndWait().ifPresent(folderName -> { 
-            Integer userId = Session.getUserId();
-            createFolder(folderName, userId);
+            String email = Session.getLoggedInEmail();
+            createFolder(folderName, email);
             populateFolderTreeView();
         });
     }
 
-    private void createFolder(String folderName, Integer userId) {
+    private void createFolder(String folderName, String email) {
         // input validation
         if (folderName == null || folderName.trim().isEmpty()) return; 
         // duplicate checks
@@ -315,7 +315,7 @@ public class HomePageController {
         // folder creation
         Folder newFolder = new Folder(folderName.trim());
         // db & local updates
-        newFolder.setUserId(Session.getUserId());
+        newFolder.setEmail(Session.getLoggedInEmail());
         folderDAO.addFolder(newFolder);
         folderList.add(newFolder);
     }

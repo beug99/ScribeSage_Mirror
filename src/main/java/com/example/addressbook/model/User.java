@@ -1,25 +1,26 @@
 package com.example.addressbook.model;
 
 public class User {
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private Integer userId;
     
-    public User(String firstName, String lastName, String email, String password, Integer userId) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.userId = userId;
     }
 
-    public Integer getUserId() 
-        { return userId; }
+    public int getId() {
+        return id;
+    }
 
-    public void setUserId(Integer userId) 
-        { this.userId = userId; }
+    public void setId (int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

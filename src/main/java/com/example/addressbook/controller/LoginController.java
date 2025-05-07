@@ -48,7 +48,7 @@ public class LoginController {
             User user = SqliteUserDAO.getUserByEmail(emailInput);
 
             if (user != null) {
-                Session.setUser(user.getEmail(), user.getFirstName(), user.getLastName(), user.getUserId());
+                Session.setUser(user.getEmail(), user.getFirstName(), user.getLastName());
             }
 
             // load the homepage

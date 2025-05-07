@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface IFolderDAO {
     void addFolder(Folder folder);
-    List<Folder> getFoldersByUserId(Integer userId);
+    List<Folder> getFolderByEmail(String email);
     Folder getFolderById(Integer id);
-    Folder getFolderByNameAndUserId(String name, Integer userId);
+    Folder getFolderByNameAndEmail(String name, String email);
 }
 
 
