@@ -4,6 +4,7 @@ import com.example.addressbook.Session;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,8 +46,8 @@ public class CreateNoteController {
         //Opens the New Note scene under with the note name that was entered
 
         NewNoteController labelForFXML = null;
-        if (!noteNameTextField.getText().isEmpty()) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail());
+        if (noteNameTextField != null && noteTagsTextField != null) {
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail(), null);
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
@@ -54,18 +55,10 @@ public class CreateNoteController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("new-note-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
 
-
             stage.setScene(scene);
             labelForFXML = fxmlLoader.getController();
             labelForFXML.setLabelText(currentNote);
             labelForFXML.setCurrentNote(newNote);
-        }
-        else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Create Note Failed");
-            alert.setHeaderText(null);
-            alert.setContentText("You must give your note a name!");
-            alert.showAndWait();
         }
     }
 
@@ -89,6 +82,7 @@ public class CreateNoteController {
         stage.setScene(scene);
     }
 
+    // may use in future
     public void onUploadSparseClick(ActionEvent actionEvent) {
     }
 

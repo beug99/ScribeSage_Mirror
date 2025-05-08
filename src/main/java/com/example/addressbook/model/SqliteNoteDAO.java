@@ -25,7 +25,8 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteName VARCHAR NOT NULL,"
                     + "noteTags VARCHAR NOT NULL,"
                     + "noteText VARCHAR NOT NULL,"
-                    + "noteOwner VARCHAR NOT NULL"
+                    + "noteOwner VARCHAR NOT NULL,"
+                    + "folderId INTEGER"
                     + ")";
             statement.execute(query);
             logSQLexecution(statement);
@@ -47,6 +48,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
+//            statement.setObject(5, note.getFolderId());
 
             statement.executeUpdate();
             logSQLexecution(statement);
@@ -63,12 +65,13 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void updateNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
-            statement.setInt(5, note.getId());
+            statement.setObject(5, note.getFolderId());
+            statement.setInt(6, note.getId());
             statement.executeUpdate();
             logSQLexecution(statement);
         } catch (Exception e) {
@@ -88,8 +91,9 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 return note;
             }
@@ -113,8 +117,9 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }
@@ -138,9 +143,10 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
                 logSQLexecution(statement);
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }
