@@ -51,13 +51,6 @@ public class CreateNoteController {
             controller.setLabelText(currentNote);
             controller.setCurrentNote(newNote);
         }
-        else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Create Note Failed");
-            alert.setHeaderText(null);
-            alert.setContentText("You must give your note a name!");
-            alert.showAndWait();
-        }
     }
 
     @FXML
@@ -74,6 +67,7 @@ public class CreateNoteController {
         SceneLoader.switchScene(stage, "homepage-view.fxml", false);
     }
 
+    // may use in future
     public void onUploadSparseClick(ActionEvent actionEvent) {
     }
 
