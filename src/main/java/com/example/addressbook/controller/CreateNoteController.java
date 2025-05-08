@@ -4,7 +4,6 @@ import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
-import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -28,8 +27,6 @@ public class CreateNoteController {
     private TextField noteNameTextField;
     @FXML
     private TextField noteTagsTextField;
-    @FXML
-    private ListView<Note> noteListView;
 
     private INoteDAO noteDAO;
 
@@ -38,7 +35,7 @@ public class CreateNoteController {
     }
 
     @FXML
-    public void onCreateButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onCreateButtonClick() throws IOException {
         //When clicked, create instance of a new note, adds initial note to DB
         //Opens the New Note scene under with the note name that was entered
 
@@ -54,6 +51,13 @@ public class CreateNoteController {
             // make new note = current note
             controller.setLabelText(currentNote);
             controller.setCurrentNote(newNote);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Create Note Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("You must give your note a name!");
+            alert.showAndWait();
         }
     }
 
@@ -71,7 +75,6 @@ public class CreateNoteController {
         SceneLoader.switchScene(stage, "homepage-view.fxml", false);
     }
 
-    // may use in future
     public void onUploadSparseClick(ActionEvent actionEvent) {
     }
 
@@ -91,13 +94,12 @@ public class CreateNoteController {
             // Handle files (copy, link to note, etc.)
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         }
-    }
 
+
+    }
     public void onAINoteSummariseClick(ActionEvent actionEvent) {
     }
 
     public void onChangeFolderClick(ActionEvent actionEvent) {
     }
-
-
 }
