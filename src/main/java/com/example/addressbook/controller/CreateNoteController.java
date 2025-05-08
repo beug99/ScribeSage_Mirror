@@ -38,9 +38,10 @@ public class CreateNoteController {
     public void onCreateButtonClick() throws IOException {
         //When clicked, create instance of a new note, adds initial note to DB
         //Opens the New Note scene under with the note name that was entered
-        if (!noteNameTextField.getText().isEmpty()) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note",
-                    Session.getLoggedInEmail());
+
+        NewNoteController labelForFXML = null;
+        if (noteNameTextField != null && noteTagsTextField != null) {
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail(), null);
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
@@ -93,5 +94,12 @@ public class CreateNoteController {
             // Handle files (copy, link to note, etc.)
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         }
+
+
+    }
+    public void onAINoteSummariseClick(ActionEvent actionEvent) {
+    }
+
+    public void onChangeFolderClick(ActionEvent actionEvent) {
     }
 }

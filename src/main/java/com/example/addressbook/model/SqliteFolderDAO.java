@@ -13,7 +13,7 @@ public class SqliteFolderDAO implements IFolderDAO {
     private Connection connection;
 
     public SqliteFolderDAO() {
-        connection = DatabaseConnection.getInstance("notes.db");
+        connection = SqliteNoteConnection.getInstance("notes.db");
         createTable();
     }
 

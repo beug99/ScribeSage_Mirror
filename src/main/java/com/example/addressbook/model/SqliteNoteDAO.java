@@ -146,7 +146,7 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteOwner = resultSet.getString("noteOwner");
                 logSQLexecution(statement.toString());
                 Integer folderId = resultSet.getInt("folderId");
-                logSQLexecution(statement);
+                logSQLexecution(statement.toString());
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
