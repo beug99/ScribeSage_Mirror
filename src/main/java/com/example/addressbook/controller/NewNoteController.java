@@ -46,8 +46,6 @@ public class NewNoteController extends CreateNoteController {
     public Button enhanceTextButton;
     public ProgressIndicator progressIndicator; // Add to FXML
     @FXML
-    private Button enhanceTextButton;
-    @FXML
     private Button summariseTextButton;
     @FXML
     private ProgressIndicator enhanceProgress;
