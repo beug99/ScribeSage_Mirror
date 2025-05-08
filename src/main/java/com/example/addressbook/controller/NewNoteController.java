@@ -37,7 +37,6 @@ public class NewNoteController extends CreateNoteController {
     public Button homeButton;
     public TextField searchBarID;
     public Button saveButton;
-    public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;

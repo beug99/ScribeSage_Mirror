@@ -4,6 +4,7 @@ import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.controller.HomePageController;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -27,6 +28,8 @@ public class CreateNoteController {
     private TextField noteNameTextField;
     @FXML
     private TextField noteTagsTextField;
+    @FXML
+    private ListView<Note> noteListView;
 
     private INoteDAO noteDAO;
 
@@ -35,12 +38,13 @@ public class CreateNoteController {
     }
 
     @FXML
-    public void onCreateButtonClick() throws IOException {
+    public void onCreateButtonClick(ActionEvent actionEvent) throws IOException {
         //When clicked, create instance of a new note, adds initial note to DB
         //Opens the New Note scene under with the note name that was entered
-        if (!noteNameTextField.getText().isEmpty()) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note",
-                    Session.getLoggedInEmail());
+
+        NewNoteController labelForFXML = null;
+        if (noteNameTextField != null && noteTagsTextField != null) {
+            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail(), null);
             noteDAO.addNote(newNote);
             currentNote = noteNameTextField.getText();
 
