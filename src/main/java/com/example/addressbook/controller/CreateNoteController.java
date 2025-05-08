@@ -94,4 +94,12 @@ public class CreateNoteController {
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         }
     }
+
+    public void onAINoteSummariseClick(ActionEvent actionEvent) {
+    }
+
+    public void onChangeFolderClick(ActionEvent actionEvent) {
+    }
+
+
 }
