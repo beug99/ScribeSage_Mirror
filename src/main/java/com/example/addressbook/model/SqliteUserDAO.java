@@ -1,6 +1,6 @@
 package com.example.addressbook.model;
 
-import com.example.addressbook.controller.PasswordHasher;
+import com.example.addressbook.helper.PasswordHasher;
 
 import java.sql.*;
 import java.util.ArrayList;

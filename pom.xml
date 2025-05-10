@@ -74,6 +74,21 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-spi</artifactId>
+            <version>1.0.0.v20140518</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-util</artifactId>
+            <version>1.0.0.v20140518</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.core.filesystem</artifactId>
+            <version>1.11.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
     </dependencies>
 
