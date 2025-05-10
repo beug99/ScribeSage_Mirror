@@ -26,8 +26,8 @@ public class UserTest {
 
     @Test
     public void testSetId() {
-        contact.setId(1);
-        assertEquals(1, contact.getId());
+        contact.setUserId(1);
+        assertEquals(1, contact.getUserId());
     }
 
     @Test

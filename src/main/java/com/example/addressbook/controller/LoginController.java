@@ -1,16 +1,12 @@
 package com.example.addressbook.controller;
 
-import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
-
-import static java.sql.DriverManager.println;
 
 public class LoginController {
     @FXML
@@ -26,9 +22,7 @@ public class LoginController {
     @FXML
     protected void onSignUp() throws IOException {
         Stage stage = (Stage) logIn.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        SceneLoader.switchScene(stage, "signup-view.fxml", false);
     }
 
     @FXML
@@ -53,9 +47,7 @@ public class LoginController {
 
             // load the homepage
             Stage stage = (Stage) logIn.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("homepage-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
+            SceneLoader.switchScene(stage, "homepage-view.fxml", false);
 
         } else {
             // show error message for failed log in attempts
