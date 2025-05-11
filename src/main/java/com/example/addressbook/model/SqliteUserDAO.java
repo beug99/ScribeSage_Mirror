@@ -1,6 +1,6 @@
 package com.example.addressbook.model;
 
-import com.example.addressbook.controller.PasswordHasher;
+import com.example.addressbook.helper.PasswordHasher;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -159,7 +159,7 @@ public class SqliteUserDAO implements IUserDAO {
                 String storedHash = resultSet.getString("password");
 
                 // verifying old password using password4j
-                if (PasswordHasher.verifyPassword(oldPassword, newPassword)) {
+                if (PasswordHasher.verifyPassword(oldPassword, storedHash)) {
                     String newHashedPassword = PasswordHasher.hashPassword(newPassword);
 
                     // updated database

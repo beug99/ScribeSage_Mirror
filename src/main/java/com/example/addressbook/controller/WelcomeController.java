@@ -1,6 +1,7 @@
 package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
+import com.example.addressbook.helper.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,21 +16,14 @@ public class WelcomeController {
     private Button logIn;
 
     @FXML
-    private Button signUp;
-
-    @FXML
     protected void onLogIn() throws IOException {
         Stage stage = (Stage) logIn.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
     @FXML
     protected void onSignUp() throws IOException {
         Stage stage = (Stage) logIn.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("signup-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        SceneLoader.switchScene(stage, "signup-view.fxml", false);
     }
 }

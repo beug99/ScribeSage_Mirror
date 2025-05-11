@@ -2,6 +2,7 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
+import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +16,10 @@ import java.io.IOException;
 public class UpdatePasswordController {
     @FXML
     private PasswordField oldPassword;
-
     @FXML
     private PasswordField newPassword;
-
     @FXML
     private Button updatePWordConfirm;
-
     @FXML
     private Button backButton;
 
@@ -35,9 +33,8 @@ public class UpdatePasswordController {
         if (SqliteUserDAO.updatePassword(email, oldPassword, newPassword)) {
             // check if oldPassword matches latest password used in authenticateUser method (current user password)
             Stage stage = (Stage) updatePWordConfirm.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updateDetails-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
+            SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
+
         } else {
             // show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -50,17 +47,8 @@ public class UpdatePasswordController {
     }
 
     @FXML
-    private void onBackToDetails(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
+    private void onBackToDetails() throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.setScene(new Scene(loader.load()));
+        SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
     }
-
-
-    public void onBackToDetails(javafx.event.ActionEvent actionEvent) throws IOException {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/addressbook/updateDetails-view.fxml"));
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-        }
-
 }

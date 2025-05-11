@@ -12,7 +12,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     public SqliteNoteDAO() {
-        connection = DatabaseConnection.getInstance("notes.db");
+        connection = SqliteNoteConnection.getInstance("notes.db");
         createTable();
     }
 
@@ -25,16 +25,17 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteName VARCHAR NOT NULL,"
                     + "noteTags VARCHAR NOT NULL,"
                     + "noteText VARCHAR NOT NULL,"
-                    + "noteOwner VARCHAR NOT NULL"
+                    + "noteOwner VARCHAR NOT NULL,"
+                    + "folderId INTEGER"
                     + ")";
             statement.execute(query);
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void logSQLexecution(Statement statement) {
+    private void logSQLexecution(String statement) {
         System.out.println("SQL executed: " + statement);
     }
 
@@ -47,9 +48,10 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
+//            statement.setObject(5, note.getFolderId());
 
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -63,14 +65,15 @@ public class SqliteNoteDAO implements INoteDAO {
     @Override
     public void updateNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
-            statement.setInt(5, note.getId());
+            statement.setObject(5, note.getFolderId());
+            statement.setInt(6, note.getId());
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,20 +85,22 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             if (resultSet.next()) {
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 return note;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Note not found");
         return null;
     }
 
@@ -106,15 +111,16 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE noteOwner = ?");
             statement.setString(1, owner);
             ResultSet resultSet = statement.executeQuery();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String noteName = resultSet.getString("noteName");
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
+                Integer folderId = resultSet.getInt("folderId");
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }
@@ -138,9 +144,11 @@ public class SqliteNoteDAO implements INoteDAO {
                 String noteTags = resultSet.getString("noteTags");
                 String noteText = resultSet.getString("noteText");
                 String noteOwner = resultSet.getString("noteOwner");
-                logSQLexecution(statement);
+                logSQLexecution(statement.toString());
+                Integer folderId = resultSet.getInt("folderId");
+                logSQLexecution(statement.toString());
 
-                Note note = new Note(noteName, noteTags, noteText, noteOwner);
+                Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
                 notes.add(note);
             }
@@ -156,7 +164,7 @@ public class SqliteNoteDAO implements INoteDAO {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM notes WHERE id = ?");
             statement.setInt(1, selectedNote.getId());
             statement.executeUpdate();
-            logSQLexecution(statement);
+            logSQLexecution(statement.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
