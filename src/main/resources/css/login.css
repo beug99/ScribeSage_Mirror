@@ -1,0 +1,46 @@
+.root {
+    -fx-background-color: #ffffff;
+    -fx-font-family: "Helvetica";
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.label.title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4b0082; /* Indigo-like */
+}
+
+.text-field,
+.password-field {
+    -fx-pref-width: 250px;
+    -fx-border-color: #6a5acd;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 6px;
+}
+
+.button {
+    -fx-background-color: #6a5acd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 200px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #7b68ee;
+}
+
+.image-view {
+    -fx-padding: 10px;
+}
+
+.vbox {
+    -fx-spacing: 10px;
+    -fx-padding: 20px;
+}
