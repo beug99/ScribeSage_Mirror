@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.geometry.Insets?>
 <StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
 
     <AnchorPane prefHeight="600.0" prefWidth="900.0">
@@ -31,7 +32,13 @@
                 <!-- Notes Section -->
                 <VBox spacing="10.0" alignment="TOP_CENTER">
                     <Label style="-fx-font-weight: bold;" text="Notes" />
-                    <ListView fx:id="notesListView" prefHeight="300.0" prefWidth="350.0" style="-fx-border-color: #6a5acd;" />
+                    <VBox style="-fx-border-color: #6a5acd; -fx-background-color: white;" >
+                        <padding>
+                            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                        </padding>
+                        <Button onAction="#onSortAlphabetically" text="Sort via Name" style="-fx-background-color: white; -fx-text-fill: black;-fx-border-radius:4; -fx-border-color: lightgrey; -fx-border-width: .3px; -fx-font-size: 10px;"/>
+                        <ListView fx:id="notesListView" prefHeight="300.0" prefWidth="350.0" style="-fx-border-color: white;"/>
+                    </VBox>
                 </VBox>
 
                 <!-- Folders Section -->

@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -273,5 +274,11 @@ public class HomePageController {
         folder.getNotes().add(note);
         note.setFolderId(folder.getFolderId());
         noteDAO.updateNote(note);
+    }
+
+    // Controller for sorting list alphabetically
+    @FXML
+    private void onSortAlphabetically()throws IOException {
+        Collections.sort(notesListView.getItems());
     }
 }
