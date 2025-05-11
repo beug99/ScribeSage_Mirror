@@ -102,4 +102,7 @@ public class CreateNoteController {
 
     public void onChangeFolderClick(ActionEvent actionEvent) {
     }
+
+    public void onTagsAddButton(ActionEvent actionEvent) {
+    }
 }
