@@ -282,6 +282,15 @@ public class HomePageController {
     }
 
     @FXML
+    private void onSortAlphabetically(ActionEvent event) {
+        // Example logic: sort notes alphabetically
+        if (noteNamesObservableList != null) {
+            FXCollections.sort(noteNamesObservableList);
+        }
+    }
+
+
+    @FXML
     private void onSearchNote() {
         String keyword = searchField.getText().toLowerCase().trim();
 
