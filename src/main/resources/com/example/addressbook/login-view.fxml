@@ -6,39 +6,64 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
-<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.LoginController">
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" style="-fx-background-color:white;" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.addressbook.controller.LoginController"
+    minHeight="400" minWidth="250">
 
-    <VBox alignment="CENTER" spacing="10.0"
+    <VBox spacing="10.0" alignment="CENTER"
         AnchorPane.leftAnchor="20.0"
         AnchorPane.rightAnchor="20.0"
         AnchorPane.topAnchor="20.0"
         AnchorPane.bottomAnchor="20.0">
-
-        <padding>
-            <Insets top="20" right="20" bottom="20" left="20" />
-        </padding>
-        <!-- logo -->
-        <ImageView>
-            <Image url="@../../../Images/Logo.png" requestedHeight="200" requestedWidth="200"/>
-        </ImageView>
-        <Label text="ScribeSage" alignment="CENTER" font = "Montserrat"/>
-
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20" />
+            </padding>
+            <!-- logo -->
+            <ImageView>
+                <Image url="@../../../Images/Logo.png" requestedHeight="200" requestedWidth="200"/>
+            </ImageView>
+        <HBox alignment="CENTER">
+            <Text text="ScribeSage" textAlignment="CENTER" fill="#6a5acd">
+                <font>
+                    <Font name="Helvetica Bold" size="42"/>
+                </font>
+            </Text>
+        </HBox>
         <!-- email -->
-        <Label text="Email Address:" />
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Email Address:">
+                <font>
+                    <Font name="Helvetica Bold" size="16"/>
+                </font>
+            </Label>
+        </HBox>
         <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
 
         <!-- password -->
-        <Label text="Password:" />
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Password:">
+                <font>
+                    <Font name="Helvetica Bold" size="16"/>
+                </font>
+            </Label>
+        </HBox>
         <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
 
         <!-- log in -->
-        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="200" style="-fx-background-color: #6a5acd;
+        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="300" prefHeight="35" scaleShape="true" style="-fx-background-color: #6a5acd;
         -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
 
         <!-- sign up -->
-        <Label text="Don't have an account?" />
-        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd;
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Don't have an account?">
+                <font>
+                    <Font name="Helvetica Bold" size="16"/>
+                </font>
+            </Label>
+        </HBox>
+        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="300" prefHeight="35" style="-fx-background-color: #6a5acd;
         -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
     </VBox>
 </StackPane>
