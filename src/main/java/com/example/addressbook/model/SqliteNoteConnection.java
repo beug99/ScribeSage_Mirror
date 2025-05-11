@@ -7,18 +7,18 @@ public class SqliteNoteConnection {
     private static Connection instance = null;
     private static SQLException lastException = null; // storing last exception for testing
 
-    private SqliteNoteConnection(String DbName) {
-        String url = "jdbc:sqlite:" + DbName;
+    private SqliteNoteConnection(String url) {
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
+            lastException = sqlEx;
             System.err.println(sqlEx);
         }
     }
 
-    public static Connection getInstance(String DbName) {
+    public static Connection getInstance(String s) {
         if (instance == null) {
-            new SqliteNoteConnection(DbName);
+            new SqliteNoteConnection("jdbc:sqlite:users.db");
         }
         return instance;
     }
@@ -30,14 +30,7 @@ public class SqliteNoteConnection {
         new SqliteNoteConnection(url);
     }
 
-    // get the exception and store it for debugging
     public static SQLException getLastException() {
-        lastException = new SQLException();
         return lastException;
-    }
-
-    // close connection
-    public static void closeConnection(String url){
-        SqliteNoteConnection.closeConnection("notes.db");
     }
 }
