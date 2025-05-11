@@ -205,6 +205,8 @@ public class NewNoteController extends CreateNoteController {
         ObservableList<String> tagsObservableList = FXCollections.observableArrayList(tagList);
 
         tagsListView.setItems(tagsObservableList);
+
+        // TODO: NEED TO MAKE THE VIEW HORIZONTAL
     }
 
     @FXML
@@ -214,6 +216,7 @@ public class NewNoteController extends CreateNoteController {
         if (currentNoteName != null && htmlEditorGui != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            setTagsListView();
             System.out.println("UI updated from setCurrentNote().");
         }
     }
@@ -401,9 +404,10 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void onAddTag(ActionEvent actionEvent) throws IOException {
-        currentNote.setNoteTags(currentNote.getNoteTags() + newTagField.getText() + ",");
-
+        currentNote.setNoteTags(currentNote.getNoteTags() + "," + newTagField.getText() + ",");
         setTagsListView();
+
+        //TODO MAKE SURE IT SAVES TO THE DATA BASE PROPERLY
     }
 
 }
