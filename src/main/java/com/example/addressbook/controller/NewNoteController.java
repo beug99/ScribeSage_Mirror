@@ -37,6 +37,7 @@ public class NewNoteController extends CreateNoteController {
     public Button homeButton;
     public TextField searchBarID;
     public Button saveButton;
+    public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
@@ -181,6 +182,16 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
+    public void onGetHighlighted(ActionEvent event) {
+        String selectedText = getSelectedHTMLText();
+        if (selectedText != null && !selectedText.isEmpty()) {
+            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
+        } else {
+            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
+        }
+    }
+
+    @FXML
     public void setLabelText(String text) {
         currentNoteName.setText(text);
     }
@@ -225,6 +236,11 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void searchBarButtonClick(ActionEvent actionEvent) {
         //TODO Create a search function - for a later sprint
+    }
+
+    @FXML
+    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
+        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
     }
 
     private void refreshHTMLEditor() {
@@ -309,6 +325,9 @@ public class NewNoteController extends CreateNoteController {
         return false;
     }
 
+    public void toggleNavMenu(MouseEvent mouseEvent) {
+
+    }
     /**
      * Private method to show alerts
      */
