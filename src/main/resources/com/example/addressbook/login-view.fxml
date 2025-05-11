@@ -4,36 +4,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.LoginController">
-    <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.LoginController">
 
-        <!-- support contact link could go here? -->
+    <VBox alignment="CENTER" spacing="10.0"
+        AnchorPane.leftAnchor="20.0"
+        AnchorPane.rightAnchor="20.0"
+        AnchorPane.topAnchor="20.0"
+        AnchorPane.bottomAnchor="20.0">
 
-        <Label text="ScribeSage">
-            <font>
-                <Font name="Arial Bold" size="28" />
-            </font>
-        </Label>
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20" />
+        </padding>
+        <!-- logo -->
+        <ImageView>
+            <Image url="@../../../Images/Logo.png" requestedHeight="200" requestedWidth="200"/>
+        </ImageView>
+        <Label text="ScribeSage" alignment="CENTER" font = "Montserrat"/>
 
         <!-- email -->
-        <VBox spacing="5.0">
-            <Label text="Email Address:" />
-            <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
-        </VBox>
+        <Label text="Email Address:" />
+        <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
 
         <!-- password -->
-        <VBox spacing="5.0">
-            <Label text="Password:" />
-            <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
-        </VBox>
+        <Label text="Password:" />
+        <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
 
         <!-- log in -->
-        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
+        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="200" style="-fx-background-color: #6a5acd;
+        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
 
-        <!-- forgot password maybe? -->
-        <!-- sign up button -->
+        <!-- sign up -->
         <Label text="Don't have an account?" />
-        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
-
+        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd;
+        -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
     </VBox>
-</AnchorPane>
+</StackPane>
