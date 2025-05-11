@@ -290,13 +290,7 @@ public class HomePageController {
         }
     }
 
-    @FXML
-    private void onSortAlphabetically(ActionEvent event) {
-        // Example logic: sort notes alphabetically
-        if (noteNamesObservableList != null) {
-            FXCollections.sort(noteNamesObservableList);
-        }
-    }
+
 
 
     @FXML
