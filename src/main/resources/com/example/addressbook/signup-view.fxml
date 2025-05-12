@@ -1,38 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.addressbook.controller.SignUpController">
+<StackPane minHeight="400" minWidth="250" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.SignUpController">
     <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-        <Label text="Enter Your Details Below">
-            <font>
-                <Font name="Arial Bold" size="20" />
-            </font>
-        </Label>
-
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+        <HBox alignment="TOP_LEFT">
+            <Button fx:id="backButton" alignment="TOP_LEFT" onAction="#onBackToHome" style="-fx-background-color:             #6a5acd; -fx-text-fill: white" text="Back">
+                <font>
+                    <Font name="Helvetica‭ ‬עבה" size="16.0" />
+                </font>
+            </Button>
+        </HBox>
+        <!-- logo -->
+        <ImageView>
+            <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/Logo.png" />
+        </ImageView>
+        <HBox alignment="CENTER">
+            <Text fill="#6a5acd" text="ScribeSage" textAlignment="CENTER">
+                <font>
+                    <Font name="Helvetica Bold" size="42" />
+                </font>
+            </Text>
+        </HBox>
         <VBox spacing="5.0">
-            <Label text="First Name:" />
+            <Label text="First Name:">
+            <font>
+               <Font name="Helvetica‭ ‬עבה" size="16.0" />
+            </font></Label>
             <TextField fx:id="firstName" promptText="Enter first name..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Last Name:" />
+            <Label text="Last Name:">
+            <font>
+               <Font name="Helvetica‭ ‬עבה" size="16.0" />
+            </font></Label>
             <TextField fx:id="lastName" promptText="Enter last name..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Email address:" />
+            <Label text="Email address:">
+            <font>
+               <Font name="Helvetica‭ ‬עבה" size="16.0" />
+            </font></Label>
             <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Password:" />
+            <Label text="Password:">
+            <font>
+               <Font name="Helvetica‭ ‬עבה" size="16.0" />
+            </font></Label>
             <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
         </VBox>
 
-        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Sign-up" />
+        <Button fx:id="signUp" onAction="#onSignUp" prefHeight="35" prefWidth="300" scaleShape="true" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Sign up">
+         <font>
+            <Font name="Helvetica‭ ‬עבה" size="16.0" />
+         </font></Button>
 
     </VBox>
-</AnchorPane>
+</StackPane>
