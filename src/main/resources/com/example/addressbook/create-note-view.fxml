@@ -3,8 +3,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
+<VBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -14,8 +15,14 @@
             <ColumnConstraints minWidth="70" />
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
-        <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Button fx:id="homeButton" onAction="#onHomeClick" GridPane.halignment="RIGHT" text="Home" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
+        <Button fx:id="homeButton" onAction="#onHomeClick" style="-fx-background-color: #6a5acd;" text="Home" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
         <padding>
             <Insets bottom="20.0" />
         </padding>
@@ -30,8 +37,14 @@
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
 
-        <Label text="Note Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label text="Tags:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="Note Title:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
+        <Label text="Tags:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
 
         <TextField fx:id="noteNameTextField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -52,17 +65,33 @@
             <ColumnConstraints />
 
         </columnConstraints>
-        <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label text="Upload Sparse Notes:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label text="Upload Canvas Material:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label text="AI Note Summariser:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
+        <Label text="Upload Sparse Notes:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
+        <Label text="Upload Canvas Material:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Label>
 
         <Label fx:id="folderName" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Button maxWidth="Infinity" onAction="#onChangeFolderClick" text="Choose Folder" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Button maxWidth="Infinity" onAction="#onChangeFolderClick" style="-fx-background-color: #6a5acd;" text="Choose Folder" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
 
-        <Button maxWidth="Infinity" onAction="#onUploadSparseClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-        <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" text="Upload" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-        <CheckBox maxWidth="Infinity" onAction="#onAINoteSummariseClick" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Button maxWidth="Infinity" onAction="#onUploadSparseClick" style="-fx-background-color: #6a5acd;" text="Upload" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
+        <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" style="-fx-background-color: #6a5acd;" text="Upload" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
         <rowConstraints>
             <RowConstraints />
             <RowConstraints />
@@ -72,25 +101,25 @@
 
     </GridPane>
 
-
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-
     <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
         <padding>
             <Insets top="50.0" />
         </padding>
 
-        <Button fx:id="cancelButton"
-                text="Cancel"
-                onAction="#onCancelButtonClick"
-        />
-        <Button fx:id="createNoteButton"
-                text="Create"
-                onAction="#onCreateButtonClick"
-        />
+        <Button fx:id="cancelButton" onAction="#onCancelButtonClick" style="-fx-background-color: #6a5acd;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
+        <Button fx:id="createNoteButton" onAction="#onCreateButtonClick" style="-fx-background-color: #6a5acd;" text="Create" textFill="WHITE">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="12.0" />
+         </font></Button>
     </HBox>
+
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
 
 
     <padding>
