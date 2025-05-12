@@ -72,13 +72,13 @@ public class NewNoteController extends CreateNoteController {
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
+        StartAutoSave();
 
         System.out.println("Initializing NewNoteController");
         // Hide progress indicator initially
         if (progressIndicator != null) {
             progressIndicator.setVisible(false);
         }
-
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
@@ -89,16 +89,6 @@ public class NewNoteController extends CreateNoteController {
         } else {
             System.out.println("Current Note is null");
         }
-
-        // Listener for enabling/disabling autosave
-        enableAutoSaveCheckbox.selectedProperty().addListener((observable, oldVal, newVal) ->{
-            autoSavingEnabled = newVal;
-            if (autoSavingEnabled) {
-                StartAutoSave();
-            } else {
-                StopAutoSave();
-            }
-        });
     }
 
     /**
@@ -241,37 +231,6 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
         htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
-    }
-
-    private void refreshHTMLEditor() {
-        // Store current content
-        String currentContent = htmlEditorGui.getHtmlText();
-
-        // Get the WebView within the HTMLEditor
-        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
-        if (webView != null) {
-            // Ensure the WebView fills its container
-            webView.setPrefHeight(htmlEditorGui.getHeight() - 80); // Subtract toolbar height
-            webView.setMinHeight(200); // Set minimum height
-
-            // Set the background color explicitly
-            webView.setStyle("-fx-background-color: white;");
-
-            // Apply the changes
-            Platform.runLater(() -> {
-                // Force redraw with current content
-                htmlEditorGui.setHtmlText(currentContent);
-
-                // Execute JavaScript to ensure body fills the available space
-                WebEngine engine = webView.getEngine();
-                engine.executeScript(
-                        "document.body.style.backgroundColor = 'white';" +
-                                "document.body.style.height = '100%';" +
-                                "document.body.style.margin = '0';" +
-                                "document.body.style.padding = '5px';"
-                );
-            });
-        }
     }
 
     /**
