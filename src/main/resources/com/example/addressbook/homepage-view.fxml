@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.geometry.Insets?>
 <StackPane minHeight="400" minWidth="250" style="-fx-background-color:white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.HomePageController">
 
     <VBox spacing="10.0"
@@ -67,7 +68,7 @@
                 <Button fx:id="createFolderButton" onAction="#onCreateFolder" prefWidth="120.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Create Folder" />
             </HBox>
         </VBox>
-
+    </VBox>
     <!-- Nav menu as an overlay positioned at the top left -->
     <AnchorPane pickOnBounds="false" mouseTransparent="false">
         <VBox fx:id="navMenu" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);"
