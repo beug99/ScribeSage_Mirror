@@ -18,11 +18,12 @@
         </padding>
 
         <!-- Profile section top left -->
-        <HBox fx:id="profileBar" onMouseClicked="#toggleNavMenu" maxWidth="100">
+        <!-- Profile section top left -->
+        <HBox fx:id="profileBar" onMouseClicked="#toggleNavMenu" maxWidth="200" alignment="CENTER_LEFT" spacing="10">
             <ImageView>
                 <Image requestedHeight="50" requestedWidth="50" url="@../../../Images/Logo.png"/>
             </ImageView>
-            <Label fx:id="nameLabel" text="First and last name">
+            <Label fx:id="nameLabel" text="First and last name" alignment="CENTER">
                 <font>
                     <Font name="Helvetica Bold" size="16.0"/>
                 </font>
