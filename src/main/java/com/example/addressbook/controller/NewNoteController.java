@@ -6,6 +6,8 @@ import com.example.addressbook.model.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,12 +26,16 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
 import static java.util.concurrent.TimeUnit.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -44,6 +50,8 @@ public class NewNoteController extends CreateNoteController {
     public CheckBox enableAutoSaveCheckbox;
     public Button enhanceTextButton;
     public ProgressIndicator progressIndicator; // Add to FXML
+    public ListView tagsListView;
+    public TextField newTagField;
     @FXML
     private Button summariseTextButton;
     @FXML
@@ -186,12 +194,29 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
+    public void setTagsListView(){
+        // Convert Tags into List
+        String tagString = currentNote.getNoteTags();
+
+        List<String> tagList = Stream.of(tagString.split(","))
+                .map(String::trim).collect(Collectors.toList());
+
+        // Display Tags as hyperlinks
+        ObservableList<String> tagsObservableList = FXCollections.observableArrayList(tagList);
+
+        tagsListView.setItems(tagsObservableList);
+
+        // TODO: NEED TO MAKE THE VIEW HORIZONTAL
+    }
+
+    @FXML
     public void setCurrentNote(Note note) {
         currentNote = note;
         System.out.println("Note set in NewNoteController: " + currentNote.getNoteName());
         if (currentNoteName != null && htmlEditorGui != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
+            setTagsListView();
             System.out.println("UI updated from setCurrentNote().");
         }
     }
@@ -376,4 +401,13 @@ public class NewNoteController extends CreateNoteController {
             // Run the task in the background
             executorService.submit(task);
         }
+
+    @FXML
+    public void onAddTag(ActionEvent actionEvent) throws IOException {
+        currentNote.setNoteTags(currentNote.getNoteTags() + "," + newTagField.getText() + ",");
+        setTagsListView();
+
+        //TODO MAKE SURE IT SAVES TO THE DATA BASE PROPERLY
     }
+
+}

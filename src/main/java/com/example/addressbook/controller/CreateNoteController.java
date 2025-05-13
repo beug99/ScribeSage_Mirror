@@ -104,5 +104,7 @@ public class CreateNoteController {
     }
 
     public void onTagsAddButton(ActionEvent actionEvent) {
+
+
     }
 }

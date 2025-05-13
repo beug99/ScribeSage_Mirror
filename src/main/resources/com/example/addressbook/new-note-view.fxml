@@ -76,7 +76,7 @@
             <!-- SAVE BUTTONS - AI BUTTONS -->
             <HBox spacing="10">
                 <padding>
-                    <Insets bottom="10" top="25" />
+                    <Insets bottom="15" top="25" />
                 </padding>
                 <Button fx:id="saveButton" onAction="#onSaveButtonClick" text="Save Note">
                     <font>
@@ -108,9 +108,17 @@
                     </Button>
                     <ProgressIndicator fx:id="summariseProgress" maxHeight="20" maxWidth="20" visible="false" />
                 </StackPane>
-
             </HBox>
-         <CheckBox fx:id="enableAutoSaveCheckbox" mnemonicParsing="false" text="Auto Save" />
+
+            <HBox spacing="300" >
+                <CheckBox fx:id="enableAutoSaveCheckbox" mnemonicParsing="false" text="Auto Save" alignment="BOTTOM_LEFT"/>
+                <HBox spacing="5">
+                    <Label text="Tags:   " style="-fx-font-weight:bold; -fx-font-size: 14px;"/>
+                    <ListView fx:id="tagsListView" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: white;"/>
+                    <TextField promptText="Add a Tag" fx:id="newTagField"/>
+                    <Button onAction="#onAddTag" text="Add"/>
+                </HBox>
+            </HBox>
 
             <!-- HTML EDITOR - Set to grow within available space -->
             <AnchorPane VBox.vgrow="ALWAYS">
