@@ -71,7 +71,15 @@
     </VBox>
     <!-- Nav menu as an overlay positioned at the top left -->
     <AnchorPane mouseTransparent="false" pickOnBounds="false">
-        <VBox fx:id="navMenu" maxWidth="180" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);" visible="false" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="70">
+        <VBox fx:id="navMenu"
+              prefHeight="166.0"
+              prefWidth="188.0"
+              visible="false"
+              AnchorPane.leftAnchor="10.0"
+              AnchorPane.topAnchor="60.0"
+              style="-fx-background-color: white; -fx-border-color: lightgray; -fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, lightgray, 8, 0, 2, 2);"
+              stylesheets="@../../../css/navmenu.css"
+              spacing="5">
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
                 <padding>
                     <Insets bottom="5" left="10" right="10" top="5" />
@@ -83,7 +91,7 @@
                 </ImageView>
                 <Label fx:id="updateDetailsLabel" onMouseClicked="#onUpdateDetails" style="-fx-cursor: hand;" text="Update Details">
                     <font>
-                        <Font name="HelveticaRounded-Bold" size="12.0" />
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
             </HBox>

@@ -1,0 +1,11 @@
+.nav-item {
+    -fx-padding: 10 0 10 15; /* Top, Right, Bottom, Left */
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.nav-item:hover {
+    -fx-background-color: #eef2ff; /* Soft highlight on hover */
+}
