@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
+
 <StackPane xmlns="http://javafx.com/javafx/17.0.12" style="-fx-background-color:white;" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.example.addressbook.controller.LoginController"
     minHeight="400" minWidth="250">
@@ -53,7 +52,7 @@
 
         <!-- log in -->
         <Button fx:id="logIn" onAction="#onLogIn" prefWidth="300" prefHeight="35" scaleShape="true" style="-fx-background-color: #6a5acd;
-        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
+        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In"><font> <Font name = "Helvetica Bold" size = "16"/></font></Button>
 
         <!-- sign up -->
         <HBox alignment="CENTER_LEFT">
@@ -64,6 +63,6 @@
             </Label>
         </HBox>
         <Button fx:id="signUp" onAction="#onSignUp" prefWidth="300" prefHeight="35" style="-fx-background-color: #6a5acd;
-        -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
+        -fx-text-fill: white; -fx-font-weight: bold;" text="Sign Up"> <font> <Font name = "Helvetica Bold" size = "16"/></font></Button>
     </VBox>
 </StackPane>

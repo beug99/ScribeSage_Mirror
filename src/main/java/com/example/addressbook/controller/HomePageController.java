@@ -19,11 +19,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import javafx.scene.control.TextField;
+import javafx.collections.transformation.FilteredList;
+
 
 public class HomePageController {
+
+    @FXML
+    private TextField searchField;
     @FXML
     public HBox profileBar;
     @FXML
@@ -276,9 +281,41 @@ public class HomePageController {
         noteDAO.updateNote(note);
     }
 
-    // Controller for sorting list alphabetically
+
     @FXML
-    private void onSortAlphabetically()throws IOException {
-        Collections.sort(notesListView.getItems());
+    private void onSortAlphabetically(ActionEvent event) {
+        // Example logic: sort notes alphabetically
+        if (noteNamesObservableList != null) {
+            FXCollections.sort(noteNamesObservableList);
+        }
     }
+
+
+
+
+    @FXML
+    private void onSearchNote() {
+        String keyword = searchField.getText().toLowerCase().trim();
+
+        if (keyword.isEmpty()) {
+            // Reset the list
+            noteNamesObservableList.clear();
+            for (Note note : notesObservableList) {
+                noteNamesObservableList.add(note.getNoteName());
+            }
+        } else {
+            // Filter based on keyword
+            noteNamesObservableList.clear();
+            for (Note note : notesObservableList) {
+                if (note.getNoteName().toLowerCase().contains(keyword)) {
+                    noteNamesObservableList.add(note.getNoteName());
+                }
+            }
+        }
+        notesListView.setItems(noteNamesObservableList);
+    }
+
+
+
+
 }
