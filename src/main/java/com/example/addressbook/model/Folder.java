@@ -1,22 +1,34 @@
 package com.example.addressbook.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Folder {
-    private Integer FolderId;
+    private Integer folderId;
     private String folderName;
-    private List<Note> notes;
     private String email;
+    private List<Note> notes;
 
     public Folder(String folderName) {
         this.folderName = folderName;
+        this.notes = new ArrayList<>();
     }
 
-    public Integer getFolderId() 
-        { return FolderId; }
+    public Integer getFolderId() {
+        return folderId;
+    }
 
-    public void setFolderId(Integer id) 
-        { this.FolderId = id; }
+    public void setFolderId(Integer folderId) {
+        this.folderId = folderId;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
 
     public String getEmail() {
         return email;
@@ -26,15 +38,24 @@ public class Folder {
         this.email = email;
     }
 
-    public String getFolderName() 
-        { return folderName; }
+    public List<Note> getNotes() {
+        return notes;
+    }
 
-    public void setFolderName(String folderName) 
-        { this.folderName = folderName; }
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
 
-    public List<Note> getNotes() 
-        { return notes; }
+    public void addNote(Note note) {
+        if (this.notes == null) {
+            this.notes = new ArrayList<>();
+        }
+        this.notes.add(note);
+    }
 
-    public void setNotes(List<Note> notes) 
-        { this.notes = notes; }
+    public void removeNote(Note note) {
+        if (this.notes != null) {
+            this.notes.remove(note);
+        }
+    }
 }
