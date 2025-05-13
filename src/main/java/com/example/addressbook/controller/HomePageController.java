@@ -2,13 +2,11 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
+import com.example.addressbook.service.FolderService;
 import com.example.addressbook.service.NoteService;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.event.ActionEvent;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -39,8 +37,6 @@ public class HomePageController {
     private Label nameLabel;
     @FXML
     private TreeView<String> notesTreeView;
-    @FXML
-    private Button createFolderButton;
 
     private INoteDAO noteDAO;
     private List<Note> userNotes;
@@ -50,10 +46,6 @@ public class HomePageController {
     private List<Folder> folderList = new ArrayList<>();
     private IFolderDAO folderDAO;
 
-    // Constants for the tree structure
-    private static final String ALL_NOTES_NODE = "All Notes";
-    private static final String FOLDERS_NODE = "Folders";
-
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
         folderDAO = new SqliteFolderDAO();
@@ -62,9 +54,18 @@ public class HomePageController {
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
+        // Setup drag and drop functionality
 
-        loadUserData();
-        populateNotesTreeView();
+        FolderService.initialise(folderList, folderDAO);
+        NoteService.initialize(new ArrayList<>(), folderList, notesTreeView);
+
+        NoteService.loadUserNotes();
+        FolderService.loadUserFolders();
+
+        this.userNotes = NoteService.getUserNotes();
+
+        NoteService.populateNotesTreeView();
+        NoteService.setupDragAndDrop();
 
         Platform.runLater(() -> {
             navMenu.getScene().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
@@ -76,157 +77,13 @@ public class HomePageController {
                 }
             });
         });
-
         // Add event handler for selections in the tree view
         notesTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 selectedItem = newValue;
-                handleTreeSelection(newValue);
+                NoteService.handleTreeSelection(newValue);
             }
         });
-
-        // Setup drag and drop functionality
-        setupDragAndDrop();
-    }
-
-    private void setupDragAndDrop() {
-        notesTreeView.setOnDragDetected(event -> {
-            TreeItem<String> selected = notesTreeView.getSelectionModel().getSelectedItem();
-            if (selected != null && isNoteItem(selected)) {
-                // Find the note
-                Note note = findNoteByName(selected.getValue());
-                if (note != null) {
-                    Dragboard db = notesTreeView.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString(String.valueOf(note.getId()));
-                    db.setContent(content);
-                    event.consume();
-                }
-            }
-        });
-
-        notesTreeView.setOnDragOver(event -> {
-            if (event.getGestureSource() != notesTreeView && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            } else if (event.getGestureSource() == notesTreeView && event.getDragboard().hasString()) {
-                TreeItem<String> target = notesTreeView.getSelectionModel().getSelectedItem();
-                if (target != null && (isFolderItem(target) || FOLDERS_NODE.equals(target.getValue()))) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-            }
-            event.consume();
-        });
-
-        notesTreeView.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                try {
-                    int noteId = Integer.parseInt(db.getString());
-                    Note note = noteDAO.getNoteById(noteId);
-                    TreeItem<String> targetItem = getDropTarget(notesTreeView.getSelectionModel().getSelectedItem());
-
-                    if (note != null && targetItem != null) {
-                        String targetValue = targetItem.getValue();
-                        if (FOLDERS_NODE.equals(targetValue)) {
-                            // Dropped on "Folders" node - remove from any folder
-                            note.setFolderId(null);
-                            noteDAO.updateNote(note);
-                            success = true;
-                        } else {
-                            // Find the target folder
-                            Folder targetFolder = findFolderByName(targetValue);
-                            if (targetFolder != null) {
-                                addNoteToFolder(note, targetFolder);
-                                success = true;
-                            }
-                        }
-
-                        if (success) {
-                            loadUserData();
-                            populateNotesTreeView();
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
-    }
-
-    private TreeItem<String> getDropTarget(TreeItem<String> item) {
-        if (item == null) return null;
-
-        // If this is a folder node or the Folders root, return it
-        if (isFolderItem(item) || FOLDERS_NODE.equals(item.getValue())) {
-            return item;
-        }
-
-        // If this is a note within a folder, return its parent folder
-        TreeItem<String> parent = item.getParent();
-        if (parent != null && isFolderItem(parent)) {
-            return parent;
-        }
-
-        return null;
-    }
-
-    private boolean isNoteItem(TreeItem<String> item) {
-        if (item == null) return false;
-
-        // It's a note if its parent is "All Notes" or a folder
-        TreeItem<String> parent = item.getParent();
-        if (parent != null) {
-            return ALL_NOTES_NODE.equals(parent.getValue()) || isFolderItem(parent);
-        }
-        return false;
-    }
-
-    private boolean isFolderItem(TreeItem<String> item) {
-        if (item == null) return false;
-
-        // It's a folder if its parent is "Folders"
-        TreeItem<String> parent = item.getParent();
-        if (parent != null) {
-            return FOLDERS_NODE.equals(parent.getValue());
-        }
-        return false;
-    }
-
-    private void handleTreeSelection(TreeItem<String> item) {
-        if (item == null) return;
-
-        // Clear current selection
-        NoteService.selectedNote = null;
-
-        // If this is a note item
-        if (isNoteItem(item)) {
-            String noteName = item.getValue();
-            Note note = findNoteByName(noteName);
-            if (note != null) {
-                NoteService.setSelectedNote(note);
-            }
-        }
-    }
-
-    private Note findNoteByName(String noteName) {
-        for (Note note : userNotes) {
-            if (note.getNoteName().equals(noteName)) {
-                return note;
-            }
-        }
-        return null;
-    }
-
-    private Folder findFolderByName(String folderName) {
-        for (Folder folder : folderList) {
-            if (folder.getFolderName().equals(folderName)) {
-                return folder;
-            }
-        }
-        return null;
     }
 
     @FXML
@@ -260,11 +117,11 @@ public class HomePageController {
     private void onDeleteItem() throws IOException {
         if (NoteService.selectedNote != null) {
             noteDAO.deleteNote(NoteService.selectedNote);
-            loadUserData();
-            populateNotesTreeView();
-        } else if (selectedItem != null && isFolderItem(selectedItem)) {
+            NoteService.loadUserData();
+            NoteService.populateNotesTreeView();
+        } else if (selectedItem != null && FolderService.isFolderItem(selectedItem)) {
             // If a folder is selected, prompt to delete it
-            Folder folder = findFolderByName(selectedItem.getValue());
+            Folder folder = FolderService.findFolderByName(selectedItem.getValue());
             if (folder != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Delete Folder");
@@ -282,97 +139,13 @@ public class HomePageController {
                         }
                         folderDAO.deleteFolder(folder);
 
-                        loadUserData();
-                        populateNotesTreeView();
+                        NoteService.loadUserData();
+                        NoteService.populateNotesTreeView();
                     }
                 });
             }
         } else {
             System.out.println("No note or folder selected to delete.");
-        }
-    }
-
-    @FXML
-    private void handleDeleteFolder(ActionEvent event) {
-        // Get the selected item from the tree view
-        TreeItem<String> selectedItem = notesTreeView.getSelectionModel().getSelectedItem();
-
-        // Check if a folder is selected
-        if (selectedItem != null && isFolderItem(selectedItem)) {
-            // Find the folder
-            Folder folder = findFolderByName(selectedItem.getValue());
-            if (folder != null) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Delete Folder");
-                alert.setHeaderText("Delete folder: " + folder.getFolderName());
-                alert.setContentText("Are you sure you want to delete this folder? The notes inside will not be deleted.");
-
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.OK) {
-                        // Remove folder association from notes
-                        for (Note note : userNotes) {
-                            if (note.getFolderId() != null && note.getFolderId().equals(folder.getFolderId())) {
-                                note.setFolderId(null);
-                                noteDAO.updateNote(note);
-                            }
-                        }
-                        folderDAO.deleteFolder(folder);
-
-                        loadUserData();
-                        populateNotesTreeView();
-                    }
-                });
-            }
-        } else {
-            // Show alert if no folder is selected
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No Folder Selected");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a folder to delete.");
-            alert.showAndWait();
-        }
-    }
-
-    // Load user data (notes and folders)
-    private void loadUserData() {
-        loadUserNotes();
-        loadUserFolders();
-    }
-
-    // Load user notes
-    private void loadUserNotes() {
-        try {
-            userNotes = noteDAO.getNotesByOwner(Session.getLoggedInEmail());
-        } catch (Exception e) {
-            e.printStackTrace();
-            userNotes = new ArrayList<>();
-        }
-    }
-
-    private void loadUserFolders() {
-        try {
-            // Clear existing folder list
-            folderList.clear();
-
-            // Load folders for the current user
-            List<Folder> userFolders = folderDAO.getFolderByEmail(Session.getLoggedInEmail());
-            folderList.addAll(userFolders);
-
-            // For each folder, identify its notes
-            for (Folder folder : folderList) {
-                List<Note> notesInFolder = new ArrayList<>();
-
-                // Find notes that belong to this folder
-                for (Note note : userNotes) {
-                    if (note.getFolderId() != null && note.getFolderId().equals(folder.getFolderId())) {
-                        notesInFolder.add(note);
-                    }
-                }
-
-                folder.setNotes(notesInFolder);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -387,47 +160,6 @@ public class HomePageController {
         SceneLoader.switchScene(stage, "create-note-view.fxml", false);
     }
 
-    // Populate the unified tree view
-    private void populateNotesTreeView() {
-        TreeItem<String> rootItem = new TreeItem<>("Root");
-        rootItem.setExpanded(true);
-
-        // Create "All Notes" node
-        TreeItem<String> allNotesNode = new TreeItem<>(ALL_NOTES_NODE);
-        allNotesNode.setExpanded(true);
-
-        // Add all user notes to the "All Notes" node
-        for (Note note : userNotes) {
-            allNotesNode.getChildren().add(new TreeItem<>(note.getNoteName()));
-        }
-
-        // Create "Folders" node
-        TreeItem<String> foldersNode = new TreeItem<>(FOLDERS_NODE);
-        foldersNode.setExpanded(true);
-
-        // Add each folder and its notes
-        for (Folder folder : folderList) {
-            TreeItem<String> folderNode = new TreeItem<>(folder.getFolderName());
-
-            // Add notes that belong to this folder
-            if (folder.getNotes() != null) {
-                for (Note note : folder.getNotes()) {
-                    folderNode.getChildren().add(new TreeItem<>(note.getNoteName()));
-                }
-            }
-
-            foldersNode.getChildren().add(folderNode);
-        }
-
-        // Add nodes to root
-        rootItem.getChildren().add(allNotesNode);
-        rootItem.getChildren().add(foldersNode);
-
-        // Set the root and hide it
-        notesTreeView.setRoot(rootItem);
-        notesTreeView.setShowRoot(false);
-    }
-
     // Create Folder
     @FXML
     private void onCreateFolder(ActionEvent event) {
@@ -437,59 +169,17 @@ public class HomePageController {
         dialog.setContentText("Folder name:");
 
         dialog.showAndWait().ifPresent(folderName -> {
-            if (createFolder(folderName, Session.getLoggedInEmail())) {
-                loadUserData();
-                populateNotesTreeView();
+            if (FolderService.createFolder(folderName, Session.getLoggedInEmail())) {
+                NoteService.loadUserData();
+                NoteService.populateNotesTreeView();
             }
         });
-    }
-
-    private boolean createFolder(String folderName, String email) {
-        // input validation
-        if (folderName == null || folderName.trim().isEmpty()) return false;
-
-        // duplicate checks
-        for (Folder folder : folderList) {
-            if (folder.getFolderName().equalsIgnoreCase(folderName.trim()))
-                return false;
-        }
-
-        // folder creation
-        Folder newFolder = new Folder(folderName.trim());
-        newFolder.setEmail(email);
-        newFolder.setNotes(new ArrayList<>());
-        folderDAO.addFolder(newFolder);
-        folderList.add(newFolder);
-        return true;
-    }
-
-    // add note to folder
-    public void addNoteToFolder(Note note, Folder folder) {
-        if (folder.getNotes() == null) {
-            folder.setNotes(new ArrayList<>());
-        }
-
-        // Check if the note is already in the folder
-        boolean alreadyInFolder = false;
-        for (Note n : folder.getNotes()) {
-            if (n.getId() == note.getId()) {
-                alreadyInFolder = true;
-                break;
-            }
-        }
-
-        if (!alreadyInFolder) {
-            folder.getNotes().add(note);
-        }
-
-        note.setFolderId(folder.getFolderId());
-        noteDAO.updateNote(note);
     }
 
     @FXML
     private void onSortAlphabetically(ActionEvent event) {
         // This will need to be updated to sort the tree view
-        loadUserData();
+        NoteService.loadUserData();
 
         // Sort the notes list
         userNotes.sort(Comparator.comparing(Note::getNoteName));
@@ -503,8 +193,7 @@ public class HomePageController {
                 folder.getNotes().sort(Comparator.comparing(Note::getNoteName));
             }
         }
-
-        populateNotesTreeView();
+        NoteService.populateNotesTreeView();
     }
 
     @FXML
@@ -513,8 +202,8 @@ public class HomePageController {
 
         if (keyword.isEmpty()) {
             // Reset the tree view
-            loadUserData();
-            populateNotesTreeView();
+            NoteService.loadUserData();
+            NoteService.populateNotesTreeView();
         } else {
             // Filter notes based on keyword
             List<Note> filteredNotes = new ArrayList<>();
