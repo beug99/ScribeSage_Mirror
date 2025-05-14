@@ -1,9 +1,8 @@
 package com.example.addressbook.controller;
 import com.example.addressbook.Session;
 import com.example.addressbook.helper.SceneLoader;
-import com.example.addressbook.model.Note;
-import com.example.addressbook.model.INoteDAO;
-import com.example.addressbook.model.SqliteNoteDAO;
+import com.example.addressbook.model.*;
+import com.example.addressbook.service.FolderService;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -14,6 +13,7 @@ import javafx.scene.Node;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 
 public class CreateNoteController {
@@ -29,36 +29,60 @@ public class CreateNoteController {
     private TextField noteTagsTextField;
 
     private INoteDAO noteDAO;
+    private IFolderDAO folderDAO;
+    private Folder selectedFolder;
+    private List<Folder> folderList;
 
     public CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
+        folderDAO = new SqliteFolderDAO();
+        folderList = folderDAO.getFolderByEmail(Session.getLoggedInEmail());
+    }
+
+    @FXML
+    public void initialize() {
+        // initialize folder service if not already initialized
+        if (FolderService.getFolderList() == null || FolderService.getFolderList().isEmpty()) {
+            FolderService.initialise(folderList, folderDAO);
+            FolderService.loadUserFolders();
+        }
     }
 
     @FXML
     public void onCreateButtonClick() throws IOException {
-        //When clicked, create instance of a new note, adds initial note to DB
-        //Opens the New Note scene under with the note name that was entered
-
-        NewNoteController labelForFXML = null;
-        if (noteNameTextField != null && noteTagsTextField != null) {
-            Note newNote = new Note(noteNameTextField.getText(), noteTagsTextField.getText(), "Your Note", Session.getLoggedInEmail(), null);
-            noteDAO.addNote(newNote);
-            currentNote = noteNameTextField.getText();
-
-            Stage stage = (Stage) createNoteButton.getScene().getWindow();
-            NewNoteController controller = SceneLoader.switchScene(stage, "new-note-view.fxml", true);
-
-            // make new note = current note
-            controller.setLabelText(currentNote);
-            controller.setCurrentNote(newNote);
-        }
-        else {
+        // validate note name
+        if (noteNameTextField.getText() == null || noteNameTextField.getText().trim().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Create Note Failed");
             alert.setHeaderText(null);
             alert.setContentText("You must give your note a name!");
             alert.showAndWait();
+            return;
         }
+
+        // get the folder ID if one was selected
+        Integer folderId = null;
+        if (folderName.getUserData() != null) {
+            folderId = (Integer) folderName.getUserData();
+        }
+
+        // create the note with proper parameters
+        Note newNote = new Note(
+                noteNameTextField.getText(),
+                noteTagsTextField.getText() != null ? noteTagsTextField.getText() : "",
+                "Your Note",
+                Session.getLoggedInEmail(),
+                folderId
+        );
+
+//        save the note to the database
+        noteDAO.addNote(newNote);
+        currentNote = noteNameTextField.getText();
+
+        Stage stage = (Stage) createNoteButton.getScene().getWindow();
+        NewNoteController controller = SceneLoader.switchScene(stage, "new-note-view.fxml", true);
+        controller.setLabelText(currentNote);
+        controller.setCurrentNote(newNote);
     }
 
     @FXML
@@ -69,40 +93,90 @@ public class CreateNoteController {
 
     @FXML
     public void onCancelButtonClick() throws IOException {
-        //This just re-loads the page a fresh, no text, no buttons clicked etc
-
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         SceneLoader.switchScene(stage, "homepage-view.fxml", false);
     }
 
     public void onUploadSparseClick(ActionEvent actionEvent) {
+        // Placeholder for future functionality
     }
 
     public void onUploadCanvasClick(ActionEvent actionEvent) {
         FileChooser chooseFile = new FileChooser();
         chooseFile.setTitle("Upload Canvas Material");
         chooseFile.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Supported Files", "*.pdf", "*.mp4","*.mp3","*.docx","*.txt"),
-            new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
-            new FileChooser.ExtensionFilter("MP4 Files", "*.mp4"),
-            new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
-            new FileChooser.ExtensionFilter("DOCX Files", "*.docx"),
-            new FileChooser.ExtensionFilter("Text Files", "*.txt")
+                new FileChooser.ExtensionFilter("Supported Files", "*.pdf", "*.mp4","*.mp3","*.docx","*.txt"),
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+                new FileChooser.ExtensionFilter("MP4 Files", "*.mp4"),
+                new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
+                new FileChooser.ExtensionFilter("DOCX Files", "*.docx"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
         );
         File selectedFile = chooseFile.showOpenDialog(((Node) actionEvent.getSource()).getScene().getWindow());
         if(selectedFile != null) {
-            // Handle files (copy, link to note, etc.)
+            // hndle files (copy, link to note, etc.)
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         }
-
-
     }
+
     public void onAINoteSummariseClick(ActionEvent actionEvent) {
+        // Placeholder for future functionality
     }
+
 
     public void onChangeFolderClick(ActionEvent actionEvent) {
+        // make sure folders are loaded
+        List<Folder> userFolders = folderDAO.getFolderByEmail(Session.getLoggedInEmail());
+
+        if (userFolders == null || userFolders.isEmpty()) {
+            // no folders available
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No Folders Available");
+            alert.setHeaderText(null);
+            alert.setContentText("You don't have any folders yet. You can create folders from the home page.");
+            alert.showAndWait();
+            return;
+        }
+
+        // choice text for folder selection
+        ChoiceDialog<String> dialog = new ChoiceDialog<>();
+        dialog.setTitle("Select Folder");
+        dialog.setHeaderText("Choose a folder for this note");
+        dialog.setContentText("Folder:");
+
+        // add no folder option
+        dialog.getItems().add("No Folder");
+
+        // add all user folders
+        for (Folder folder : userFolders) {
+            dialog.getItems().add(folder.getFolderName());
+        }
+        // default selection to "No Folder"
+        dialog.setSelectedItem("No Folder");
+
+        // show dialog and process result
+        dialog.showAndWait().ifPresent(folderChoice -> {
+            if (folderChoice.equals("No Folder")) {
+                folderName.setText("No Folder Selected");
+            } else {
+                // find the selected folder
+                Folder selectedFolder = null;
+                for (Folder folder : userFolders) {
+                    if (folder.getFolderName().equals(folderChoice)) {
+                        selectedFolder = folder;
+                        break;
+                    }
+                }
+                if (selectedFolder != null) {
+                    folderName.setText(selectedFolder.getFolderName());
+                    // store folder ID for later use when creating the note
+                    folderName.setUserData(selectedFolder.getFolderId());
+                }
+            }
+        });
     }
 
     public void onTagsAddButton(ActionEvent actionEvent) {
+        // Placeholder for future functionality
     }
 }
