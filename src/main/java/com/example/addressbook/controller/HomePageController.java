@@ -184,9 +184,26 @@ public class HomePageController {
     @FXML
     private void onDeleteItem() throws IOException {
         if (NoteService.selectedNote != null) {
-            noteDAO.deleteNote(NoteService.selectedNote);
-            NoteService.loadUserData();
-            NoteService.populateNotesTreeView();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Note");
+            alert.setHeaderText("Delete Note: " + selectedItem.getValue());
+            alert.setContentText("Are you sure you want to delete this note? This is irreversible.");
+
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    // Remove folder association from notes
+                    for (Note note : userNotes) {
+                        if (note.getNoteName() != null && note.getNoteName().equals(selectedItem.getValue())) {
+                            note.setFolderId(null);
+                            noteDAO.updateNote(note);
+                        }
+                    }
+                    noteDAO.deleteNote(NoteService.selectedNote);
+
+                    NoteService.loadUserData();
+                    NoteService.populateNotesTreeView();
+                }
+            });
         } else if (selectedItem != null && FolderService.isFolderItem(selectedItem)) {
             // If a folder is selected, prompt to delete it
             Folder folder = FolderService.findFolderByName(selectedItem.getValue());
