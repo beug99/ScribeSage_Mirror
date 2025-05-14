@@ -9,6 +9,7 @@ module com.example.addressbook {
     requires java.desktop;
     requires password4j;
     requires jdk.compiler;
+    requires vosk;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;

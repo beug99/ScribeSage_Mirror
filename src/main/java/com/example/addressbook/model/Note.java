@@ -20,6 +20,10 @@ public class Note {
         this(noteName, noteTags, noteText, noteOwner, null);
     }
 
+    public Note(String noteName) {
+        this(noteName, "", "", null, null);
+    }
+
     public int getId() {
         return id;
     }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 
 import javafx.scene.control.TextField;
 
@@ -54,18 +55,22 @@ public class HomePageController {
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
-        // Setup drag and drop functionality
 
+        // initialise services
         FolderService.initialise(folderList, folderDAO);
         NoteService.initialize(new ArrayList<>(), folderList, notesTreeView);
+        NoteService.noteDAO = noteDAO;
 
+        // load user data
         NoteService.loadUserNotes();
         FolderService.loadUserFolders();
-
         this.userNotes = NoteService.getUserNotes();
 
+        // setup ui
         NoteService.populateNotesTreeView();
-        NoteService.setupDragAndDrop();
+
+        // setup context menu for notes
+        setupContextMenus();
 
         Platform.runLater(() -> {
             navMenu.getScene().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
@@ -84,6 +89,69 @@ public class HomePageController {
                 NoteService.handleTreeSelection(newValue);
             }
         });
+    }
+
+    private void setupContextMenus() {
+        ContextMenu folderMenu = new ContextMenu();
+        // for notes, add a move to folder option
+        ContextMenu noteMenu = new ContextMenu();
+        Menu moveToFolder = new Menu("Move to folder");
+        MenuItem removeFromFolder = new MenuItem("Remove from folder");
+
+        notesTreeView.setOnContextMenuRequested(event -> {
+            TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
+            if (item != null) {
+                if (FolderService.isFolderItem(item)) {
+                    folderMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
+                } else if (NoteService.isNoteItem(item)) {
+                    // clear previous menu items
+                    moveToFolder.getItems().clear();
+
+                    // add each folder as options
+                    for (Folder folder : FolderService.getFolderList()) {
+                        MenuItem folderItem = new MenuItem(folder.getFolderName());
+                        folderItem.setOnAction(actionEvent -> {
+                            Note note = findNoteByName(item.getValue());
+                            if (note != null) {
+                                FolderService.addNoteToFolder(note, folder);
+                                NoteService.loadUserData();
+                                NoteService.populateNotesTreeView();
+                            }
+                        });
+                        moveToFolder.getItems().add(folderItem);
+                    }
+
+                    // add menu items to context menu
+                    noteMenu.getItems().clear();
+                    if (!moveToFolder.getItems().isEmpty()) {
+                        noteMenu.getItems().add(moveToFolder);
+                    }
+
+                    // option to remove note from folder
+                    removeFromFolder.setOnAction(actionEvent -> {
+                        Note note = findNoteByName(item.getValue());
+                        if (note != null) {
+                            note.setFolderId(null);
+                            noteDAO.updateNote(note);
+                            NoteService.loadUserData();
+                            NoteService.populateNotesTreeView();
+                        }
+                    });
+                    noteMenu.getItems().add(removeFromFolder);
+
+                    noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
+                }
+            }
+        });
+    }
+
+    private Note findNoteByName(String noteName) {
+        for (Note note : userNotes) {
+            if (note.getNoteName().equals(noteName)) {
+                return note;
+            }
+        }
+        return null;
     }
 
     @FXML
