@@ -29,9 +29,6 @@ jobs:
         cache: maven
     - name: Build and run tests with Maven
       run: mvn -B verify --file pom.xml
-    - name: Upload test reports
-      if: always()
-      uses: actions/upload-artifact@v3
       with:
         name: test-reports
         path: target/surefire-reports
