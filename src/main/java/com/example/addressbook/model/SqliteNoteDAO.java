@@ -41,7 +41,7 @@ public class SqliteNoteDAO implements INoteDAO {
 
 
     @Override
-    public void addNote(Note note) {
+    public int addNote(Note note) {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText, noteOwner) VALUES (?, ?, ?, ?)");
             statement.setString(1, note.getNoteName());
@@ -60,6 +60,7 @@ public class SqliteNoteDAO implements INoteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     @Override

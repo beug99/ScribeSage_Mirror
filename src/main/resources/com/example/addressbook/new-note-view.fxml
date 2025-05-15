@@ -83,7 +83,7 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="loadButton" onAction="#onLoadButtonClick" style="-fx-background-color: #6a5acd;" text="Load" textFill="WHITE">
+                <Button fx:id="loadButton" onAction="#onLoadButtonClick" style="-fx-background-color: #6a5acd;" text="Import Audio" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>

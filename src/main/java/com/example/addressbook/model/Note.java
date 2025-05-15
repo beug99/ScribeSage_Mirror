@@ -1,16 +1,14 @@
 package com.example.addressbook.model;
 
-import java.io.File;
-
 public class Note {
-    private int noteID;
+    private int id;
     private String noteName;
     private String noteTags;
     private String noteText;
     private String noteOwner;
     private Integer folderId;
 
-    public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId){
+    public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId) {
         this.noteName = noteName;
         this.noteTags = noteTags;
         this.noteText = noteText;
@@ -18,12 +16,20 @@ public class Note {
         this.folderId = folderId;
     }
 
+    public Note(String noteName, String noteTags, String noteText, String noteOwner) {
+        this(noteName, noteTags, noteText, noteOwner, null);
+    }
+
+    public Note(String noteName) {
+        this(noteName, "", "", null, null);
+    }
+
     public int getId() {
-        return noteID;
+        return id;
     }
 
     public void setId(int id) {
-        this.noteID = id;
+        this.id = id;
     }
 
     public String getNoteName() {
@@ -34,14 +40,6 @@ public class Note {
         this.noteName = noteName;
     }
 
-    public String getNoteText() {
-        return noteText;
-    }
-
-    public void setNoteText(String noteText) {
-        this.noteText = noteText;
-    }
-
     public String getNoteTags() {
         return noteTags;
     }
@@ -50,12 +48,27 @@ public class Note {
         this.noteTags = noteTags;
     }
 
-    public String getNoteOwner() { return noteOwner;}
+    public String getNoteText() {
+        return noteText;
+    }
 
-    public void setNoteOwner(String owner) { this.noteOwner = owner;}
+    public void setNoteText(String noteText) {
+        this.noteText = noteText;
+    }
 
-    public Integer getFolderId() { return folderId; }
+    public String getNoteOwner() {
+        return noteOwner;
+    }
 
-    public void setFolderId(Integer folderId) { this.folderId = folderId; }
+    public void setNoteOwner(String noteOwner) {
+        this.noteOwner = noteOwner;
+    }
 
+    public Integer getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Integer folderId) {
+        this.folderId = folderId;
+    }
 }

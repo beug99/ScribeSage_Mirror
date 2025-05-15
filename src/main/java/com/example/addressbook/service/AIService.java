@@ -1,4 +1,4 @@
-package com.example.addressbook.model;
+package com.example.addressbook.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

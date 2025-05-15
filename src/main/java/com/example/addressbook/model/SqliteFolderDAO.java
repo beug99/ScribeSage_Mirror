@@ -1,5 +1,9 @@
 package com.example.addressbook.model;
 
+import com.example.addressbook.Session;
+import javafx.scene.control.TreeItem;
+
+import java.io.File;
 import java.sql.Connection;
 // import java.sql.DriverManager;
 // import java.sql.SQLException;
@@ -110,5 +114,65 @@ public class SqliteFolderDAO implements IFolderDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void logSQLexecution(String string) {
+    }
+
+    @Override
+    public void deleteFolder(TreeItem<String> selectedItem) {
+        // This method is not actually being used correctly in the current implementation
+        // But we'll keep it for interface compatibility
+        try {
+            // Get the folder name from the TreeItem
+            String folderName = selectedItem.getValue();
+
+            // Get current user's email from Session
+            String email = Session.getLoggedInEmail();
+
+            // Find the folder by name and email
+            Folder folder = getFolderByNameAndEmail(folderName, email);
+
+            if (folder != null) {
+                deleteFolder(folder);
+            } else {
+                System.err.println("Could not find folder with name: " + folderName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteFolder(Folder folder) {
+        try {
+            if (folder != null) {
+                int folderId = folder.getFolderId();
+
+                // Delete the folder itself
+                PreparedStatement folderStatement = connection.prepareStatement(
+                        "DELETE FROM folders WHERE folderId = ?"
+                );
+                folderStatement.setInt(1, folderId);
+                folderStatement.executeUpdate();
+
+                logSQLexecution("Deleted folder with ID: " + folderId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // Helper method to get folder ID from TreeItem
+    private int getFolderIdFromTreeItem(TreeItem<String> item) {
+        // Extract folder name from the TreeItem
+        String folderName = item.getValue();
+
+        // Get current user's email from Session
+        String email = Session.getLoggedInEmail();
+
+        // Look up folder by name and email
+        Folder folder = getFolderByNameAndEmail(folderName, email);
+
+        return (folder != null) ? folder.getFolderId() : -1;
     }
 }
