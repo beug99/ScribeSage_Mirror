@@ -29,6 +29,4 @@ jobs:
         cache: maven
     - name: Build and run tests with Maven
       run: mvn -B verify --file pom.xml
-      with:
-        name: test-reports
-        path: target/surefire-reports
+
