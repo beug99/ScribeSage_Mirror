@@ -1,68 +1,97 @@
 import com.example.addressbook.model.Note;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NoteTest {
 
-    //SHELLEY'S TEST FILE
+    private Note noteWithFolder;
+    private Note noteWithoutFolder;
+    private Note simpleNote;
 
-    private static final String NOTE_NAME = "Uni Week 1";
-    private static final String NOTE_TAGS = "Math";
-    private static final String NOTE_TEXT = "This is my note";
-    private static final String NOTE_OWNER = "Test@user";
-
-    private static final String NOTE_NAME_TWO = "Uni Week 2";
-    private static final String NOTE_TAGS_TWO = "Databases";
-    private static final String NOTE_TEXT_TWO = "This is my second note";
-    private static final String NOTE_OWNER_TWO = "Test@user";
-
-
-    private Note note;
-    private Note noteTwo;
+    private final String NOTE_NAME = "Shopping List";
+    private final String NOTE_TAGS = "shopping, groceries";
+    private final String NOTE_TEXT = "Milk, Eggs, Bread";
+    private final String NOTE_OWNER = "john.doe@example.com";
+    private final Integer FOLDER_ID = 1;
 
     @BeforeEach
-    public void setUp() {
-        note = new Note(NOTE_NAME, NOTE_TAGS, NOTE_TEXT, NOTE_OWNER);
-        noteTwo = new Note(NOTE_NAME_TWO, NOTE_TAGS_TWO, NOTE_TEXT_TWO, NOTE_OWNER_TWO);
+    void setUp() {
+        noteWithFolder = new Note(NOTE_NAME, NOTE_TAGS, NOTE_TEXT, NOTE_OWNER, FOLDER_ID);
+        noteWithoutFolder = new Note(NOTE_NAME, NOTE_TAGS, NOTE_TEXT, NOTE_OWNER);
+        simpleNote = new Note(NOTE_NAME);
     }
 
     @Test
-    public void testSetId() {
-        note.setId(1);
-        assertEquals(1, note.getId());
-        noteTwo.setId(2);
-        assertEquals(2, noteTwo.getId());
+    void testFullConstructor() {
+        assertEquals(NOTE_NAME, noteWithFolder.getNoteName());
+        assertEquals(NOTE_TAGS, noteWithFolder.getNoteTags());
+        assertEquals(NOTE_TEXT, noteWithFolder.getNoteText());
+        assertEquals(NOTE_OWNER, noteWithFolder.getNoteOwner());
+        assertEquals(FOLDER_ID, noteWithFolder.getFolderId());
     }
 
     @Test
-    public void testGetNoteName() {
-        assertEquals(NOTE_NAME, note.getNoteName());
-        assertEquals(NOTE_NAME_TWO, noteTwo.getNoteName());
+    void testConstructorWithoutFolder() {
+        assertEquals(NOTE_NAME, noteWithoutFolder.getNoteName());
+        assertEquals(NOTE_TAGS, noteWithoutFolder.getNoteTags());
+        assertEquals(NOTE_TEXT, noteWithoutFolder.getNoteText());
+        assertEquals(NOTE_OWNER, noteWithoutFolder.getNoteOwner());
+        assertNull(noteWithoutFolder.getFolderId());
     }
 
     @Test
-    public void testSetNoteName() {
-        note.setNoteName(NOTE_NAME);
-        assertEquals(NOTE_NAME, note.getNoteName());
-
-        noteTwo.setNoteName(NOTE_NAME_TWO);
-        assertEquals(NOTE_NAME_TWO, noteTwo.getNoteName());
+    void testSimpleConstructor() {
+        assertEquals(NOTE_NAME, simpleNote.getNoteName());
+        assertEquals("", simpleNote.getNoteTags());
+        assertEquals("", simpleNote.getNoteText());
+        assertNull(simpleNote.getNoteOwner());
+        assertNull(simpleNote.getFolderId());
     }
 
     @Test
-    public void testGetNoteTags() {
-        assertEquals(NOTE_TAGS, note.getNoteTags());
-        assertEquals(NOTE_TAGS_TWO, noteTwo.getNoteTags());
+    void testSetId() {
+        int id = 1;
+        noteWithFolder.setId(id);
+        assertEquals(id, noteWithFolder.getId());
     }
 
     @Test
-    public void testSetNoteTags() {
-        note.setNoteTags(NOTE_TAGS);
-        assertEquals(NOTE_TAGS, note.getNoteTags());
+    void testSetNoteName() {
+        String newName = "Grocery List";
+        noteWithFolder.setNoteName(newName);
+        assertEquals(newName, noteWithFolder.getNoteName());
+    }
 
-        noteTwo.setNoteTags(NOTE_TAGS_TWO);
-        assertEquals(NOTE_TAGS_TWO, noteTwo.getNoteTags());
+    @Test
+    void testSetNoteTags() {
+        String newTags = "food, essentials";
+        noteWithFolder.setNoteTags(newTags);
+        assertEquals(newTags, noteWithFolder.getNoteTags());
+    }
+
+    @Test
+    void testSetNoteText() {
+        String newText = "Apples, Bananas, Oranges";
+        noteWithFolder.setNoteText(newText);
+        assertEquals(newText, noteWithFolder.getNoteText());
+    }
+
+    @Test
+    void testSetNoteOwner() {
+        String newOwner = "jane.smith@example.com";
+        noteWithFolder.setNoteOwner(newOwner);
+        assertEquals(newOwner, noteWithFolder.getNoteOwner());
+    }
+
+    @Test
+    void testSetFolderId() {
+        Integer newFolderId = 2;
+        noteWithFolder.setFolderId(newFolderId);
+        assertEquals(newFolderId, noteWithFolder.getFolderId());
+
+        // Test setting folder ID for note without folder
+        noteWithoutFolder.setFolderId(newFolderId);
+        assertEquals(newFolderId, noteWithoutFolder.getFolderId());
     }
 }

@@ -52,6 +52,7 @@ public class UserTest {
     public void testGetEmail() {
         assertEquals(EMAIL, contact.getEmail());
     }
+
     @Test
     public void testSetEmail() {
         contact.setEmail(EMAIL_TWO);
