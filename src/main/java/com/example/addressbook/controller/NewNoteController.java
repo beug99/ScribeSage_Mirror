@@ -227,11 +227,6 @@ public class NewNoteController extends CreateNoteController {
         //TODO Create a search function - for a later sprint
     }
 
-    @FXML
-    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
-        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
-    }
-
     /**
      * Starts a timer to save the note every 5 minutes
      */
@@ -283,9 +278,6 @@ public class NewNoteController extends CreateNoteController {
         return false;
     }
 
-    public void toggleNavMenu(MouseEvent mouseEvent) {
-
-    }
     /**
      * Private method to show alerts
      */

@@ -20,7 +20,7 @@ public class NoteService {
     private static List<Note> userNotes = new ArrayList<>();
     private static List<Folder> folderList = new ArrayList<>();
     private static final String ALL_NOTES_NODE = "All Notes";
-    private static TreeView<String> notesTreeView;
+    public static TreeView<String> notesTreeView;
 
     public static void initialize(List<Note> notes, List<Folder> folders, TreeView<String> treeView) {
         notesTreeView = treeView;
