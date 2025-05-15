@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import javafx.scene.control.TextField;
 
+import static com.example.addressbook.service.NoteService.notesTreeView;
+
 
 public class HomePageController {
 

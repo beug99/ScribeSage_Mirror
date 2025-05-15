@@ -29,7 +29,7 @@ public class UpdateDetailsController {
     @FXML
     private void onBackToHome() throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        SceneLoader.switchScene(stage, "homepage-view.fxml", true);
+        stage.hide();
     }
 
 

@@ -14,7 +14,7 @@
             </padding>
             <!-- logo -->
             <ImageView>
-                <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/logo kinda purple.png" />
+                <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/logo kinda purple.jpeg" />
             </ImageView>
         <HBox alignment="CENTER">
             <Text fill="WHITE" text="ScribeSage" textAlignment="CENTER">
@@ -50,7 +50,7 @@
          </font></PasswordField>
 
         <!-- log in -->
-        <Button fx:id="logIn" onAction="#onLogIn" prefHeight="35" prefWidth="300" scaleShape="true" style="-fx-background-color: #6a5acd;         -fx-text-fill: white; -fx-font-weight: bold;" text="Log In"><font> <Font name="Helvetica Bold" size="16" /></font></Button>
+        <Button fx:id="logIn" onAction="#onLogIn" prefHeight="35" prefWidth="300" scaleShape="true" style="-fx-background-color: #6a5acd;  -fx-cursor: hand;        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In"><font> <Font name="Helvetica Bold" size="16" /></font></Button>
 
         <!-- sign up -->
         <HBox alignment="CENTER_LEFT">
@@ -60,6 +60,6 @@
                 </font>
             </Label>
         </HBox>
-        <Button fx:id="signUp" onAction="#onSignUp" prefHeight="35" prefWidth="300" style="-fx-background-color: #6a5acd;         -fx-text-fill: white; -fx-font-weight: bold;" text="Sign Up"> <font> <Font name="Helvetica Bold" size="16" /></font></Button>
+        <Button fx:id="signUp" onAction="#onSignUp" prefHeight="35" prefWidth="300" style="-fx-background-color: #6a5acd;  -fx-cursor: hand;       -fx-text-fill: white; -fx-font-weight: bold;" text="Sign Up"> <font> <Font name="Helvetica Bold" size="16" /></font></Button>
     </VBox>
 </StackPane>
