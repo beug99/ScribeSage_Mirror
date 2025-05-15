@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -156,8 +157,9 @@ public class HomePageController {
 
     @FXML
     private void onUpdateDetails() throws IOException {
-        Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
-        SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        SceneLoader.switchScene(popupStage, "updateDetails-view.fxml", false);
     }
 
     @FXML
