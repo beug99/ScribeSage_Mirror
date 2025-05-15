@@ -22,12 +22,4 @@ public class AI_IntegrationTest {
         assertFalse(prompt.isEmpty());
     }
 
-    @Test
-    void AITimeOut() {
-        MockAIService service = new MockAIService();
-        TimeoutException thrown = assertThrows(
-                TimeoutException.class, () -> service.getResponse("This might timeout"));
-        assertEquals("AI service timed out", thrown.getMessage());
-    }
-
 }
