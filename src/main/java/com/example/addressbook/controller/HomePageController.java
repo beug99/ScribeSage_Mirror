@@ -68,10 +68,9 @@ public class HomePageController {
         NoteService.loadUserNotes();
         FolderService.loadUserFolders();
         this.userNotes = NoteService.getUserNotes();
-
         // setup ui
         NoteService.populateNotesTreeView();
-
+        NoteService.setupDateCellFactory();
         // setup context menu for notes
         setupContextMenus();
 

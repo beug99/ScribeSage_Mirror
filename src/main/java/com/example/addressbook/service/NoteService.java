@@ -5,8 +5,13 @@ import com.example.addressbook.model.Folder;
 import com.example.addressbook.model.INoteDAO;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeCell;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,9 @@ public class NoteService {
         userNotes = notes;
         folderList = folders;
 
+        // set up custom cell factory to show created date
+        setupDateCellFactory();
+
         //  set up context menu for notes
         setupContextMenu();
     }
@@ -43,6 +51,58 @@ public class NoteService {
         selectedNote = note;
         System.out.println("Selected note: " + note.getNoteName() + " ID:" + note.getId() + " Owner: " + note.getNoteOwner());
     }
+
+    public static void setupDateCellFactory() {
+        notesTreeView.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>() {
+            @Override
+            public TreeCell<String> call(TreeView<String> param) {
+                return new TreeCell<String>() {
+                    private final HBox container = new HBox();
+                    private final Label nameLabel = new Label();
+                    private final Region spacer = new Region();
+                    private final Label dateLabel = new Label();
+
+                    {
+                        // Set up the cell layout
+                        container.getChildren().addAll(nameLabel, spacer, dateLabel);
+                        container.setAlignment(Pos.CENTER_LEFT);
+                        HBox.setHgrow(spacer, Priority.ALWAYS);
+                        dateLabel.getStyleClass().add("date-label");
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty || item == null) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            nameLabel.setText(item);
+
+                            TreeItem<String> treeItem = getTreeItem();
+                            if (treeItem != null && isNoteItem(treeItem)) {
+                                // This is a note item, find the corresponding Note object
+                                Note note = findNoteByName(item);
+                                if (note != null && note.getCreatedDate() != null) {
+                                    dateLabel.setText(note.getFormattedCreatedDate());
+                                } else {
+                                    dateLabel.setText("");
+                                }
+                            } else {
+                                // This is a folder or another item
+                                dateLabel.setText("");
+                            }
+
+                            setGraphic(container);
+                            setText(null);
+                        }
+                    }
+                };
+            }
+        });
+    }
+
 
     private static void setupContextMenu() {
         notesTreeView.setCellFactory(tv -> {

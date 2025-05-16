@@ -1,5 +1,8 @@
 package com.example.addressbook.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Note {
     private int id;
     private String noteName;
@@ -7,6 +10,9 @@ public class Note {
     private String noteText;
     private String noteOwner;
     private Integer folderId;
+    private LocalDateTime createdDate;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId) {
         this.noteName = noteName;
@@ -14,6 +20,7 @@ public class Note {
         this.noteText = noteText;
         this.noteOwner = noteOwner;
         this.folderId = folderId;
+        this.createdDate = LocalDateTime.now();
     }
 
     public Note(String noteName, String noteTags, String noteText, String noteOwner) {
@@ -70,5 +77,17 @@ public class Note {
 
     public void setFolderId(Integer folderId) {
         this.folderId = folderId;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getFormattedCreatedDate() {
+        return createdDate != null ? createdDate.format(formatter) : "";
     }
 }
