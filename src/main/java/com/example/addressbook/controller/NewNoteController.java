@@ -2,40 +2,41 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
-import com.example.addressbook.model.AIService;
+import com.example.addressbook.helper.SceneLoader;
+import com.example.addressbook.service.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
-import javafx.animation.PauseTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.example.addressbook.service.VoskTranscribeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Stop;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
+
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
 import static java.util.concurrent.TimeUnit.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -43,6 +44,7 @@ public class NewNoteController extends CreateNoteController {
     public Button homeButton;
     public TextField searchBarID;
     public Button saveButton;
+    public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
@@ -50,8 +52,6 @@ public class NewNoteController extends CreateNoteController {
     public CheckBox enableAutoSaveCheckbox;
     public Button enhanceTextButton;
     public ProgressIndicator progressIndicator; // Add to FXML
-    public ListView tagsListView;
-    public TextField newTagField;
     @FXML
     private Button summariseTextButton;
     @FXML
@@ -79,13 +79,13 @@ public class NewNoteController extends CreateNoteController {
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
+        StartAutoSave();
 
         System.out.println("Initializing NewNoteController");
         // Hide progress indicator initially
         if (progressIndicator != null) {
             progressIndicator.setVisible(false);
         }
-
         if (currentNote != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
@@ -96,16 +96,6 @@ public class NewNoteController extends CreateNoteController {
         } else {
             System.out.println("Current Note is null");
         }
-
-        // Listener for enabling/disabling autosave
-        enableAutoSaveCheckbox.selectedProperty().addListener((observable, oldVal, newVal) ->{
-            autoSavingEnabled = newVal;
-            if (autoSavingEnabled) {
-                StartAutoSave();
-            } else {
-                StopAutoSave();
-            }
-        });
     }
 
     /**
@@ -194,29 +184,12 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void setTagsListView(){
-        // Convert Tags into List
-        String tagString = currentNote.getNoteTags();
-
-        List<String> tagList = Stream.of(tagString.split(","))
-                .map(String::trim).collect(Collectors.toList());
-
-        // Display Tags as hyperlinks
-        ObservableList<String> tagsObservableList = FXCollections.observableArrayList(tagList);
-
-        tagsListView.setItems(tagsObservableList);
-
-        // TODO: NEED TO MAKE THE VIEW HORIZONTAL
-    }
-
-    @FXML
     public void setCurrentNote(Note note) {
         currentNote = note;
         System.out.println("Note set in NewNoteController: " + currentNote.getNoteName());
         if (currentNoteName != null && htmlEditorGui != null) {
             currentNoteName.setText(currentNote.getNoteName());
             htmlEditorGui.setHtmlText(currentNote.getNoteText());
-            setTagsListView();
             System.out.println("UI updated from setCurrentNote().");
         }
     }
@@ -231,7 +204,9 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
         System.out.println("Load button pressed");
-        //TODO Load another view with sole purpose to display notes associated with owner
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        SceneLoader.switchScene(popupStage, "transcript-view.fxml", false);
     }
 
     @FXML
@@ -250,37 +225,6 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void searchBarButtonClick(ActionEvent actionEvent) {
         //TODO Create a search function - for a later sprint
-    }
-
-    private void refreshHTMLEditor() {
-        // Store current content
-        String currentContent = htmlEditorGui.getHtmlText();
-
-        // Get the WebView within the HTMLEditor
-        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
-        if (webView != null) {
-            // Ensure the WebView fills its container
-            webView.setPrefHeight(htmlEditorGui.getHeight() - 80); // Subtract toolbar height
-            webView.setMinHeight(200); // Set minimum height
-
-            // Set the background color explicitly
-            webView.setStyle("-fx-background-color: white;");
-
-            // Apply the changes
-            Platform.runLater(() -> {
-                // Force redraw with current content
-                htmlEditorGui.setHtmlText(currentContent);
-
-                // Execute JavaScript to ensure body fills the available space
-                WebEngine engine = webView.getEngine();
-                engine.executeScript(
-                        "document.body.style.backgroundColor = 'white';" +
-                                "document.body.style.height = '100%';" +
-                                "document.body.style.margin = '0';" +
-                                "document.body.style.padding = '5px';"
-                );
-            });
-        }
     }
 
     /**
@@ -401,13 +345,4 @@ public class NewNoteController extends CreateNoteController {
             // Run the task in the background
             executorService.submit(task);
         }
-
-    @FXML
-    public void onAddTag(ActionEvent actionEvent) throws IOException {
-        currentNote.setNoteTags(currentNote.getNoteTags() + "," + newTagField.getText() + ",");
-        setTagsListView();
-
-        //TODO MAKE SURE IT SAVES TO THE DATA BASE PROPERLY
     }
-
-}

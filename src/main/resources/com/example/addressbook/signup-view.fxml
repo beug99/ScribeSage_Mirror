@@ -1,38 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.addressbook.controller.SignUpController">
-    <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-        <Label text="Enter Your Details Below">
+<StackPane minHeight="400" minWidth="350" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.SignUpController">
+    <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #2a2d3e;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+        <HBox alignment="TOP_LEFT">
+            <Button fx:id="backButton" alignment="TOP_LEFT" onAction="#onBackToHome" style="-fx-background-color:             #6a5acd; -fx-text-fill: white" text="Back">
+                <font>
+                    <Font name="Helvetica‭ ‬עבה" size="16.0" />
+                </font>
+            </Button>
+        </HBox>
+        <!-- logo -->
+        <ImageView>
+            <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/logo kinda purple.jpeg" />
+        </ImageView>
+        <HBox alignment="CENTER">
+            <Text fill="#6a5acd" text="ScribeSage" textAlignment="CENTER">
+                <font>
+                    <Font name="Georgia" size="42.0" />
+                </font>
+            </Text>
+        </HBox>
+        <VBox spacing="5.0">
+            <Label text="First Name:" textFill="WHITE">
             <font>
-                <Font name="Arial Bold" size="20" />
-            </font>
-        </Label>
-
-        <VBox spacing="5.0">
-            <Label text="First Name:" />
-            <TextField fx:id="firstName" promptText="Enter first name..." style="-fx-border-color: #6a5acd;" />
+               <Font name="HelveticaRounded-Bold" size="16.0" />
+            </font></Label>
+            <TextField fx:id="firstName" promptText="Enter first name..." style="-fx-border-color: #6a5acd;">
+            <font>
+               <Font name="Helvetica" size="14.0" />
+            </font></TextField>
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Last Name:" />
-            <TextField fx:id="lastName" promptText="Enter last name..." style="-fx-border-color: #6a5acd;" />
+            <Label text="Last Name:" textFill="WHITE">
+            <font>
+               <Font name="HelveticaRounded-Bold" size="16.0" />
+            </font></Label>
+            <TextField fx:id="lastName" promptText="Enter last name..." style="-fx-border-color: #6a5acd;">
+            <font>
+               <Font name="Helvetica" size="14.0" />
+            </font></TextField>
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Email address:" />
-            <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
+            <Label text="Email address:" textFill="WHITE">
+            <font>
+               <Font name="HelveticaRounded-Bold" size="16.0" />
+            </font></Label>
+            <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;">
+            <font>
+               <Font name="Helvetica" size="14.0" />
+            </font></TextField>
         </VBox>
 
         <VBox spacing="5.0">
-            <Label text="Password:" />
-            <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
+            <Label text="Password:" textFill="WHITE">
+            <font>
+               <Font name="HelveticaRounded-Bold" size="16.0" />
+            </font></Label>
+            <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;">
+            <font>
+               <Font name="Helvetica" size="14.0" />
+            </font></PasswordField>
         </VBox>
 
-        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="200" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Sign-up" />
+        <Button fx:id="signUp" onAction="#onSignUp" prefHeight="35" prefWidth="350" scaleShape="true" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirm Sign up">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="18.0" />
+         </font></Button>
 
     </VBox>
-</AnchorPane>
+</StackPane>

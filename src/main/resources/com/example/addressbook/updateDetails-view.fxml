@@ -1,27 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minWidth="-Infinity" prefHeight="368.0" prefWidth="301.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
+<StackPane minHeight="400" minWidth="300" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.UpdateDetailsController">
+    <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #2a2d3e;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+        <HBox alignment="TOP_LEFT">
+            <Button fx:id="backButton" alignment="TOP_LEFT" onAction="#onBackToHome" style="-fx-background-color: #6a5acd; -fx-text-fill: white" text="Back">
+                <font>
+                    <Font name="Helvetica‭ ‬עבה" size="16.0" />
+                </font>
+            </Button>
+        </HBox>
+        <!-- logo -->
+        <ImageView>
+            <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/logo kinda purple.jpeg" />
+        </ImageView>
+        <HBox alignment="CENTER">
+            <Label fx:id="nameLabel" text="User's Name" textFill="SLATEBLUE">
+            <font>
+               <Font name="HelveticaRounded-Bold" size="32.0" />
+            </font></Label>
+        </HBox>
+    <VBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Password:" textFill="WHITE">
+            <font>
+                <Font name="HelveticaRounded-Bold" size="16.0" />
+            </font></Label>
 
-    <Button fx:id="backButton" layoutX="10.0" layoutY="14.0" onAction="#onBackToHome" prefHeight="26.0" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12; -fx-padding: 6 16 6 16; -fx-background-radius: 8;" text="Home">
-      <font>
-         <Font size="10.0" />
-      </font></Button>
-    <ImageView fitHeight="135.0" fitWidth="151.0" layoutX="68.0" layoutY="32.0" preserveRatio="true">
-        <image>
-            <Image url="@../../../Images/Icon%20purple.png" />
-        </image>
-    </ImageView>
-    <Label layoutX="21.0" layoutY="279.0" minWidth="-Infinity" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Password:" />
-    <PasswordField fx:id="passwordField" editable="false" layoutX="22.0" layoutY="302.0" minWidth="-Infinity" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #cccccc;" />
-    <Button layoutX="230.0" layoutY="303.0" onAction="#onChangePassword" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Change" />
-    <Label layoutX="23.0" layoutY="202.0" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Email:" />
-    <TextField fx:id="emailField" editable="false" layoutX="24.0" layoutY="224.0" minWidth="-Infinity" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #cccccc;" />
-    <Button layoutX="230.0" layoutY="225.0" onAction="#onChangeEmail" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" text="Change" />
-    <Label layoutX="103.0" layoutY="157.0" minWidth="-Infinity" prefHeight="20.0" prefWidth="103.0" style="-fx-font-weight: bold; -fx-font-size: 14;" />
-    <Label fx:id="nameLabel" alignment="CENTER" layoutX="72.0" layoutY="164.0" prefWidth="140" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="User's Name" />
-</AnchorPane>
+        <PasswordField fx:id="passwordField" editable="false" promptText="*****************">
+            <font>
+                <Font name="Helvetica" size="14.0" />
+            </font></PasswordField>
+        <Button onAction="#onChangePassword" prefHeight="35" prefWidth="300" style="-fx-background-color: #6a5acd; -fx-cursor: hand;" text="Change" textFill="WHITE">
+             <font>
+                <Font name="HelveticaRounded-Bold" size="16.0" />
+             </font></Button>
+        <Label text="Email:" textFill="WHITE">
+             <font>
+                <Font name="HelveticaRounded-Bold" size="16.0" />
+             </font></Label>
+        <TextField fx:id="emailField" editable="false" promptText="Your email will be here">
+             <font>
+                <Font name="Helvetica" size="14.0" />
+             </font></TextField>
+        <Button onAction="#onChangeEmail" prefHeight="35" prefWidth="300" style="-fx-background-color: #6a5acd; -fx-cursor: hand;" text="Change" textFill="WHITE">
+             <font>
+                <Font name="HelveticaRounded-Bold" size="16.0" />
+             </font></Button>
+    </VBox>
+
+
+    </VBox>
+</StackPane>

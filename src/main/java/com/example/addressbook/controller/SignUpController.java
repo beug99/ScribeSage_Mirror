@@ -29,6 +29,8 @@ public class SignUpController {
     private PasswordField password;
     @FXML
     private Button signUp;
+    @FXML
+    private Button backButton;
 
     /**
      * Method for adding user info from sign up fields into database once "sign-up" button is pressed
@@ -68,6 +70,12 @@ public class SignUpController {
             Stage stage = (Stage) signUp.getScene().getWindow();
             SceneLoader.switchScene(stage, "login-view.fxml", false);
         }
+    }
+
+    @FXML
+    private void onBackToHome() throws IOException {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
     private boolean isValidEmail(String email) {

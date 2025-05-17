@@ -1,69 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
-<StackPane xmlns="http://javafx.com/javafx/17.0.12" style="-fx-background-color:white;" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.example.addressbook.controller.LoginController"
-    minHeight="400" minWidth="250">
+<StackPane minHeight="400" minWidth="250" style="-fx-border-radius: 15;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.LoginController">
 
-    <VBox spacing="10.0" alignment="CENTER"
-        AnchorPane.leftAnchor="20.0"
-        AnchorPane.rightAnchor="20.0"
-        AnchorPane.topAnchor="20.0"
-        AnchorPane.bottomAnchor="20.0">
+    <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #2a2d3e; -fx-border-radius: 15;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20" />
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             <!-- logo -->
             <ImageView>
-                <Image url="@../../../Images/Logo.png" requestedHeight="200" requestedWidth="200"/>
+                <Image requestedHeight="200" requestedWidth="200" url="@../../../Images/logo kinda purple.jpeg" />
             </ImageView>
         <HBox alignment="CENTER">
-            <Text text="ScribeSage" textAlignment="CENTER" fill="#6a5acd">
+            <Text fill="WHITE" text="ScribeSage" textAlignment="CENTER">
                 <font>
-                    <Font name="Helvetica Bold" size="42"/>
+                    <Font name="Centaur" size="42.0" />
                 </font>
             </Text>
         </HBox>
         <!-- email -->
         <HBox alignment="CENTER_LEFT">
-            <Label text="Email Address:">
+            <Label text="Email Address:" textFill="WHITE">
                 <font>
-                    <Font name="Helvetica Bold" size="16"/>
+                    <Font name="HelveticaRounded-Bold" size="16.0" />
                 </font>
             </Label>
         </HBox>
-        <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;" />
+        <TextField fx:id="eMail" promptText="Enter email address..." style="-fx-border-color: #6a5acd;">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font></TextField>
 
         <!-- password -->
         <HBox alignment="CENTER_LEFT">
-            <Label text="Password:">
+            <Label text="Password:" textFill="WHITE">
                 <font>
-                    <Font name="Helvetica Bold" size="16"/>
+                    <Font name="HelveticaRounded-Bold" size="16.0" />
                 </font>
             </Label>
         </HBox>
-        <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;" />
+        <PasswordField fx:id="password" promptText="Enter password..." style="-fx-border-color: #6a5acd;">
+         <font>
+            <Font name="Helvetica‭ ‬עבה" size="14.0" />
+         </font></PasswordField>
 
         <!-- log in -->
-        <Button fx:id="logIn" onAction="#onLogIn" prefWidth="300" prefHeight="35" scaleShape="true" style="-fx-background-color: #6a5acd;
-        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In" />
+        <Button fx:id="logIn" onAction="#onLogIn" prefHeight="35" prefWidth="300" scaleShape="true" style="-fx-background-color: #6a5acd;  -fx-cursor: hand;        -fx-text-fill: white; -fx-font-weight: bold;" text="Log In"><font> <Font name="Helvetica Bold" size="16" /></font></Button>
 
         <!-- sign up -->
         <HBox alignment="CENTER_LEFT">
-            <Label text="Don't have an account?">
+            <Label text="Don't have an account?" textFill="WHITE">
                 <font>
-                    <Font name="Helvetica Bold" size="16"/>
+                    <Font name="HelveticaRounded-Bold" size="16.0" />
                 </font>
             </Label>
         </HBox>
-        <Button fx:id="signUp" onAction="#onSignUp" prefWidth="300" prefHeight="35" style="-fx-background-color: #6a5acd;
-        -fx-text-fill: white; -fx-font-weight: bold;" text="Sign up" />
+        <Button fx:id="signUp" onAction="#onSignUp" prefHeight="35" prefWidth="300" style="-fx-background-color: #6a5acd;  -fx-cursor: hand;       -fx-text-fill: white; -fx-font-weight: bold;" text="Sign Up"> <font> <Font name="Helvetica Bold" size="16" /></font></Button>
     </VBox>
 </StackPane>
