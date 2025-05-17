@@ -10,11 +10,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+/**
+ * A controller class that manages the Signup page of the application and user creation.
+ * User specific details are captured including first and last name, email address and password.
+ */
 public class SignUpController {
     @FXML
     private ListView<User> userListView;
     private IUserDAO userDAO;
 
+    /**
+     * Constructs an instance of a user Data Access Object (IUserDAO).
+     */
     public SignUpController(){
         userDAO = new SqliteUserDAO();
     }
@@ -33,7 +40,9 @@ public class SignUpController {
     private Button backButton;
 
     /**
-     * Method for adding user info from sign up fields into database once "sign-up" button is pressed
+     * A method for adding user info from sign up fields into the database once the 'Sign-up' button
+     * is pressed. If the fields are invalid, the user is unable to sign up and an alert appears
+     * explaining why.
      */
     @FXML
     private void onSignUp() throws IOException {
@@ -72,18 +81,34 @@ public class SignUpController {
         }
     }
 
+    /**
+     * A method that loads the applications home page when the home button is clicked.
+     * @throws IOException Page fails to load.
+     */
     @FXML
     private void onBackToHome() throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
         SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
+    /**
+     * A method that analyses the email entered by the user. If the email is written in the correct
+     * syntax it is valid, else it is invalid.
+     * @param email The email entered by the user.
+     * @return True if valid, False if invalid.
+     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
 
+    /**
+     * A method that analyses the password entered by the user. If the password is written in the
+     * correct syntax it is valid, else it is invalid.
+     * @param password The password entered by the user.
+     * @return True if valid, false if invalid.
+     */
     private boolean isValidPassword(String password) {
         String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
