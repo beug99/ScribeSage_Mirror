@@ -24,9 +24,13 @@ import javafx.scene.control.TextField;
 
 import static com.example.addressbook.service.NoteService.notesTreeView;
 
-
+/**
+ * A controller class that manages the home page of the application once a user has signed in.
+ * Upon logging in, the scene is set to homepage-view.fxml. User specific details, notes and
+ * folders are displayed on the page. The user can perform further functions by interacting
+ * with the interface.
+ */
 public class HomePageController {
-
     @FXML
     private TextField searchField;
     @FXML
@@ -50,11 +54,17 @@ public class HomePageController {
     private List<Folder> folderList = new ArrayList<>();
     private IFolderDAO folderDAO;
 
+    /**
+     * Constructs an instance of both a note and a folder Data Access Object (INoteDAO and IFolderDAO).
+     */
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
         folderDAO = new SqliteFolderDAO();
     }
 
+    /**
+     *
+     */
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
@@ -93,6 +103,9 @@ public class HomePageController {
         });
     }
 
+    /**
+     *
+     */
     private void setupContextMenus() {
         ContextMenu folderMenu = new ContextMenu();
         // for notes, add a move to folder option
@@ -147,6 +160,12 @@ public class HomePageController {
         });
     }
 
+    /**
+     * This method takes the user string input and searches the database for an instance of
+     * a note with the same name.
+     * @param noteName The search query entered by the user.
+     * @return Either the note if found, or null.
+     */
     private Note findNoteByName(String noteName) {
         for (Note note : userNotes) {
             if (note.getNoteName().equals(noteName)) {
@@ -156,6 +175,11 @@ public class HomePageController {
         return null;
     }
 
+    /**
+     * This method will load the Update Details page. When the 'Update Details' button is
+     * clicked, the updateDetails-view.fxml will display.
+     * @throws IOException An error will occur or the page will not load.
+     */
     @FXML
     private void onUpdateDetails() throws IOException {
         Stage popupStage = new Stage();
@@ -163,13 +187,22 @@ public class HomePageController {
         SceneLoader.switchScene(popupStage, "updateDetails-view.fxml", false);
     }
 
+    /**
+     * This method will log the user out of the application. When the 'Logout' button is clicked,
+     * the user will be taken back to the Log-In page.
+     * @throws IOException An error will appear or the page will not load.
+     */
     @FXML
     private void onLogOut() throws IOException {
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
         SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
-    // loads a selected note from the tree view
+    /**
+     * This method will open and display the selected note when the 'Open Note' button is
+     * clicked. If no note is selected, an alert will appear to inform the user.
+     * @throws IOException An error will occur or the selected note will not open.
+     */
     @FXML
     private void onLoadNote() throws IOException {
         if (NoteService.selectedNote != null) {
@@ -183,7 +216,11 @@ public class HomePageController {
         }
     }
 
-    // deletes the selected note
+    /**
+     * This method will delete the selected note or folder from the database when the 'Delete'
+     * button is clicked. If no note or folder is selected, an alert will appear to inform the user.
+     * @throws IOException An error will occur or the selected object will not be deleted.
+     */
     @FXML
     private void onDeleteItem() throws IOException {
         if (NoteService.selectedNote != null) {
@@ -237,18 +274,31 @@ public class HomePageController {
         }
     }
 
+    /**
+     * This method will display the navigation menu when the Logo is clicked.
+     * @param mouseEvent A mouse click on the logo.
+     */
     @FXML
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
 
+    /**
+     * This method will load the Create Note page when the 'New Note' button is clicked.
+     * @param actionEvent A mouse click on the 'New Note' Button.
+     * @throws IOException An error will occur or the Create Note page will not load.
+     */
     @FXML
     private void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) createNewButton.getScene().getWindow();
         SceneLoader.switchScene(stage, "create-note-view.fxml", false);
     }
 
-    // Create Folder
+    /**
+     * This method will display a dialog prompting users to enter a new folder name. The user
+     * can then cancel or click OK which will create and save a named folder to the database.
+     * @param event Clicking the 'New Folder' button.
+     */
     @FXML
     private void onCreateFolder(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
@@ -264,6 +314,11 @@ public class HomePageController {
         });
     }
 
+    /**
+     * This method sorts the existing notes and folders into alphabetical
+     * order when the 'Sort Alphabetically' button is clicked.
+     * @param event The 'Sort Alphabetically' button is clicked.
+     */
     @FXML
     private void onSortAlphabetically(ActionEvent event) {
         // This will need to be updated to sort the tree view
@@ -284,6 +339,12 @@ public class HomePageController {
         NoteService.populateNotesTreeView();
     }
 
+    /**
+     * This method takes the user input and searches the notes within the database
+     * for any note that contains the input. The notes that contain the text will
+     * be displayed.
+     * //TODO Search function didn't work for me, will test.
+     */
     @FXML
     private void onSearchNote() {
         String keyword = searchField.getText().toLowerCase().trim();
