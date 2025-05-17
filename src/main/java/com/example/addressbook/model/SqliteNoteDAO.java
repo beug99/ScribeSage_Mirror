@@ -1,12 +1,18 @@
 package com.example.addressbook.model;
 
 import com.example.addressbook.Session;
+import com.sun.jna.platform.win32.Sspi;
+
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
+
 
 public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
@@ -20,6 +26,16 @@ public class SqliteNoteDAO implements INoteDAO {
         // Create table if not exists
         try {
             Statement statement = connection.createStatement();
+
+            try {
+                ResultSet rs = connection.getMetaData().getColumns(null, null, "notes", "createdDate");
+                if (!rs.next()) {
+                    // column doesn't exist, add it
+                    statement.execute("ALTER TABLE notes ADD COLUMN createdDate TIMESTAMP");
+                    logSQLexecution("Added createdDate column to notes table");
+                }
+            }catch (Exception e) {
+            }
             String query = "CREATE TABLE IF NOT EXISTS notes ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "noteName VARCHAR NOT NULL,"
@@ -27,6 +43,7 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteText VARCHAR NOT NULL,"
                     + "noteOwner VARCHAR NOT NULL,"
                     + "folderId INTEGER"
+                    + "createdData TIMESTAMP"
                     + ")";
             statement.execute(query);
             logSQLexecution(statement.toString());
@@ -41,14 +58,19 @@ public class SqliteNoteDAO implements INoteDAO {
 
 
     @Override
-    public void addNote(Note note) {
+    public int addNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText, noteOwner) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO notes (noteName, noteTags, noteText, noteOwner, createdDate) VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
 //            statement.setObject(5, note.getFolderId());
+            if (note.getCreatedDate() == null) {
+                note.setCreatedDate(LocalDateTime.now());
+            }
+            Timestamp timeStamp = Timestamp.valueOf(note.getCreatedDate());
+            statement.setTimestamp(5,timeStamp);
 
             statement.executeUpdate();
             logSQLexecution(statement.toString());
@@ -60,18 +82,31 @@ public class SqliteNoteDAO implements INoteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     @Override
     public void updateNote(Note note) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, " +
+                    "noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?, createdDate = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
             statement.setString(4, Session.getLoggedInEmail());
             statement.setObject(5, note.getFolderId());
             statement.setInt(6, note.getId());
+
+            // set created date
+            LocalDateTime createdDate = note.getCreatedDate();
+            if (createdDate == null) {
+                createdDate = LocalDateTime.now();
+                note.setCreatedDate(createdDate);
+            }
+            Timestamp timestamp = Timestamp.valueOf(createdDate);
+            statement.setTimestamp(6, timestamp);
+
+            statement.setInt(7, note.getId());
             statement.executeUpdate();
             logSQLexecution(statement.toString());
         } catch (Exception e) {
@@ -95,6 +130,14 @@ public class SqliteNoteDAO implements INoteDAO {
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
+
+                Timestamp timestamp = resultSet.getTimestamp("createdDate");
+                if (timestamp != null) {
+                    note.setCreatedDate(timestamp.toLocalDateTime());
+                } else {
+                    note.setCreatedDate(LocalDateTime.now());
+                }
+
                 return note;
             }
         } catch (Exception e) {
@@ -122,6 +165,14 @@ public class SqliteNoteDAO implements INoteDAO {
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
+
+                Timestamp timestamp = resultSet.getTimestamp("createdDate");
+                if (timestamp != null) {
+                    note.setCreatedDate(timestamp.toLocalDateTime());
+                } else {
+                    note.setCreatedDate(LocalDateTime.now());
+                }
+
                 notes.add(note);
             }
         } catch (Exception e) {
@@ -150,6 +201,14 @@ public class SqliteNoteDAO implements INoteDAO {
 
                 Note note = new Note(noteName, noteTags, noteText, noteOwner, folderId);
                 note.setId(id);
+
+                Timestamp timestamp = resultSet.getTimestamp("createdDate");
+                if (timestamp != null) {
+                    note.setCreatedDate(timestamp.toLocalDateTime());
+                } else {
+                    note.setCreatedDate(LocalDateTime.now());
+                }
+
                 notes.add(note);
             }
         } catch (Exception e) {

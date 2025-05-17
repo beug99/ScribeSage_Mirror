@@ -1,4 +1,4 @@
-package com.example.addressbook.model;
+package com.example.addressbook.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +18,7 @@ public class AIService {
 
     // uses the config.properties file to read the api key, rather than hardcoding it here for security
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String DEFAULT_MODEL = "gpt-3.5-turbo";
+    private static final String DEFAULT_MODEL = "o4-mini";
 
     private final String apiKey;
     private final HttpClient client;
@@ -100,7 +100,7 @@ public class AIService {
         return aiPerformTextOp(
         input,
         "You are a helpful assistant for students that summarises writing for clarity, context and conciseness",
-        "Enhance these lecture notes for clarity and style. Add information where it gives context" +
+        "Summarise these lecture notes for clarity and style. Add information where it gives context" +
                 " and adds to the quality of the note. Use html formatting, keeping the same font, layout, size, etc"
         );
     }

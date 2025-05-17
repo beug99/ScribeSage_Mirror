@@ -47,8 +47,7 @@ public class LoginController {
 
             // load the homepage
             Stage stage = (Stage) logIn.getScene().getWindow();
-            SceneLoader.switchScene(stage, "homepage-view.fxml", false);
-
+            SceneLoader.switchScene(stage, "homepage-view.fxml", true);
         } else {
             // show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);
