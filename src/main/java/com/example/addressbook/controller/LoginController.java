@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * A controller class that manages the Login page of the application.
- * Upon opening the App, the scene is set to homepage-view.fxml. The user can interact with
+ * Upon opening the App, the scene is set to login-view.fxml. The user can interact with
  * the page by logging in with existing account details or by redirecting to the signup page.
  */
 public class LoginController {
