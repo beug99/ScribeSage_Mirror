@@ -15,10 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.*;
 
 import javafx.scene.control.TextField;
 
@@ -319,20 +316,48 @@ public class HomePageController {
     }
 
     /**
+     * This method sorts the existing notes and folders into order by creation
+     * date when the 'Sort By Date' button is clicked.
+     * @param event The 'Sort By Date' button is clicked.
+     */
+    @FXML
+    private void onSortByDate(ActionEvent event){
+
+        List<Note> retrieveNotes = NoteService.getUserNotes();
+        List<Folder> retrieveFolders = NoteService.getFolderList();
+
+        retrieveNotes.sort(Comparator.comparing(Note::getCreatedDate));
+        retrieveFolders.sort(Comparator.comparing(Folder::getFolderId));
+
+        NoteService.populateNotesTreeView();
+
+        folderList.sort(Comparator.comparing(Folder::getFolderName));
+
+        for (Folder folder : folderList) {
+            if (folder.getNotes() != null) {
+                folder.getNotes().sort(Comparator.comparing(Note::getCreatedDate));
+            }
+        }
+        NoteService.populateNotesTreeView();
+    }
+
+
+    /**
      * This method sorts the existing notes and folders into alphabetical
      * order when the 'Sort Alphabetically' button is clicked.
      * @param event The 'Sort Alphabetically' button is clicked.
      */
     @FXML
-    private void onSortAlphabetically(ActionEvent event) {
+    private void onSortAlphabetically(ActionEvent event)throws IOException {
         // This will need to be updated to sort the tree view
-        NoteService.loadUserData();
+        List<Note> retrieveNotes = NoteService.getUserNotes();
+        List<Folder> retrieveFolders = NoteService.getFolderList();
 
         // Sort the notes list
-        userNotes.sort(Comparator.comparing(Note::getNoteName));
+        retrieveNotes.sort(Comparator.comparing(Note::getNoteName));
 
         // Sort folders
-        folderList.sort(Comparator.comparing(Folder::getFolderName));
+        retrieveFolders.sort(Comparator.comparing(Folder::getFolderName));
 
         // Sort notes within folders
         for (Folder folder : folderList) {
@@ -342,6 +367,24 @@ public class HomePageController {
         }
         NoteService.populateNotesTreeView();
     }
+//    @FXML
+//    private void onSortAlphabetically(ActionEvent event)throws IOException {
+//        // This will need to be updated to sort the tree view
+//        NoteService.loadUserData();
+//        // Sort the notes list
+//        userNotes.sort(Comparator.comparing(Note::getNoteName));
+//
+//        // Sort folders
+//        folderList.sort(Comparator.comparing(Folder::getFolderName));
+//
+//        // Sort notes within folders
+//        for (Folder folder : folderList) {
+//            if (folder.getNotes() != null) {
+//                folder.getNotes().sort(Comparator.comparing(Note::getNoteName));
+//            }
+//        }
+//        NoteService.populateNotesTreeView();
+//    }
 
     /**
      * This method takes the user input and searches the notes within the database
