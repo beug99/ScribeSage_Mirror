@@ -231,33 +231,39 @@ public class NewNoteController extends CreateNoteController {
 
         WebEngine engine = webView.getEngine();
 
-        // Restore the original HTML (removes old highlights)
-        String originalHTML = currentNote.getNoteText();  // From your model
-        engine.loadContent(originalHTML);
+        // Get current HTML content from the editor, not from the model
+        String currentHtml = htmlEditorGui.getHtmlText();
 
-        // If the search is empty, do not highlight
-        if (searchTerm.isEmpty()) return;
+        // If the search is empty, reset and do not highlight
+        if (searchTerm.isEmpty()) {
+            engine.loadContent(currentHtml);  // Still use current content, just remove highlights
+            return;
+        }
 
-        // Sanitize input for JS
+        // Sanitize input for JS injection
         String safeSearchTerm = searchTerm.replace("'", "\\'");
 
-        // JS to highlight all matches
+        // Highlight matches using JavaScript
         String script =
                 "var body = document.body.innerHTML;" +
                         "var searchRegex = new RegExp('" + safeSearchTerm + "', 'gi');" +
                         "document.body.innerHTML = body.replace(searchRegex, " +
                         "'<span style=\"background-color: #DDD7FF;\">$&</span>');";
 
-        // Slight delay to ensure content is loaded before injecting highlights
+        // Load the HTML first (to clear any old highlights)
+        engine.loadContent(currentHtml);
+
+        // Then apply the highlighting after a short delay
         Platform.runLater(() -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
                     Platform.runLater(() -> engine.executeScript(script));
                 }
-            }, 100); // 100 ms delay
+            }, 100);
         });
     }
+
 
 
     /**
