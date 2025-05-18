@@ -45,6 +45,11 @@
                   <font>
                      <Font name="HelveticaRounded-Bold" size="12.0" />
                   </font></Button>
+                    <Button fx:id="sortDateButton" onAction="#onSortByDate" style="-fx-background-color: #6a5acd;" text="Sort By Date" textFill="WHITE">
+                        <font>
+                            <Font name="HelveticaRounded-Bold" size="12.0" />
+                        </font>
+                    </Button>
                 </HBox>
                 <TreeView fx:id="notesTreeView" prefHeight="300.0" prefWidth="700.0" style="-fx-border-color: #6a5acd; -fx-border-width: 2; -fx-font-family: helvetica rounded; -fx-font-size: 14px;">
                 </TreeView>
