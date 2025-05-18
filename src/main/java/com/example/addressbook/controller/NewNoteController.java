@@ -2,27 +2,34 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.HelloApplication;
 import com.example.addressbook.Session;
-import com.example.addressbook.model.AIService;
+import com.example.addressbook.helper.SceneLoader;
+import com.example.addressbook.service.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
-import javafx.animation.PauseTransition;
+import com.example.addressbook.service.VoskTranscribeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Stop;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
+
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -172,16 +179,6 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onGetHighlighted(ActionEvent event) {
-        String selectedText = getSelectedHTMLText();
-        if (selectedText != null && !selectedText.isEmpty()) {
-            showAlert(AlertType.INFORMATION, "Selected Text", selectedText);
-        } else {
-            showAlert(AlertType.INFORMATION, "No Selection", "No text is currently selected.");
-        }
-    }
-
-    @FXML
     public void setLabelText(String text) {
         currentNoteName.setText(text);
     }
@@ -207,7 +204,9 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
         System.out.println("Load button pressed");
-        //TODO Load another view with sole purpose to display notes associated with owner
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        SceneLoader.switchScene(popupStage, "transcript-view.fxml", false);
     }
 
     @FXML
@@ -226,11 +225,6 @@ public class NewNoteController extends CreateNoteController {
     @FXML
     public void searchBarButtonClick(ActionEvent actionEvent) {
         //TODO Create a search function - for a later sprint
-    }
-
-    @FXML
-    public void htmlToTextButtonClick(ActionEvent actionEvent) throws IOException {
-        htmlEditorGui.setHtmlText(todeletejustdisplay.getText());
     }
 
     /**
@@ -284,9 +278,6 @@ public class NewNoteController extends CreateNoteController {
         return false;
     }
 
-    public void toggleNavMenu(MouseEvent mouseEvent) {
-
-    }
     /**
      * Private method to show alerts
      */
