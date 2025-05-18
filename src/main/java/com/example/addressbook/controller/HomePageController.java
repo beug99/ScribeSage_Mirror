@@ -15,10 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.*;
 
 import javafx.scene.control.TextField;
 
@@ -41,6 +38,9 @@ public class HomePageController {
     private Label nameLabel;
     @FXML
     private TreeView<String> notesTreeView;
+    @FXML
+    private Map<String, Note> searchNoteMap = new HashMap<>();
+
 
     private INoteDAO noteDAO;
     private List<Note> userNotes;
@@ -172,16 +172,24 @@ public class HomePageController {
     // loads a selected note from the tree view
     @FXML
     private void onLoadNote() throws IOException {
+        TreeItem<String> selectedItem = notesTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            String selectedName = selectedItem.getValue();
+            if (searchNoteMap.containsKey(selectedName)) {
+                NoteService.selectedNote = searchNoteMap.get(selectedName);  // from search
+            }
+        }
+
         if (NoteService.selectedNote != null) {
             Stage stage = (Stage) notesTreeView.getScene().getWindow();
             NewNoteController noteController = SceneLoader.switchScene(stage, "new-note-view.fxml", true);
-
             noteController.setCurrentNote(NoteService.selectedNote);
             noteController.setLabelText(NoteService.selectedNote.getNoteName());
         } else {
             System.out.println("No note selected to load.");
         }
     }
+
 
     // deletes the selected note
     @FXML
@@ -271,21 +279,24 @@ public class HomePageController {
     private void onSearchNote() {
         String keyword = searchField.getText().toLowerCase().trim();
 
+        // Reset search
         if (keyword.isEmpty()) {
+            searchNoteMap.clear();  // clear previous search mappings
             NoteService.loadUserData();
             NoteService.populateNotesTreeView();
             return;
         }
 
-        // Filter notes
+        // Prepare new filtered notes and folders
+        searchNoteMap.clear();
         List<Note> filteredNotes = new ArrayList<>();
         for (Note note : userNotes) {
             if (note.getNoteName().toLowerCase().contains(keyword)) {
                 filteredNotes.add(note);
+                searchNoteMap.put(note.getNoteName(), note); // store for click handling
             }
         }
 
-        // Filter folders
         List<Folder> filteredFolders = new ArrayList<>();
         for (Folder folder : folderList) {
             if (folder.getFolderName().toLowerCase().contains(keyword)) {
@@ -300,6 +311,7 @@ public class HomePageController {
         TreeItem<String> searchResults = new TreeItem<>("Search Results");
         searchResults.setExpanded(true);
 
+        // Folders (expanded by default)
         if (!filteredFolders.isEmpty()) {
             TreeItem<String> folderNode = new TreeItem<>("Folders");
             folderNode.setExpanded(true);
@@ -309,11 +321,13 @@ public class HomePageController {
             searchResults.getChildren().add(folderNode);
         }
 
+        // Notes (expanded by default)
         if (!filteredNotes.isEmpty()) {
             TreeItem<String> noteNode = new TreeItem<>("Notes");
             noteNode.setExpanded(true);
             for (Note note : filteredNotes) {
-                noteNode.getChildren().add(new TreeItem<>(note.getNoteName()));
+                TreeItem<String> noteItem = new TreeItem<>(note.getNoteName());
+                noteNode.getChildren().add(noteItem);
             }
             searchResults.getChildren().add(noteNode);
         }
