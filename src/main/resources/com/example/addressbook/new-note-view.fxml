@@ -9,7 +9,7 @@
 
 <AnchorPane id="rootBox" style="-fx-background-color: #2a2d3e;" stylesheets="@../../../css/newnote.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.NewNoteController">
 
-    <VBox style="-fx-background-color: #2a2d3e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="780.0" style="-fx-background-color: #2a2d3e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- Header Section -->
         <VBox style="-fx-background-color: #2a2d3e;">
             <GridPane fx:id="profileBar" style="-fx-background-color: #2a2d3e;">
@@ -28,7 +28,7 @@
                 </ImageView>
                 <Label fx:id="nameLabel" contentDisplay="BOTTOM" prefHeight="42.0" prefWidth="366.0" text="First and last name" textFill="WHITE" GridPane.columnIndex="1">
                     <font>
-                        <Font name="Helvetica‭ ‬עבה" size="16.0" />
+                        <Font name="System Bold" size="16.0" />
                     </font>
                 </Label>
                 <Button fx:id="homeButton" onAction="#onHomeButtonClick" prefWidth="80" style="-fx-background-color: #6a5acd;" text="Home" textFill="WHITE" GridPane.columnIndex="2">
