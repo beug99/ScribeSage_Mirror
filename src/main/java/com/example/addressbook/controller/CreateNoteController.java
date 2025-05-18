@@ -38,9 +38,9 @@ public class CreateNoteController {
 
 
     /**
-     * Constructs an instance of both a note and a folder Data Access Object (INoteDAO and IFolderDAO).
-     * The available folders are loaded to the instance by accessing the existing folders through the
-     * current logged-in users email.
+     * Constructs an instance of both a note and a folder Data Access Object ({@link INoteDAO} and
+     * {@link IFolderDAO}). The available folders are loaded to the instance by accessing the existing
+     * folders through the current logged-in users email.
      */
     public CreateNoteController() {
         noteDAO = new SqliteNoteDAO();
@@ -49,8 +49,8 @@ public class CreateNoteController {
     }
 
     /**
-     * A method which initializes the folder service, this loads the users existing folders which can
-     * be selected when assigning the new note to a folder.
+     * A method which initializes the {@link FolderService}, this loads the users existing folders
+     * which can be selected when assigning the new note to a folder.
      */
     @FXML
     public void initialize() {
@@ -64,9 +64,9 @@ public class CreateNoteController {
     /**
      * A method that creates a new note instance and save it to the database if the user input
      * variables are valid. The variables include the note name, chosen folder and note tags. If the
-     * note is successfully created and saved, the method loads the New Note page. If unsuccessful,
-     * the method will display errors accordingly.
-     * @throws IOException An error will occur or the new note will note be created.
+     * note is successfully created and saved, the method loads the New Note page {@link NewNoteController}.
+     * If unsuccessful, the method will display errors accordingly.
+     * @throws IOException An error will occur or the new note will not be created.
      */
     @FXML
     public void onCreateButtonClick() throws IOException {
@@ -106,7 +106,8 @@ public class CreateNoteController {
     }
 
     /**
-     * A method that loads the applications home page when the home button is clicked.
+     * A method that loads the applications home page {@link HomePageController} when the home button
+     * is clicked.
      * @throws IOException Page fails to load.
      */
     @FXML
@@ -116,8 +117,8 @@ public class CreateNoteController {
     }
 
     /**
-     * A method that cancels the creation of a new note and loads the home page if the cancel
-     * button is clicked.
+     * A method that cancels the creation of a new note and loads the home page {@link HomePageController}
+     * if the cancel button is clicked.
      * @throws IOException An error appears, the note creation hasn't cancelled or the home
      * page has not loaded.
      */

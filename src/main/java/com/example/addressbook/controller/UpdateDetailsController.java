@@ -36,7 +36,7 @@ public class UpdateDetailsController {
     }
 
     /**
-     * A method that loads the applications home page when the home button is clicked.
+     * A method that loads the applications home page {@link HomePageController} when the home button is clicked.
      * @throws IOException Page fails to load.
      */
     @FXML
@@ -46,7 +46,7 @@ public class UpdateDetailsController {
     }
 
     /**
-     * This method loads the Update Email page when the 'Change' button is clicked.
+     * This method loads the Update Email page {@link UpdateEmailController} when the 'Change' button is clicked.
      * @throws IOException An error appears or the page fails to load.
      */
     @FXML
@@ -56,7 +56,7 @@ public class UpdateDetailsController {
     }
 
     /**
-     * This method loads the Update Password page when the 'Change' button is clicked.
+     * This method loads the Update Password page {@link UpdatePasswordController} when the 'Change' button is clicked.
      * @throws IOException An error appears or the page fails to load.
      */
     @FXML

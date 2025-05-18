@@ -36,6 +36,7 @@ public class UpdateEmailController {
 
     /**
      * Constructs an instance of a note Data Access Object (INoteDAO) and assigns it to noteDAO.
+     * TODO CHECK THIS?? SHOULD IT BE NOTE DAO?
      */
     public UpdateEmailController()
     {
@@ -47,7 +48,7 @@ public class UpdateEmailController {
      * if the changes are permitted. The current users password must be accurate, the new email
      * address must be in the correct syntax. If either of these are incorrect, the user is alerted
      * to the reason why the change of email address has failed. If successful, the email address in
-     * the database is updated.
+     * the database is updated. It accesses methods from {@link SqliteUserDAO} for validation.
      * @throws IOException An error appears or the page fails to load.
      */
     @FXML
@@ -98,8 +99,8 @@ public class UpdateEmailController {
     }
 
     /**
-     * This method returns the user to the previous Update Details page. If the 'Confirm Update'
-     * button has not been clicked, the updates are discarded.
+     * This method returns the user to the previous Update Details page {@link UpdateDetailsController}.
+     * If the 'Confirm Update' button has not been clicked, the updates are discarded.
      * @throws IOException An error appears or the page does not load.
      */
     public void onBackToDetails() throws IOException  {
