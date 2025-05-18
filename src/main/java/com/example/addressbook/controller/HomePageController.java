@@ -55,7 +55,8 @@ public class HomePageController {
     private IFolderDAO folderDAO;
 
     /**
-     * Constructs an instance of both a note and a folder Data Access Object (INoteDAO and IFolderDAO).
+     * Constructs an instance of both a note and a folder Data Access Object ({@link INoteDAO} and
+     * {@link IFolderDAO}).
      */
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
@@ -178,8 +179,8 @@ public class HomePageController {
     }
 
     /**
-     * This method will load the Update Details page. When the 'Update Details' button is
-     * clicked, the updateDetails-view.fxml will display.
+     * This method will load the Update Details {@link UpdateDetailsController} page. When the
+     * 'Update Details' button is clicked, the updateDetails-view.fxml will display.
      * @throws IOException An error will occur or the page will not load.
      */
     @FXML
@@ -191,7 +192,7 @@ public class HomePageController {
 
     /**
      * This method will log the user out of the application. When the 'Logout' button is clicked,
-     * the user will be taken back to the Log-In page.
+     * the user will be taken back to the Log-In page {@link LoginController}.
      * @throws IOException An error will appear or the page will not load.
      */
     @FXML
@@ -286,7 +287,8 @@ public class HomePageController {
     }
 
     /**
-     * This method will load the Create Note page when the 'New Note' button is clicked.
+     * This method will load the Create Note page {@link CreateNoteController} when the 'New Note'
+     * button is clicked.
      * @param actionEvent A mouse click on the 'New Note' Button.
      * @throws IOException An error will occur or the Create Note page will not load.
      */
@@ -343,8 +345,7 @@ public class HomePageController {
 
     /**
      * This method takes the user input and searches the notes within the database
-     * for any note that contains the input. The notes that contain the text will
-     * be displayed.
+     * for any note that contains the input. The notes that contain the text will be displayed.
      * //TODO Search function didn't work for me, will test.
      */
     @FXML

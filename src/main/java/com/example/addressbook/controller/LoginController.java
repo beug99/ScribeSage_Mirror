@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * A controller class that manages the Login page of the application.
- * Upon opening the App, the scene is set to login-view.fxml. The user can interact with
- * the page by logging in with existing account details or by redirecting to the signup page.
+ * A controller class that manages the Login page of the application. Upon opening the App, the scene
+ * is set to login-view.fxml. The user can interact with the page by logging in with existing account
+ * details or by redirecting to the signup page {@link SignUpController}
  */
 public class LoginController {
     @FXML
@@ -24,7 +24,7 @@ public class LoginController {
     private Button signUp;
 
     /**
-     * A method that will load the Sign-up page when the 'Sign Up' button is clicked.
+     * A method that will load the Sign-up page {@link SignUpController} when the 'Sign Up' button is clicked.
      * @throws IOException An error will occur or the Signup page will not load.
      */
     @FXML

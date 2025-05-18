@@ -37,6 +37,18 @@ import java.util.concurrent.Executors;
 import java.util.Timer;
 import static java.util.concurrent.TimeUnit.*;
 import java.util.function.Supplier;
+/**
+ * A controller class that manages the creation of a new Note. Upon opening the page, the scene
+ * is set to the create-note-view.fxml. Depending on the user input validity, the user is able to
+ * create and name a note, add it to an existing folder, upload files to the note and add note tags.
+ */
+
+
+/**
+ * A controller class that manages the new note page including editing a new and existing note, saving
+ * to the database, importing audio {@link VoskTranscribeService} and utilising the AI enhance and
+ * summarise functions through {@link AIService}.
+ */
 public class NewNoteController extends CreateNoteController {
 
     @FXML
@@ -67,6 +79,9 @@ public class NewNoteController extends CreateNoteController {
     private Timer autoSaveTimer;
     private int AutoSaveInterval = 5; // How often the autosave runs in minutes
 
+    /**
+     * Constructs
+     */
     public NewNoteController() {
         super();
         aiService = new AIService();
@@ -99,7 +114,8 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Gets currently selected text from the HTML editor
+     * This method gets the currently selected text from the HTML editor and returns it as a string.
+     * @return The currently selected text.
      */
     public String getSelectedHTMLText() {
         WebView webView = (WebView) htmlEditorGui.lookup("WebView");
@@ -114,7 +130,9 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Replaces the selected text in the HTML editor with new content
+     * This method takes the string parameter 'replacement' and
+     * whaaaa haha, TODO Will study that ai process.
+     * @param replacement
      */
     public void replaceSelectedHTMLText(String replacement) {
         if (replacement == null || replacement.isEmpty()) {
@@ -144,7 +162,9 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Uses the intergraded AI to enhance the text
+     * This method gets the users selected text {@link #getSelectedHTMLText() getSelectedHTMLText}
+     * and runs the text through the {@link #runAIProcess(Supplier, Button, ProgressIndicator, String, String) runAIProcess}
+     *  to enhance the text with AI. If this fails or there is no text selected, the user is advised.
      */
     @FXML
     public void onEnhanceButton(){
@@ -162,6 +182,11 @@ public class NewNoteController extends CreateNoteController {
         );
     }
 
+    /**
+     * This method gets the users selected text {@link #getSelectedHTMLText() getSelectedHTMLText}
+     * and runs the text through the {@link #runAIProcess(Supplier, Button, ProgressIndicator, String, String) runAIProcess}
+     * to summarise the text with AI. If this fails or there is no text selected, the user is advised.
+     */
     @FXML
     public void onSummariseButton(){
         String selected = getSelectedHTMLText();
@@ -178,11 +203,20 @@ public class NewNoteController extends CreateNoteController {
         );
     }
 
+    /**
+     * This method sets the name of the current note to display on the UI.
+     * @param text The name of the open note.
+     */
     @FXML
     public void setLabelText(String text) {
         currentNoteName.setText(text);
     }
 
+    /**
+     * This method prints the note name to the terminal and confirms prints when the note name
+     * has successfully been set on the UI.
+     * @param note The name of the current note.
+     */
     @FXML
     public void setCurrentNote(Note note) {
         currentNote = note;
@@ -194,6 +228,12 @@ public class NewNoteController extends CreateNoteController {
         }
     }
 
+    /**
+     * This method calls the {@link #saveNote() saveNote} method when the 'Save Note' button is clicked.
+     * If saveNote returns True, an alert will appear advising that the note has saved to the database.
+     * @param actionEvent Mouse click on the 'Save Note' button.
+     * @throws IOException An error will appear or the alert will not appear.
+     */
     @FXML
     public void onSaveButtonClick(ActionEvent actionEvent) throws IOException {
         if(saveNote()) {
@@ -201,14 +241,26 @@ public class NewNoteController extends CreateNoteController {
         }
     }
 
+    /**
+     * This method will load a pop-up for users to select audio files to import when the 'Import Audio'
+     * button is clicked. Users can choose to browse their files and select an audio file or copy transcript.
+     * @param actionEvent On mouse click of the 'Import Audio' button.
+     * @throws IOException An error will occur or the pop-up will not appear.
+     */
     @FXML
-    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
-        System.out.println("Load button pressed");
+    public void onImportAudioButtonClick(ActionEvent actionEvent) throws IOException {
+        System.out.println("Import Audio button pressed");
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         SceneLoader.switchScene(popupStage, "transcript-view.fxml", false);
     }
 
+    /**
+     * A method that loads the applications home page {@link HomePageController} when the home button
+     * is clicked.
+     * @param actionEvent A mouse click on the 'Home' button.
+     * @throws IOException Page fails to load.
+     */
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
         StopAutoSave(); // Otherwise it will keep running in the background, even after you x out
@@ -222,13 +274,8 @@ public class NewNoteController extends CreateNoteController {
         stage.show();
     }
 
-    @FXML
-    public void searchBarButtonClick(ActionEvent actionEvent) {
-        //TODO Create a search function - for a later sprint
-    }
-
     /**
-     * Starts a timer to save the note every 5 minutes
+     * This method starts a timer to save the note to the database every 5 minutes.
      */
     private void StartAutoSave() {
         System.out.println("Auto Saving Enabled");
@@ -243,7 +290,7 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Ends and deletes the save so it can be created again when the autosave is started
+     * This method ends and deletes the save so it can be created again when the autosave is started.
      */
     private void StopAutoSave() {
         if(autoSaveTimer != null) {
@@ -254,7 +301,10 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Saves the state of the current note to the notes DB
+     * This method saves the current state of the note to the database. It is called by
+     * the {@link #onSaveButtonClick} method. If the note is empty, it will return false, if the note is
+     * valid and is saved to the database, it returns true.
+     * @return True if the note successfully saves, False if it does not save.
      */
     private boolean saveNote() {
         if (currentNote == null) {
@@ -279,7 +329,11 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Private method to show alerts
+     * This is a method that displays an alert based on the parameters of alert type, the alert title
+     * and the content of the alert.
+     * @param type The type of the alert.
+     * @param title The title of the alert.
+     * @param content The content of the alert.
      */
     private void showAlert(AlertType type, String title, String content) {
         Alert alert = new Alert(type);
@@ -288,15 +342,24 @@ public class NewNoteController extends CreateNoteController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-        // reusable method for running aiProcesses when a button is pressed
-        @FXML
-        public void runAIProcess(
-                Supplier<String> aiFunction,
-                Button triggerButton,
-                ProgressIndicator progressIndicator,
-                String errorTitle,
-                String errorMessage
-    ) {
+
+    /**
+     * This method is called by the {@link #onSummariseButton()} and {@link #onEnhanceButton()} to send a
+     * request to the AI service. TODO - BRAIN SORE, WILL LOOK INTO IT.
+     * @param aiFunction
+     * @param triggerButton
+     * @param progressIndicator
+     * @param errorTitle
+     * @param errorMessage
+     */
+    @FXML
+    public void runAIProcess(
+            Supplier<String> aiFunction,
+            Button triggerButton,
+            ProgressIndicator progressIndicator,
+            String errorTitle,
+            String errorMessage)
+        {
             String selected = getSelectedHTMLText();
             if (selected == null || selected.trim().isEmpty()) {
                 showAlert(AlertType.WARNING, "No text selected",
@@ -345,4 +408,9 @@ public class NewNoteController extends CreateNoteController {
             // Run the task in the background
             executorService.submit(task);
         }
+
+    @FXML
+    public void searchBarButtonClick(ActionEvent actionEvent) {
+        //TODO Create a search function - for a later sprint
     }
+}

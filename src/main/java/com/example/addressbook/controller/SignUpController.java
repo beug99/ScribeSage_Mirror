@@ -21,7 +21,7 @@ public class SignUpController {
     private IUserDAO userDAO;
 
     /**
-     * Constructs an instance of a user Data Access Object (IUserDAO) for the user information.
+     * Constructs an instance of a user Data Access Object ({@link IUserDAO}) for the user information.
      */
     public SignUpController(){
         userDAO = new SqliteUserDAO();
@@ -83,7 +83,7 @@ public class SignUpController {
     }
 
     /**
-     * A method that loads the applications home page when the home button is clicked.
+     * A method that loads the applications home page {@link HomePageController} when the home button is clicked.
      * @throws IOException Page fails to load.
      */
     @FXML
