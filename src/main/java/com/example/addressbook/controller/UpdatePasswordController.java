@@ -8,11 +8,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
+
+/**
+ * This controller class manages the update password page for the application.
+ * The scene will load through the updatePassword-view.fxml. It provides methods for users
+ * to alter their password that is stored on the database.
+ */
 public class UpdatePasswordController {
     @FXML
     private PasswordField oldPassword;
@@ -23,7 +31,10 @@ public class UpdatePasswordController {
     @FXML
     private Button backButton;
 
-
+    /**
+     * This method assesses the input from
+     * @throws IOException
+     */
     @FXML
     private void onUpdatePassword() throws IOException {
         String oldPassword = this.oldPassword.getText();
@@ -32,20 +43,36 @@ public class UpdatePasswordController {
 
         if (SqliteUserDAO.updatePassword(email, oldPassword, newPassword)) {
             // check if oldPassword matches latest password used in authenticateUser method (current user password)
+
+            // Displays an alert advising the user that the password has bene updated before redirecting back to
+            // the update details page
+            Alert success = new Alert(Alert.AlertType.INFORMATION);
+            success.setTitle("Success");
+            success.setHeaderText(null);
+            success.setContentText("Your password has been successfully updated.");
+            success.showAndWait();
+
             Stage stage = (Stage) updatePWordConfirm.getScene().getWindow();
             SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
 
         } else {
-            // show error message for failed log in attempts
+            // Show error message for failed log in attempts
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Update Password Failed");
             alert.setHeaderText(null);
-            alert.setContentText("Invalid email or password. Please check you have" + " " +
-                    "typed your old password correctly");
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.setContentText("Invalid Password. A valid password is at least 8 characters long, " +
+                    "contains a mix of upper-case and lower-case characters, numbers, and symbols. " +
+                    "Your new password can not be your most recent password.");
             alert.showAndWait();
         }
     }
 
+    /**
+     * This method returns the user to the previous Update Details page. If the 'Confirm Update'
+     * button has not been clicked, the updates are discarded.
+     * @throws IOException An error appears or the page does not load.
+     */
     @FXML
     private void onBackToDetails() throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
