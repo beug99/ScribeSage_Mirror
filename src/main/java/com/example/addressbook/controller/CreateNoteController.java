@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A controller class that manages the creation of a new Note.
- * Upon opening the page, the scene is set to the create-note-view.fxml.
- *
+ * A controller class that manages the creation of a new Note. Upon opening the page, the scene
+ * is set to the create-note-view.fxml. Depending on the user input validity, the user is able to
+ * create and name a note, add it to an existing folder, upload files to the note and add note tags.
  */
 public class CreateNoteController {
     public Label folderName;
@@ -49,7 +49,8 @@ public class CreateNoteController {
     }
 
     /**
-     * A method which //TODO ----------------------------------
+     * A method which initializes the folder service, this loads the users existing folders which can
+     * be selected when assigning the new note to a folder.
      */
     @FXML
     public void initialize() {
@@ -61,8 +62,11 @@ public class CreateNoteController {
     }
 
     /**
-     *
-     * @throws IOException
+     * A method that creates a new note instance and save it to the database if the user input
+     * variables are valid. The variables include the note name, chosen folder and note tags. If the
+     * note is successfully created and saved, the method loads the New Note page. If unsuccessful,
+     * the method will display errors accordingly.
+     * @throws IOException An error will occur or the new note will note be created.
      */
     @FXML
     public void onCreateButtonClick() throws IOException {
@@ -123,13 +127,8 @@ public class CreateNoteController {
         SceneLoader.switchScene(stage, "homepage-view.fxml", true);
     }
 
-
-    public void onUploadSparseClick(ActionEvent actionEvent) {
-        // Placeholder for future functionality
-    }
-
     /**
-     * A function that allows the user to choose a file to upload to the new note.
+     * A method that allows the user to choose a file to upload to the new note.
      * @param actionEvent The corresponding 'Upload' button is clicked.
      */
     public void onUploadCanvasClick(ActionEvent actionEvent) {
@@ -215,4 +214,9 @@ public class CreateNoteController {
     public void onAINoteSummariseClick(ActionEvent actionEvent) {
         // Placeholder for future functionality
     }
+
+    public void onUploadSparseClick(ActionEvent actionEvent) {
+        // Placeholder for future functionality
+    }
+
 }
