@@ -14,12 +14,11 @@
         </padding>
 
         <!-- Profile section top left -->
-        <HBox fx:id="profileBar" onMouseClicked="#toggleNavMenu" style="-fx-cursor: hand;" alignment="CENTER_LEFT" spacing="10"
-              minWidth="-Infinity" prefWidth="-Infinity" maxWidth="-Infinity">
+        <HBox fx:id="profileBar" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleNavMenu" prefWidth="-Infinity" spacing="10" style="-fx-cursor: hand;">
             <ImageView>
                 <Image requestedHeight="50" requestedWidth="50" url="@../../../Images/logo kinda purple.jpeg" />
             </ImageView>
-            <Label fx:id="nameLabel" minWidth="-Infinity" text="First and last name" textFill="WHITE">
+            <Label fx:id="nameLabel" minWidth="-Infinity" style="-fx-font-weight: bold;" text="First and last name" textFill="WHITE">
                 <font>
                     <Font name="HelveticaRounded-Bold" size="16.0" />
                 </font>
@@ -67,31 +66,31 @@
     <!-- Nav menu as an overlay positioned at the top left -->
     <AnchorPane mouseTransparent="false" pickOnBounds="false">
         <VBox fx:id="navMenu" maxWidth="180" style="-fx-background-color: #2a2d3e; -fx-border-width: 2; -fx-border-color: white; -fx-border-radius: 2;" visible="false" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="70">
-            <HBox alignment="CENTER_LEFT"  onMouseClicked="#onUpdateDetails" spacing="10.0" styleClass="nav-item">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#onUpdateDetails" spacing="10.0" styleClass="nav-item">
                 <padding>
                     <Insets bottom="5" left="10" right="10" top="5" />
                 </padding>
-                <ImageView fitHeight="32.0" style="-fx-cursor: hand;" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                     <image>
                         <Image url="@../../../Images/Update%20Details%20purple.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="updateDetailsLabel" style="-fx-cursor: hand;" text="Update Details" textFill="WHITE">
+                <Label fx:id="updateDetailsLabel" style="-fx-cursor: hand; -fx-font-weight: bold;" text="Update Details" textFill="WHITE">
                     <font>
                         <Font name="HelveticaRounded-Bold" size="12.0" />
                     </font>
                 </Label>
             </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut"  spacing="10.0" styleClass="nav-item">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#onLogOut" spacing="10.0" styleClass="nav-item">
                 <padding>
                     <Insets bottom="5" left="10" right="10" top="5" />
                 </padding>
-                <ImageView fitHeight="31.0" fitWidth="34.0" style="-fx-cursor: hand;"  pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="31.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                     <image>
                         <Image url="@../../../Images/Log%20out%20purple.png" />
                     </image>
                 </ImageView>
-                <Label prefHeight="18.0" prefWidth="80.0" style="-fx-cursor: hand;"  text="Logout" textFill="WHITE">
+                <Label prefHeight="18.0" prefWidth="80.0" style="-fx-cursor: hand; -fx-font-weight: bold;" text="Logout" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>

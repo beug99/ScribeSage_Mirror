@@ -396,37 +396,53 @@ public class HomePageController {
         String keyword = searchField.getText().toLowerCase().trim();
 
         if (keyword.isEmpty()) {
-            // Reset the tree view
             NoteService.loadUserData();
             NoteService.populateNotesTreeView();
-        } else {
-            // Filter notes based on keyword
-            List<Note> filteredNotes = new ArrayList<>();
-            for (Note note : userNotes) {
-                if (note.getNoteName().toLowerCase().contains(keyword)) {
-                    filteredNotes.add(note);
-                }
-            }
-
-            // Create a filtered tree view
-            TreeItem<String> rootItem = new TreeItem<>("Root");
-            rootItem.setExpanded(true);
-
-            // Create search results node
-            TreeItem<String> searchResultsNode = new TreeItem<>("Search Results");
-            searchResultsNode.setExpanded(true);
-
-            // Add matching notes to search results
-            for (Note note : filteredNotes) {
-                searchResultsNode.getChildren().add(new TreeItem<>(note.getNoteName()));
-            }
-
-            // Add nodes to root
-            rootItem.getChildren().add(searchResultsNode);
-
-            // Set the root and hide it
-            notesTreeView.setRoot(rootItem);
-            notesTreeView.setShowRoot(false);
+            return;
         }
+
+        // Filter notes
+        List<Note> filteredNotes = new ArrayList<>();
+        for (Note note : userNotes) {
+            if (note.getNoteName().toLowerCase().contains(keyword)) {
+                filteredNotes.add(note);
+            }
+        }
+
+        // Filter folders
+        List<Folder> filteredFolders = new ArrayList<>();
+        for (Folder folder : folderList) {
+            if (folder.getFolderName().toLowerCase().contains(keyword)) {
+                filteredFolders.add(folder);
+            }
+        }
+
+        // Build TreeView
+        TreeItem<String> rootItem = new TreeItem<>("Root");
+        rootItem.setExpanded(true);
+
+        TreeItem<String> searchResults = new TreeItem<>("Search Results");
+        searchResults.setExpanded(true);
+
+        if (!filteredFolders.isEmpty()) {
+            TreeItem<String> folderNode = new TreeItem<>("Folders");
+            for (Folder folder : filteredFolders) {
+                folderNode.getChildren().add(new TreeItem<>(folder.getFolderName()));
+            }
+            searchResults.getChildren().add(folderNode);
+        }
+
+        if (!filteredNotes.isEmpty()) {
+            TreeItem<String> noteNode = new TreeItem<>("Notes");
+            for (Note note : filteredNotes) {
+                noteNode.getChildren().add(new TreeItem<>(note.getNoteName()));
+            }
+            searchResults.getChildren().add(noteNode);
+        }
+
+        rootItem.getChildren().add(searchResults);
+        notesTreeView.setRoot(rootItem);
+        notesTreeView.setShowRoot(false);
     }
+
 }
