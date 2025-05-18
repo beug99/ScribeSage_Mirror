@@ -25,10 +25,10 @@ import javafx.scene.control.TextField;
 import static com.example.addressbook.service.NoteService.notesTreeView;
 
 /**
- * A controller class that manages the home page of the application once a user has signed in.
+ * A controller class that manages the Home Page of the application once a user has signed in.
  * Upon logging in, the scene is set to homepage-view.fxml. User specific details, notes and
  * folders are displayed on the page. The user can perform further functions by interacting
- * with the interface.
+ * with the user interface.
  */
 public class HomePageController {
     @FXML
@@ -63,7 +63,9 @@ public class HomePageController {
     }
 
     /**
-     *
+     * The Initialize method retrieves the name, existing notes and folders created by the current
+     * session user from the database and populates the UI. It also loads the listener functions for the
+     * navigation menu and the note/folder selection.
      */
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
@@ -104,7 +106,7 @@ public class HomePageController {
     }
 
     /**
-     *
+     * This method //TODO -- JUST CHECKING WHAT THIS DOES AND IF IT WORKS
      */
     private void setupContextMenus() {
         ContextMenu folderMenu = new ContextMenu();
