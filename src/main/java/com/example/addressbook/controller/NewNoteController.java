@@ -224,8 +224,41 @@ public class NewNoteController extends CreateNoteController {
 
     @FXML
     public void searchBarButtonClick(ActionEvent actionEvent) {
-        //TODO Create a search function - for a later sprint
+        String searchTerm = searchBarID.getText().trim();
+
+        WebView webView = (WebView) htmlEditorGui.lookup("WebView");
+        if (webView == null) return;
+
+        WebEngine engine = webView.getEngine();
+
+        // Restore the original HTML (removes old highlights)
+        String originalHTML = currentNote.getNoteText();  // From your model
+        engine.loadContent(originalHTML);
+
+        // If the search is empty, do not highlight
+        if (searchTerm.isEmpty()) return;
+
+        // Sanitize input for JS
+        String safeSearchTerm = searchTerm.replace("'", "\\'");
+
+        // JS to highlight all matches
+        String script =
+                "var body = document.body.innerHTML;" +
+                        "var searchRegex = new RegExp('" + safeSearchTerm + "', 'gi');" +
+                        "document.body.innerHTML = body.replace(searchRegex, " +
+                        "'<span style=\"background-color: #DDD7FF;\">$&</span>');";
+
+        // Slight delay to ensure content is loaded before injecting highlights
+        Platform.runLater(() -> {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    Platform.runLater(() -> engine.executeScript(script));
+                }
+            }, 100); // 100 ms delay
+        });
     }
+
 
     /**
      * Starts a timer to save the note every 5 minutes
