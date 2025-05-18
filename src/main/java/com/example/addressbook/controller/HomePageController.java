@@ -426,6 +426,7 @@ public class HomePageController {
 
         if (!filteredFolders.isEmpty()) {
             TreeItem<String> folderNode = new TreeItem<>("Folders");
+            folderNode.setExpanded(true);
             for (Folder folder : filteredFolders) {
                 folderNode.getChildren().add(new TreeItem<>(folder.getFolderName()));
             }
@@ -434,6 +435,7 @@ public class HomePageController {
 
         if (!filteredNotes.isEmpty()) {
             TreeItem<String> noteNode = new TreeItem<>("Notes");
+            noteNode.setExpanded(true);
             for (Note note : filteredNotes) {
                 noteNode.getChildren().add(new TreeItem<>(note.getNoteName()));
             }
