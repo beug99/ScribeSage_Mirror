@@ -337,4 +337,10 @@ public class HomePageController {
         notesTreeView.setShowRoot(false);
     }
 
+    @FXML
+    private void onSortByDate(ActionEvent event) {
+        System.out.println("Sort by date clicked!");
+        // TODO: Add actual sorting logic here
+    }
+
 }
