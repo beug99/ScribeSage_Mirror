@@ -32,8 +32,10 @@ public class UpdatePasswordController {
     private Button backButton;
 
     /**
-     * This method assesses the input from
-     * @throws IOException
+     * A method that authenticates the current session user, checks the validity of the new password and
+     * updates user and the database depending on the result. It takes user input and retrieves the current
+     * session parameters. The sqliteUserDAO.updatePassword method is called and utilised within the method.
+     * @throws IOException An error will occur or the password will not update.
      */
     @FXML
     private void onUpdatePassword() throws IOException {

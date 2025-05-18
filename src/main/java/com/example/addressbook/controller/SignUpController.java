@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 
 /**
  * A controller class that manages the Signup page of the application and user creation.
- * User specific details are captured including first and last name, email address and password.
+ * User specific details are commited to the database depending on input validity. User
+ * details include first and last name, email address and password.
  */
 public class SignUpController {
     @FXML
@@ -20,7 +21,7 @@ public class SignUpController {
     private IUserDAO userDAO;
 
     /**
-     * Constructs an instance of a user Data Access Object (IUserDAO).
+     * Constructs an instance of a user Data Access Object (IUserDAO) for the user information.
      */
     public SignUpController(){
         userDAO = new SqliteUserDAO();
@@ -40,7 +41,7 @@ public class SignUpController {
     private Button backButton;
 
     /**
-     * A method for adding user info from sign up fields into the database once the 'Sign-up' button
+     * A method for saving user info from sign up fields toto the database once the 'Sign-up' button
      * is pressed. If the fields are invalid, the user is unable to sign up and an alert appears
      * explaining why.
      */
@@ -114,5 +115,4 @@ public class SignUpController {
         Pattern pattern = Pattern.compile(passwordRegex);
         return pattern.matcher(password).matches();
     }
-
 }
