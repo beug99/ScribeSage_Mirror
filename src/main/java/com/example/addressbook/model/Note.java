@@ -1,29 +1,42 @@
 package com.example.addressbook.model;
 
-import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Note {
-    private int noteID;
+    private int id;
     private String noteName;
     private String noteTags;
     private String noteText;
     private String noteOwner;
     private Integer folderId;
+    private LocalDateTime createdDate;
 
-    public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId){
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    public Note(String noteName, String noteTags, String noteText, String noteOwner, Integer folderId) {
         this.noteName = noteName;
         this.noteTags = noteTags;
         this.noteText = noteText;
         this.noteOwner = noteOwner;
         this.folderId = folderId;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public Note(String noteName, String noteTags, String noteText, String noteOwner) {
+        this(noteName, noteTags, noteText, noteOwner, null);
+    }
+
+    public Note(String noteName) {
+        this(noteName, "", "", null, null);
     }
 
     public int getId() {
-        return noteID;
+        return id;
     }
 
     public void setId(int id) {
-        this.noteID = id;
+        this.id = id;
     }
 
     public String getNoteName() {
@@ -34,14 +47,6 @@ public class Note {
         this.noteName = noteName;
     }
 
-    public String getNoteText() {
-        return noteText;
-    }
-
-    public void setNoteText(String noteText) {
-        this.noteText = noteText;
-    }
-
     public String getNoteTags() {
         return noteTags;
     }
@@ -50,12 +55,39 @@ public class Note {
         this.noteTags = noteTags;
     }
 
-    public String getNoteOwner() { return noteOwner;}
+    public String getNoteText() {
+        return noteText;
+    }
 
-    public void setNoteOwner(String owner) { this.noteOwner = owner;}
+    public void setNoteText(String noteText) {
+        this.noteText = noteText;
+    }
 
-    public Integer getFolderId() { return folderId; }
+    public String getNoteOwner() {
+        return noteOwner;
+    }
 
-    public void setFolderId(Integer folderId) { this.folderId = folderId; }
+    public void setNoteOwner(String noteOwner) {
+        this.noteOwner = noteOwner;
+    }
 
+    public Integer getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Integer folderId) {
+        this.folderId = folderId;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getFormattedCreatedDate() {
+        return createdDate != null ? createdDate.format(formatter) : "";
+    }
 }
