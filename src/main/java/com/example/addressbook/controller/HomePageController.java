@@ -21,13 +21,9 @@ import javafx.scene.control.TextField;
 
 import static com.example.addressbook.service.NoteService.notesTreeView;
 
-/**
- * A controller class that manages the Home Page of the application once a user has signed in.
- * Upon logging in, the scene is set to homepage-view.fxml. User specific details, notes and
- * folders are displayed on the page. The user can perform further functions by interacting
- * with the user interface.
- */
+
 public class HomePageController {
+
     @FXML
     private TextField searchField;
     @FXML
@@ -42,6 +38,9 @@ public class HomePageController {
     private Label nameLabel;
     @FXML
     private TreeView<String> notesTreeView;
+    @FXML
+    private Map<String, Note> searchNoteMap = new HashMap<>();
+
 
     private INoteDAO noteDAO;
     private List<Note> userNotes;
@@ -51,20 +50,11 @@ public class HomePageController {
     private List<Folder> folderList = new ArrayList<>();
     private IFolderDAO folderDAO;
 
-    /**
-     * Constructs an instance of both a note and a folder Data Access Object ({@link INoteDAO} and
-     * {@link IFolderDAO}).
-     */
     public HomePageController() {
         noteDAO = new SqliteNoteDAO();
         folderDAO = new SqliteFolderDAO();
     }
 
-    /**
-     * The Initialize method retrieves the name, existing notes and folders created by the current
-     * session user from the database and populates the UI. It also loads the listener functions for the
-     * navigation menu and the note/folder selection.
-     */
     public void initialize() {
         String fullName = Session.getFirstName() + " " + Session.getLastName();
         nameLabel.setText(fullName);
@@ -103,9 +93,6 @@ public class HomePageController {
         });
     }
 
-    /**
-     * This method //TODO -- JUST CHECKING WHAT THIS DOES AND IF IT WORKS
-     */
     private void setupContextMenus() {
         ContextMenu folderMenu = new ContextMenu();
         // for notes, add a move to folder option
@@ -160,12 +147,6 @@ public class HomePageController {
         });
     }
 
-    /**
-     * This method takes the user string input and searches the database for an instance of
-     * a note with the same name.
-     * @param noteName The search query entered by the user.
-     * @return Either the note if found, or null.
-     */
     private Note findNoteByName(String noteName) {
         for (Note note : userNotes) {
             if (note.getNoteName().equals(noteName)) {
@@ -175,11 +156,6 @@ public class HomePageController {
         return null;
     }
 
-    /**
-     * This method will load the Update Details {@link UpdateDetailsController} page. When the
-     * 'Update Details' button is clicked, the updateDetails-view.fxml will display.
-     * @throws IOException An error will occur or the page will not load.
-     */
     @FXML
     private void onUpdateDetails() throws IOException {
         Stage popupStage = new Stage();
@@ -187,28 +163,26 @@ public class HomePageController {
         SceneLoader.switchScene(popupStage, "updateDetails-view.fxml", false);
     }
 
-    /**
-     * This method will log the user out of the application. When the 'Logout' button is clicked,
-     * the user will be taken back to the Log-In page {@link LoginController}.
-     * @throws IOException An error will appear or the page will not load.
-     */
     @FXML
     private void onLogOut() throws IOException {
         Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
         SceneLoader.switchScene(stage, "login-view.fxml", false);
     }
 
-    /**
-     * This method will open and display the selected note when the 'Open Note' button is
-     * clicked. If no note is selected, an alert will appear to inform the user.
-     * @throws IOException An error will occur or the selected note will not open.
-     */
+    // loads a selected note from the tree view
     @FXML
     private void onLoadNote() throws IOException {
+        TreeItem<String> selectedItem = notesTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            String selectedName = selectedItem.getValue();
+            if (searchNoteMap.containsKey(selectedName)) {
+                NoteService.selectedNote = searchNoteMap.get(selectedName);  // from search
+            }
+        }
+
         if (NoteService.selectedNote != null) {
             Stage stage = (Stage) notesTreeView.getScene().getWindow();
             NewNoteController noteController = SceneLoader.switchScene(stage, "new-note-view.fxml", true);
-
             noteController.setCurrentNote(NoteService.selectedNote);
             noteController.setLabelText(NoteService.selectedNote.getNoteName());
         } else {
@@ -216,34 +190,14 @@ public class HomePageController {
         }
     }
 
-    /**
-     * This method will delete the selected note or folder from the database when the 'Delete'
-     * button is clicked. If no note or folder is selected, an alert will appear to inform the user.
-     * @throws IOException An error will occur or the selected object will not be deleted.
-     */
+
+    // deletes the selected note
     @FXML
     private void onDeleteItem() throws IOException {
         if (NoteService.selectedNote != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete Note");
-            alert.setHeaderText("Delete Note: " + selectedItem.getValue());
-            alert.setContentText("Are you sure you want to delete this note? This is irreversible.");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    // Remove folder association from notes
-                    for (Note note : userNotes) {
-                        if (note.getNoteName() != null && note.getNoteName().equals(selectedItem.getValue())) {
-                            note.setFolderId(null);
-                            noteDAO.updateNote(note);
-                        }
-                    }
-                    noteDAO.deleteNote(NoteService.selectedNote);
-
-                    NoteService.loadUserData();
-                    NoteService.populateNotesTreeView();
-                }
-            });
+            noteDAO.deleteNote(NoteService.selectedNote);
+            NoteService.loadUserData();
+            NoteService.populateNotesTreeView();
         } else if (selectedItem != null && FolderService.isFolderItem(selectedItem)) {
             // If a folder is selected, prompt to delete it
             Folder folder = FolderService.findFolderByName(selectedItem.getValue());
@@ -274,32 +228,18 @@ public class HomePageController {
         }
     }
 
-    /**
-     * This method will display the navigation menu when the Logo is clicked.
-     * @param mouseEvent A mouse click on the logo.
-     */
     @FXML
     public void toggleNavMenu(javafx.scene.input.MouseEvent mouseEvent) {
         navMenu.setVisible(!navMenu.isVisible());
     }
 
-    /**
-     * This method will load the Create Note page {@link CreateNoteController} when the 'New Note'
-     * button is clicked.
-     * @param actionEvent A mouse click on the 'New Note' Button.
-     * @throws IOException An error will occur or the Create Note page will not load.
-     */
     @FXML
     private void onCreateNew(javafx.event.ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) createNewButton.getScene().getWindow();
         SceneLoader.switchScene(stage, "create-note-view.fxml", false);
     }
 
-    /**
-     * This method will display a dialog prompting users to enter a new folder name. The user
-     * can then cancel or click OK which will create and save a named folder to the database.
-     * @param event Clicking the 'New Folder' button.
-     */
+    // Create Folder
     @FXML
     private void onCreateFolder(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
@@ -315,49 +255,16 @@ public class HomePageController {
         });
     }
 
-    /**
-     * This method sorts the existing notes and folders into order by creation
-     * date when the 'Sort By Date' button is clicked.
-     * @param event The 'Sort By Date' button is clicked.
-     */
     @FXML
-    private void onSortByDate(ActionEvent event){
-
-        List<Note> retrieveNotes = NoteService.getUserNotes();
-        List<Folder> retrieveFolders = NoteService.getFolderList();
-
-        retrieveNotes.sort(Comparator.comparing(Note::getCreatedDate));
-        retrieveFolders.sort(Comparator.comparing(Folder::getFolderId));
-
-        NoteService.populateNotesTreeView();
-
-        folderList.sort(Comparator.comparing(Folder::getFolderName));
-
-        for (Folder folder : folderList) {
-            if (folder.getNotes() != null) {
-                folder.getNotes().sort(Comparator.comparing(Note::getCreatedDate));
-            }
-        }
-        NoteService.populateNotesTreeView();
-    }
-
-
-    /**
-     * This method sorts the existing notes and folders into alphabetical
-     * order when the 'Sort Alphabetically' button is clicked.
-     * @param event The 'Sort Alphabetically' button is clicked.
-     */
-    @FXML
-    private void onSortAlphabetically(ActionEvent event)throws IOException {
+    private void onSortAlphabetically(ActionEvent event) {
         // This will need to be updated to sort the tree view
-        List<Note> retrieveNotes = NoteService.getUserNotes();
-        List<Folder> retrieveFolders = NoteService.getFolderList();
+        NoteService.loadUserData();
 
         // Sort the notes list
-        retrieveNotes.sort(Comparator.comparing(Note::getNoteName));
+        userNotes.sort(Comparator.comparing(Note::getNoteName));
 
         // Sort folders
-        retrieveFolders.sort(Comparator.comparing(Folder::getFolderName));
+        folderList.sort(Comparator.comparing(Folder::getFolderName));
 
         // Sort notes within folders
         for (Folder folder : folderList) {
@@ -367,49 +274,29 @@ public class HomePageController {
         }
         NoteService.populateNotesTreeView();
     }
-//    @FXML
-//    private void onSortAlphabetically(ActionEvent event)throws IOException {
-//        // This will need to be updated to sort the tree view
-//        NoteService.loadUserData();
-//        // Sort the notes list
-//        userNotes.sort(Comparator.comparing(Note::getNoteName));
-//
-//        // Sort folders
-//        folderList.sort(Comparator.comparing(Folder::getFolderName));
-//
-//        // Sort notes within folders
-//        for (Folder folder : folderList) {
-//            if (folder.getNotes() != null) {
-//                folder.getNotes().sort(Comparator.comparing(Note::getNoteName));
-//            }
-//        }
-//        NoteService.populateNotesTreeView();
-//    }
 
-    /**
-     * This method takes the user input and searches the notes within the database
-     * for any note that contains the input. The notes that contain the text will be displayed.
-     * //TODO Search function didn't work for me, will test.
-     */
     @FXML
     private void onSearchNote() {
         String keyword = searchField.getText().toLowerCase().trim();
 
+        // Reset search
         if (keyword.isEmpty()) {
+            searchNoteMap.clear();  // clear previous search mappings
             NoteService.loadUserData();
             NoteService.populateNotesTreeView();
             return;
         }
 
-        // Filter notes
+        // Prepare new filtered notes and folders
+        searchNoteMap.clear();
         List<Note> filteredNotes = new ArrayList<>();
         for (Note note : userNotes) {
             if (note.getNoteName().toLowerCase().contains(keyword)) {
                 filteredNotes.add(note);
+                searchNoteMap.put(note.getNoteName(), note); // store for click handling
             }
         }
 
-        // Filter folders
         List<Folder> filteredFolders = new ArrayList<>();
         for (Folder folder : folderList) {
             if (folder.getFolderName().toLowerCase().contains(keyword)) {
@@ -424,6 +311,7 @@ public class HomePageController {
         TreeItem<String> searchResults = new TreeItem<>("Search Results");
         searchResults.setExpanded(true);
 
+        // Folders (expanded by default)
         if (!filteredFolders.isEmpty()) {
             TreeItem<String> folderNode = new TreeItem<>("Folders");
             folderNode.setExpanded(true);
@@ -433,11 +321,13 @@ public class HomePageController {
             searchResults.getChildren().add(folderNode);
         }
 
+        // Notes (expanded by default)
         if (!filteredNotes.isEmpty()) {
             TreeItem<String> noteNode = new TreeItem<>("Notes");
             noteNode.setExpanded(true);
             for (Note note : filteredNotes) {
-                noteNode.getChildren().add(new TreeItem<>(note.getNoteName()));
+                TreeItem<String> noteItem = new TreeItem<>(note.getNoteName());
+                noteNode.getChildren().add(noteItem);
             }
             searchResults.getChildren().add(noteNode);
         }

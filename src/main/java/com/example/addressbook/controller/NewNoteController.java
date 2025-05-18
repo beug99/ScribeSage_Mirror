@@ -231,33 +231,46 @@ public class NewNoteController extends CreateNoteController {
 
         WebEngine engine = webView.getEngine();
 
-        // Restore the original HTML (removes old highlights)
-        String originalHTML = currentNote.getNoteText();  // From your model
-        engine.loadContent(originalHTML);
+        // Get the current HTML (including any unsaved user edits)
+        String currentHtml = htmlEditorGui.getHtmlText();
 
-        // If the search is empty, do not highlight
-        if (searchTerm.isEmpty()) return;
+        // Remove previous highlights by stripping <span> tags
+        String cleanedHtml = currentHtml.replaceAll(
+                "<span style=\\\"background-color: #DDD7FF;\\\">(.*?)</span>",
+                "$1"
+        );
 
-        // Sanitize input for JS
+        // If search is empty, restore clean version without highlights
+        if (searchTerm.isEmpty()) {
+            engine.loadContent(cleanedHtml);
+            return;
+        }
+
+        // Sanitize search term for JS safety
         String safeSearchTerm = searchTerm.replace("'", "\\'");
 
-        // JS to highlight all matches
-        String script =
-                "var body = document.body.innerHTML;" +
-                        "var searchRegex = new RegExp('" + safeSearchTerm + "', 'gi');" +
-                        "document.body.innerHTML = body.replace(searchRegex, " +
-                        "'<span style=\"background-color: #DDD7FF;\">$&</span>');";
+        // Load the cleaned HTML into the editor (removing old highlights)
+        engine.loadContent(cleanedHtml);
 
-        // Slight delay to ensure content is loaded before injecting highlights
+        // After content loads, highlight matching terms
         Platform.runLater(() -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
-                    Platform.runLater(() -> engine.executeScript(script));
+                    Platform.runLater(() -> {
+                        String script =
+                                "var body = document.body.innerHTML;" +
+                                        "var searchRegex = new RegExp('" + safeSearchTerm + "', 'gi');" +
+                                        "document.body.innerHTML = body.replace(searchRegex, " +
+                                        "'<span style=\"background-color: #DDD7FF;\">$&</span>');";
+                        engine.executeScript(script);
+                    });
                 }
-            }, 100); // 100 ms delay
+            }, 100); // slight delay for content load
         });
     }
+
+
 
 
     /**
