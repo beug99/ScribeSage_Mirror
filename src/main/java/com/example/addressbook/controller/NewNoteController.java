@@ -242,9 +242,10 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     *
-     * @param actionEvent
-     * @throws IOException
+     * This method will load a pop-up for users to select audio files to import when the 'Import Audio'
+     * button is clicked. Users can choose to browse their files and select an audio file or copy transcript.
+     * @param actionEvent On mouse click of the 'Import Audio' button.
+     * @throws IOException An error will occur or the pop-up will not appear.
      */
     @FXML
     public void onImportAudioButtonClick(ActionEvent actionEvent) throws IOException {
@@ -254,6 +255,12 @@ public class NewNoteController extends CreateNoteController {
         SceneLoader.switchScene(popupStage, "transcript-view.fxml", false);
     }
 
+    /**
+     * A method that loads the applications home page {@link HomePageController} when the home button
+     * is clicked.
+     * @param actionEvent A mouse click on the 'Home' button.
+     * @throws IOException Page fails to load.
+     */
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
         StopAutoSave(); // Otherwise it will keep running in the background, even after you x out
@@ -267,13 +274,8 @@ public class NewNoteController extends CreateNoteController {
         stage.show();
     }
 
-    @FXML
-    public void searchBarButtonClick(ActionEvent actionEvent) {
-        //TODO Create a search function - for a later sprint
-    }
-
     /**
-     * Starts a timer to save the note every 5 minutes
+     * This method starts a timer to save the note to the database every 5 minutes.
      */
     private void StartAutoSave() {
         System.out.println("Auto Saving Enabled");
@@ -288,7 +290,7 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Ends and deletes the save so it can be created again when the autosave is started
+     * This method ends and deletes the save so it can be created again when the autosave is started.
      */
     private void StopAutoSave() {
         if(autoSaveTimer != null) {
@@ -299,7 +301,10 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Saves the state of the current note to the notes DB
+     * This method saves the current state of the note to the database. It is called by
+     * the {@link #onSaveButtonClick} method. If the note is empty, it will return false, if the note is
+     * valid and is saved to the database, it returns true.
+     * @return True if the note successfully saves, False if it does not save.
      */
     private boolean saveNote() {
         if (currentNote == null) {
@@ -324,7 +329,11 @@ public class NewNoteController extends CreateNoteController {
     }
 
     /**
-     * Private method to show alerts
+     * This is a method that displays an alert based on the parameters of alert type, the alert title
+     * and the content of the alert.
+     * @param type The type of the alert.
+     * @param title The title of the alert.
+     * @param content The content of the alert.
      */
     private void showAlert(AlertType type, String title, String content) {
         Alert alert = new Alert(type);
@@ -333,7 +342,16 @@ public class NewNoteController extends CreateNoteController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-    // reusable method for running aiProcesses when a button is pressed
+
+    /**
+     * This method is called by the {@link #onSummariseButton()} and {@link #onEnhanceButton()} to send a
+     * request to the AI service. TODO - BRAIN SORE, WILL LOOK INTO IT.
+     * @param aiFunction
+     * @param triggerButton
+     * @param progressIndicator
+     * @param errorTitle
+     * @param errorMessage
+     */
     @FXML
     public void runAIProcess(
             Supplier<String> aiFunction,
@@ -390,4 +408,9 @@ public class NewNoteController extends CreateNoteController {
             // Run the task in the background
             executorService.submit(task);
         }
+
+    @FXML
+    public void searchBarButtonClick(ActionEvent actionEvent) {
+        //TODO Create a search function - for a later sprint
     }
+}
