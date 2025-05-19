@@ -2,6 +2,10 @@ package com.example.addressbook.model;
 
 import java.util.List;
 
+/**
+ * Interface for the User Data Access Object that handles
+ * the CRUD operations for the User class with the database.
+ */
 public interface IUserDAO {
     /**
      * Adds a new User to the database.
