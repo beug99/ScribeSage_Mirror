@@ -3,10 +3,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 /**
- * A model class that represents the connection to the Note database. This class is
- * implemented by the {@link SqliteNoteConnection} class to connect to save, view, edit and
- * delete items from the database.
+ * Class to create a single connection to SQLite Note Database - Implements singleton pattern.
+ * Assists
  */
 public class SqliteNoteConnection {
     private static Connection instance = null;
