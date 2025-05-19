@@ -4,9 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * A model class that represents the connection to the User database. This class is
- * implemented by the {@link SqliteUserConnection} class to connect to save, view, edit and
- * delete items from the database.
+ * Class to create a single connection to SQLite Database - Implements singleton pattern
  */
 public class SqliteUserConnection {
     private static Connection instance = null;
