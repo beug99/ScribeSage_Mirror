@@ -7,15 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * This DAO class will handle the CRUD operations with the SQlite User database. This class implements
+ * the {@link IUserDAO} interface. It handles the operations for user creation, viewing, editing and deletion.
+ */
 public class SqliteUserDAO implements IUserDAO {
     private static SqliteNoteConnection SqliteConnection;
     private Connection connection;
 
+    /**
+     * Constructs an instance of the SqliteUserDAO and calls the {@link #createTable()} method.
+     */
     public SqliteUserDAO() {
         connection = SqliteUserConnection.getInstance();
         createTable();
     }
 
+    /**
+     * A method that creates an instance of a table to store the contents that will be saved to the database.
+     */
     private void createTable() {
         // Create table if not exists
         try {
@@ -33,6 +43,10 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
+    /**
+     * A method that adds a user to the User database.
+     * @param user The User to add to the database.
+     */
     @Override
     public void addUser(User user) {
         try {
@@ -52,6 +66,10 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
+    /**
+     * A method That will update the database with updated information on the selected user.
+     * @param user The User to update.
+     */
     @Override
     public void updateUser(User user) {
         try {
@@ -67,6 +85,10 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
+    /**
+     * A method that will delete the selected user from the database.
+     * @param user The User to delete.
+     */
     @Override
     public void deleteUser(User user) {
         try {
@@ -78,6 +100,11 @@ public class SqliteUserDAO implements IUserDAO {
         }
     }
 
+    /**
+     * A method that will retrieve the data on a selected user.
+     * @param id The id of the User to retrieve.
+     * @return The users first and last name, email and password.
+     */
     @Override
     public User getUser(int id) {
         try {
@@ -99,6 +126,10 @@ public class SqliteUserDAO implements IUserDAO {
         return null;
     }
 
+    /**
+     * A method that will get a list of current users from the database.
+     * @return A list of existing users including their first and last name, email and passwords.
+     */
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -123,6 +154,13 @@ public class SqliteUserDAO implements IUserDAO {
         return users;
     }
 
+    /**
+     * A method that will authenticate if a user exists and if their password patches their email.
+     * This is called when a user attempts to log in to their account.
+     * @param email The email address the user enters.
+     * @param password The password the user enters.
+     * @return True if the user account details match, False if they don't match or don't exist.
+     */
     public static boolean authenticateUser(String email, String password) {
         boolean isAuthenticated = false;
         try {
@@ -147,6 +185,15 @@ public class SqliteUserDAO implements IUserDAO {
         return isAuthenticated;
     }
 
+    /**
+     * A method that updates the password of an existing user. They must enter their email and current
+     * password to authenticate themselves before being permitted to chane their password. The method
+     * uses {@link #isValidPassword(String)} to check if the password is valid before updating it.
+     * @param email The email address of the user.
+     * @param oldPassword The current password of the user.
+     * @param newPassword The new password of the user.
+     * @return True if the password update is successful, false if it fails to update.
+     */
     public static boolean updatePassword(String email, String oldPassword, String newPassword) {
         boolean isUpdated = false;
 
@@ -184,52 +231,62 @@ public class SqliteUserDAO implements IUserDAO {
         catch (SQLException e) {
             System.err.println("Password update error: " + e.getMessage());
         }
-
         return isUpdated;
     }
 
-    // email update with password4j
+    /**
+     * A method that updates the email of an existing user. They must enter their email to
+     * authenticate themselves before being permitted to chane their email. The method
+     * uses {@link #isValidEmail(String)} to check if the email is valid before updating it.
+     * @param currentEmail Users current email address.
+     * @param password Users password.
+     * @param newEmail The new email address.
+     * @return True if the email is successfully updated, false it this fails.
+     */
     public static boolean updateEmail(String currentEmail, String password, String newEmail) {
         boolean isUpdated = false;
+        if(isValidEmail(newEmail)) {
+            try {
+                // Check if the current email exists
+                PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
+                        "SELECT password FROM users WHERE email = ?"
+                );
+                getStmt.setString(1, currentEmail); // placeholder
 
-        try {
-            // Check if the current email exists
-            PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT password FROM users WHERE email = ?"
-            );
-            getStmt.setString(1, currentEmail); // placeholder
+                ResultSet resultSet = getStmt.executeQuery();
+                if (resultSet.next()) {
+                    String storedHash = resultSet.getString("password");
 
-            ResultSet resultSet = getStmt.executeQuery();
+                    // verify password with password4j
+                    if (PasswordHasher.verifyPassword(password, storedHash)) {
+                        // If valid, update the email
+                        PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
+                                "UPDATE users SET email = ? WHERE email = ?"
+                        );
+                        updateStmt.setString(1, newEmail);
+                        updateStmt.setString(2, currentEmail);
+                        int rowsAffected = updateStmt.executeUpdate();
+                        isUpdated = (rowsAffected > 0);
 
-            if (resultSet.next()) {
-                String storedHash = resultSet.getString("password");
-
-                // verify password with password4j
-                if (PasswordHasher.verifyPassword(password, storedHash)) {
-                    // If valid, update the email
-                    PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                            "UPDATE users SET email = ? WHERE email = ?"
-                    );
-                    updateStmt.setString(1, newEmail);
-                    updateStmt.setString(2, currentEmail);
-                    int rowsAffected = updateStmt.executeUpdate();
-                    isUpdated = (rowsAffected > 0);
-
-                    updateStmt.close();
+                        updateStmt.close();
+                    }
                 }
+
+                resultSet.close();
+                getStmt.close();
+
+            } catch (SQLException e) {
+                System.err.println("Email update error: " + e.getMessage());
             }
-
-            resultSet.close();
-            getStmt.close();
-
-        } catch (SQLException e) {
-            System.err.println("Email update error: " + e.getMessage());
         }
-
         return isUpdated;
     }
 
-
+    /**
+     *
+     * @param email The email address to be searched.
+     * @return A user if one exists with this email, else returns null.
+     */
     public static User getUserByEmail(String email) {
         try {
             Connection conn = SqliteUserConnection.getInstance();
@@ -253,6 +310,24 @@ public class SqliteUserDAO implements IUserDAO {
         return null;
     }
 
+    /**
+     * A method that analyses the email entered by the user. If the email is written in the correct
+     * syntax it is valid, else it is invalid.
+     * @param email The email entered by the user.
+     * @return True if valid, False if invalid.
+     */
+    public static boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
+
+    /**
+     * A method that analyses the password entered by the user. If the password is written in the
+     * correct syntax it is valid, else it is invalid.
+     * @param password The password entered by the user.
+     * @return True if valid, false if invalid.
+     */
     public static boolean isValidPassword(String password){
         String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
