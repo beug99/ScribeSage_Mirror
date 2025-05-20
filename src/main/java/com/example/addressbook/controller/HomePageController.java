@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import javafx.scene.control.TextField;
+
+import static com.example.addressbook.service.NoteService.notesTreeView;
 
 
 public class HomePageController {
@@ -65,10 +68,9 @@ public class HomePageController {
         NoteService.loadUserNotes();
         FolderService.loadUserFolders();
         this.userNotes = NoteService.getUserNotes();
-
         // setup ui
         NoteService.populateNotesTreeView();
-
+        NoteService.setupDateCellFactory();
         // setup context menu for notes
         setupContextMenus();
 
@@ -156,8 +158,9 @@ public class HomePageController {
 
     @FXML
     private void onUpdateDetails() throws IOException {
-        Stage stage = (Stage) updateDetailsLabel.getScene().getWindow();
-        SceneLoader.switchScene(stage, "updateDetails-view.fxml", false);
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        SceneLoader.switchScene(popupStage, "updateDetails-view.fxml", false);
     }
 
     @FXML

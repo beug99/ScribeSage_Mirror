@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
 
-<VBox fx:id="layout" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.addressbook.controller.TranscriptionPopupController">
+<VBox fx:id="layout" spacing="10" style="-fx-background-color: #2a2d3e;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.TranscriptionPopupController">
    <padding>
-      <Insets top="10" right="10" bottom="10" left="10"/>
+      <Insets bottom="10" left="10" right="10" top="10" />
    </padding>
-
-   <Button fx:id="chooseFileButton" text="Choose audio file" onAction="#onChooseFile"/>
-   <TextArea fx:id="transcriptArea" wrapText="true" editable="false"/>
-   <Button fx:id="copyButton" text="Copy Transcript" onAction="#onCopyTranscript"/>
+   <HBox spacing="10">
+      <Button fx:id="chooseFileButton" onAction="#onChooseFile" style="-fx-background-color: #6a5acd;" text="Select Audio File" textFill="WHITE">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="copyButton" onAction="#onCopyTranscript" style="-fx-background-color: #6a5acd;" text="Copy Transcript" textFill="WHITE">
+         <font>
+            <Font name="HelveticaRounded-Bold" size="14.0" />
+         </font></Button>
+   </HBox>
+   <StackPane fx:id="transcriptionStackPane">
+      <TextArea fx:id="transcriptArea" editable="false" promptText="Your transcribed audio will appear here" wrapText="true">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font>
+      </TextArea>
+      <ProgressIndicator fx:id="progressIndicator" maxHeight="50" maxWidth="50" visible="false" />
+   </StackPane>
 </VBox>

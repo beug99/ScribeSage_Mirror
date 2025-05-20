@@ -88,13 +88,13 @@ public class CreateNoteController {
     @FXML
     public void onHomeClick() throws IOException {
         Stage stage = (Stage) homeButton.getScene().getWindow();
-        SceneLoader.switchScene(stage, "homepage-view.fxml", false);
+        SceneLoader.switchScene(stage, "homepage-view.fxml", true);
     }
 
     @FXML
     public void onCancelButtonClick() throws IOException {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
-        SceneLoader.switchScene(stage, "homepage-view.fxml", false);
+        SceneLoader.switchScene(stage, "homepage-view.fxml", true);
     }
 
     public void onUploadSparseClick(ActionEvent actionEvent) {

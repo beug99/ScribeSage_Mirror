@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
+<VBox prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #2a2d3e;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.CreateNoteController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -15,13 +15,13 @@
             <ColumnConstraints minWidth="70" />
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
-        <Label text="Create New Note" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="Create New Note" textFill="WHITE" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="18.0" />
          </font></Label>
         <Button fx:id="homeButton" onAction="#onHomeClick" style="-fx-background-color: #6a5acd;" text="Home" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
         <padding>
             <Insets bottom="20.0" />
@@ -37,17 +37,23 @@
             <ColumnConstraints hgrow="ALWAYS" />
         </columnConstraints>
 
-        <Label text="Note Title:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="Note Title:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Label>
-        <Label text="Tags:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label text="Tags:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Label>
 
-        <TextField fx:id="noteNameTextField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="noteNameTextField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font></TextField>
+        <TextField fx:id="noteTagsTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font></TextField>
         <rowConstraints>
             <RowConstraints />
             <RowConstraints />
@@ -65,32 +71,32 @@
             <ColumnConstraints />
 
         </columnConstraints>
-        <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="Location:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Label>
-        <Label text="Upload Sparse Notes:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label text="Upload Sparse Notes:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Label>
-        <Label text="Upload Canvas Material:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <Label text="Upload Canvas Material:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Label>
 
-        <Label fx:id="folderName" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label fx:id="folderName" maxWidth="Infinity" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <Button maxWidth="Infinity" onAction="#onChangeFolderClick" style="-fx-background-color: #6a5acd;" text="Choose Folder" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
 
         <Button maxWidth="Infinity" onAction="#onUploadSparseClick" style="-fx-background-color: #6a5acd;" text="Upload" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
         <Button maxWidth="Infinity" onAction="#onUploadCanvasClick" style="-fx-background-color: #6a5acd;" text="Upload" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
         <rowConstraints>
             <RowConstraints />
@@ -108,11 +114,11 @@
 
         <Button fx:id="cancelButton" onAction="#onCancelButtonClick" style="-fx-background-color: #6a5acd;" text="Cancel" textFill="WHITE">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
         <Button fx:id="createNoteButton" onAction="#onCreateButtonClick" style="-fx-background-color: #6a5acd;" text="Create" textFill="WHITE">
          <font>
-            <Font name="HelveticaRounded-Bold" size="12.0" />
+            <Font name="HelveticaRounded-Bold" size="14.0" />
          </font></Button>
     </HBox>
 
