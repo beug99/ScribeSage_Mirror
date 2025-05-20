@@ -3,6 +3,8 @@ package com.example.addressbook.helper;
 import com.password4j.Password;
 import com.password4j.BadParametersException;
 
+import java.util.Properties;
+
 public class PasswordHasher {
 
     public static String hashPassword(String plainTextPassword){
@@ -13,7 +15,6 @@ public class PasswordHasher {
             throw new RuntimeException("Error hashing password", e);
         }
     }
-
     public static boolean verifyPassword(String plainTextPassword, String passwordHash){
         try {
             return Password.check(plainTextPassword, passwordHash).withArgon2();
