@@ -29,6 +29,7 @@ public class AIService {
         this.client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(30))
                 .build();
+        System.out.println("Loaded API key: " + (apiKey != null ? "[HIDDEN]" : "null"));
     }
 
     // loads the api key from the config file
@@ -48,50 +49,60 @@ public class AIService {
         }
     }
 
-    // uses openAI to enhance text
-    public String enhanceText(String input) {
+    // method for performing operations with AI, prompt can be defined for reusability
+    public String aiPerformTextOp(String input, String sysPrompt, String aiPurpose) {
         if (input == null || input.trim().isEmpty()) {
             return "Please provide text to enhance.";
         }
-
         try {
             ObjectMapper mapper = new ObjectMapper();
-
+            ObjectNode jsonBody = mapper.createObjectNode();
+            jsonBody.put("model", DEFAULT_MODEL);
             // messages array, setting AI role
             ArrayNode messages = mapper.createArrayNode();
             messages.add(mapper.createObjectNode()
                     .put("role", "system")
-                    .put("content", "You are a helpful assistant that enhances writing. Improve clarity, style, and readability while maintaining the original meaning."));
+                    .put("content", sysPrompt));
             messages.add(mapper.createObjectNode()
                     .put("role", "user")
-                    .put("content", "Enhance these lecture notes for clarity and style. " + "Add" +
-                            " information where it gives" +"context and adds to the quality of the note. Use html formatting " +
-                            ", keeping the same font, layout, size, etc: '" + input + "'"));
+                    .put("content", aiPurpose + ": '" + input + "'"));
             // AI receives json body text as input so need to parse string to json
-            ObjectNode jsonBody = mapper.createObjectNode();
-            jsonBody.put("model", DEFAULT_MODEL);
             jsonBody.set("messages", messages);
 
-            String requestBody = mapper.writeValueAsString(jsonBody);
-
-            // makes http request to API url (provided by openAI, found on openai website)
+            // makes http request to API url (provided by openAI)
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + apiKey)
-                    // timeout in case it doesn't connect properly
                     .timeout(Duration.ofSeconds(30))
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(jsonBody)))
                     .build();
-
             System.out.println("sending request to OpenAI");
-            // saves response from http (if there's an issue (there were lots) and prints it)
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return parseCompletionFromResponse(response.body());
         } catch (Exception e) {
             e.printStackTrace();
             return "sorry, I couldn't enhance the text due to a technical issue: " + e.getMessage();
         }
+    }
+
+    public String enhanceText(String input) {
+        return aiPerformTextOp(
+                input,
+                "You are a helpful assistant for students that enhances writing for clarity, context and conciseness",
+                "Enhance these lecture notes for clarity and style. Add information where it gives context" +
+                        " and adds to the quality of the note. Use html formatting, keeping the same font, layout, size, etc"
+        );
+    }
+
+    public String summariseText(String input){
+        return aiPerformTextOp(
+        input,
+        "You are a helpful assistant for students that summarises writing for clarity, context and conciseness",
+        "Enhance these lecture notes for clarity and style. Add information where it gives context" +
+                " and adds to the quality of the note. Use html formatting, keeping the same font, layout, size, etc"
+        );
     }
 
     // returns the response and parses from json to string

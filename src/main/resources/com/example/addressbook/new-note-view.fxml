@@ -8,13 +8,12 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane id="rootBox" stylesheets="@../../../css/newnote.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.NewNoteController"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane id="rootBox" stylesheets="@../../../css/newnote.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.NewNoteController">
 
     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- Header Section -->
         <VBox>
-            <GridPane fx:id="profileBar" onMouseClicked="#toggleNavMenu">
+            <GridPane fx:id="profileBar">
                 <columnConstraints>
                     <ColumnConstraints minWidth="50.0" />
                     <ColumnConstraints hgrow="ALWAYS" />
@@ -97,21 +96,28 @@
                             <Font size="14.0" />
                         </font>
                     </Button>
-                    <ProgressIndicator fx:id="progressIndicator" maxHeight="20" maxWidth="20" visible="false" />
+                    <ProgressIndicator fx:id="enhanceProgress" maxHeight="20" maxWidth="20" visible="false" />
                 </StackPane>
+
+                <!-- Added StackPane to overlay progress indicator on button -->
+                <StackPane>
+                    <Button fx:id="summariseTextButton" onAction="#onSummariseButton" text="Summarise Selected Text">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                    <ProgressIndicator fx:id="summariseProgress" maxHeight="20" maxWidth="20" visible="false" />
+                </StackPane>
+
             </HBox>
+         <CheckBox fx:id="enableAutoSaveCheckbox" mnemonicParsing="false" text="Auto Save" />
 
             <!-- HTML EDITOR - Set to grow within available space -->
             <AnchorPane VBox.vgrow="ALWAYS">
                 <padding>
                     <Insets bottom="15" top="15" />
                 </padding>
-                <HTMLEditor fx:id="htmlEditorGui"
-                            htmlText="&lt;html&gt;&lt;body style='margin:0;padding:5px;height:100%;background-color:white;'&gt;&lt;p&gt;Start writing your note here...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
-                            AnchorPane.bottomAnchor="0.0"
-                            AnchorPane.leftAnchor="0.0"
-                            AnchorPane.rightAnchor="0.0"
-                            AnchorPane.topAnchor="0.0" />
+                <HTMLEditor fx:id="htmlEditorGui" htmlText="&lt;html&gt;&lt;body style='margin:0;padding:5px;height:100%;background-color:white;'&gt;&lt;p&gt;Start writing your note here...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </AnchorPane>
         </VBox>
     </VBox>
