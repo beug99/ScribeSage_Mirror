@@ -20,6 +20,7 @@ import java.util.*;
 import javafx.scene.control.TextField;
 
 import static com.example.addressbook.service.NoteService.notesTreeView;
+import static com.example.addressbook.service.NoteService.selectedNote;
 
 
 public class HomePageController {
@@ -99,10 +100,10 @@ public class HomePageController {
         ContextMenu noteMenu = new ContextMenu();
         Menu moveToFolder = new Menu("Move to folder");
         MenuItem removeFromFolder = new MenuItem("Remove from folder");
-        MenuItem renameNote = new MenuItem("Rename note");
-        MenuItem deleteNote = new MenuItem("Delete note");
-        MenuItem duplicateNote = new MenuItem("Duplicate note");
-        MenuItem exportNote = new MenuItem("Export as PDF");
+        MenuItem renameNote = new MenuItem("Rename note (NOT IMPLEMENTED)");
+        MenuItem deleteNote = new MenuItem("Delete note (NOT IMPLEMENTED)");
+        MenuItem duplicateNote = new MenuItem("Duplicate note (NOT IMPLEMENTED)");
+        MenuItem exportNote = new MenuItem("Export as PDF (NOT IMPLEMENTED)");
 
         notesTreeView.setOnContextMenuRequested(event -> {
             TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
@@ -147,25 +148,52 @@ public class HomePageController {
 
                     // Option to rename note from context menu
                     renameNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to rename note: ");
+                        if (selectedNote != null) {
+                            System.out.println("Trying to rename note: " + selectedNote);
+                            // Text field for renaming
+                            TextField renameField = new TextField(selectedNote.getNoteName());
+
+                            // Create buttons
+                            Button saveButton = new Button("Save");
+                            Button cancelButton = new Button("Cancel");
+
+                            // Handle save action
+                            saveButton.setOnAction(saveEvent -> {
+                                selectedNote.setNoteName(renameField.getText());
+                                // Refresh UI or save changes
+                            });
+
+                            // Handle cancel action
+                            cancelButton.setOnAction(e -> {
+                                // Simply remove the rename field without saving
+                            });
+
+                            // Layout for the rename field and buttons
+                            HBox renameBox = new HBox(renameField, saveButton, cancelButton);
+                            renameBox.setSpacing(10);
+                        }
                     });
                     noteMenu.getItems().add(renameNote);
 
                     // Option to delete note from context menu
                     deleteNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to delete note: ");
+                        System.out.println("Trying to delete note: " + selectedNote);
                     });
                     noteMenu.getItems().add(deleteNote);
 
                     // Option to create note from copy of selected note
                     duplicateNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to duplicate note: ");
+                        if (selectedNote != null) {
+                            System.out.println("Trying to duplicate note: " + selectedNote);
+                        }
                     });
                     noteMenu.getItems().add(duplicateNote);
 
                     // Option to export note to PDF
                     exportNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to export note: ");
+                        if (selectedNote != null) {
+                            System.out.println("Trying to export note: " + selectedNote);
+                        }
                     });
                     noteMenu.getItems().add(exportNote);
 
