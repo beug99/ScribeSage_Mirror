@@ -178,6 +178,11 @@ public class HomePageController {
                     // Option to delete note from context menu
                     deleteNote.setOnAction(actionEvent -> {
                         System.out.println("Trying to delete note: " + selectedNote);
+                        try {
+                            onDeleteItem();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     });
                     noteMenu.getItems().add(deleteNote);
 
