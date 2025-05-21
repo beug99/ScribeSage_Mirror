@@ -155,6 +155,12 @@ public class HomePageController {
                     });
                     noteMenu.getItems().add(deleteNote);
 
+                    // Option to create note from copy of selected note
+                    deleteNote.setOnAction(actionEvent -> {
+                        System.out.println("Trying to delete note: ");
+                    });
+                    noteMenu.getItems().add(deleteNote);
+
                     noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
                 }
             }
