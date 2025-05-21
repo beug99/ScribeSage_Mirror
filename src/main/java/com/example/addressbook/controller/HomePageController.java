@@ -101,6 +101,8 @@ public class HomePageController {
         MenuItem removeFromFolder = new MenuItem("Remove from folder");
         MenuItem renameNote = new MenuItem("Rename note");
         MenuItem deleteNote = new MenuItem("Delete note");
+        MenuItem duplicateNote = new MenuItem("Duplicate note");
+        MenuItem exportNote = new MenuItem("Export as PDF");
 
         notesTreeView.setOnContextMenuRequested(event -> {
             TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
@@ -156,10 +158,17 @@ public class HomePageController {
                     noteMenu.getItems().add(deleteNote);
 
                     // Option to create note from copy of selected note
-                    deleteNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to delete note: ");
+                    duplicateNote.setOnAction(actionEvent -> {
+                        System.out.println("Trying to duplicate note: ");
                     });
-                    noteMenu.getItems().add(deleteNote);
+                    noteMenu.getItems().add(duplicateNote);
+
+                    // Option to export note to PDF
+                    exportNote.setOnAction(actionEvent -> {
+                        System.out.println("Trying to export note: ");
+                    });
+                    noteMenu.getItems().add(exportNote);
+
 
                     noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
                 }
