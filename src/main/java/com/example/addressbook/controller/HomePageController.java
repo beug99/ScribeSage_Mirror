@@ -99,6 +99,7 @@ public class HomePageController {
         ContextMenu noteMenu = new ContextMenu();
         Menu moveToFolder = new Menu("Move to folder");
         MenuItem removeFromFolder = new MenuItem("Remove from folder");
+        MenuItem renameNote = new MenuItem("Rename note");
 
         notesTreeView.setOnContextMenuRequested(event -> {
             TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
@@ -140,6 +141,12 @@ public class HomePageController {
                         }
                     });
                     noteMenu.getItems().add(removeFromFolder);
+
+                    // Option to rename note from context menu
+                    renameNote.setOnAction(actionEvent -> {
+                        System.out.println("Trying to rename note: ");
+                    });
+                    noteMenu.getItems().add(renameNote);
 
                     noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
                 }
