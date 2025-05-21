@@ -4,6 +4,7 @@ import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import com.example.addressbook.service.FolderService;
 import com.example.addressbook.service.NoteService;
+import com.sun.source.tree.Tree;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
 import javafx.event.ActionEvent;
@@ -100,10 +101,20 @@ public class HomePageController {
         ContextMenu noteMenu = new ContextMenu();
         Menu moveToFolder = new Menu("Move to folder");
         MenuItem removeFromFolder = new MenuItem("Remove from folder");
-        MenuItem renameNote = new MenuItem("Rename note (NOT IMPLEMENTED)");
         MenuItem deleteNote = new MenuItem("Delete note (NOT IMPLEMENTED)");
         MenuItem duplicateNote = new MenuItem("Duplicate note (NOT IMPLEMENTED)");
         MenuItem exportNote = new MenuItem("Export as PDF (NOT IMPLEMENTED)");
+        MenuItem renameNote = new MenuItem("Rename note");
+
+        renameNote.setOnAction(event -> {
+            TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
+            if (item != null && NoteService.isNoteItem(item)) {
+                Note note = findNoteByName(item.getValue());
+                if (note != null) {
+                    showRenameDialog(note);
+                }
+            }
+        });
 
         notesTreeView.setOnContextMenuRequested(event -> {
             TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
@@ -146,36 +157,9 @@ public class HomePageController {
                     });
                     noteMenu.getItems().add(removeFromFolder);
 
-                    // Option to rename note from context menu
-                    renameNote.setOnAction(actionEvent -> {
-                        if (selectedNote != null) {
-                            System.out.println("Trying to rename note: " + selectedNote.getNoteName());
-                            // Text field for renaming
-                            TextField renameField = new TextField(selectedNote.getNoteName());
-
-                            // Create buttons
-                            Button saveButton = new Button("Save");
-                            Button cancelButton = new Button("Cancel");
-
-                            // Handle save action
-                            saveButton.setOnAction(saveEvent -> {
-                                selectedNote.setNoteName(renameField.getText());
-                                // Refresh UI or save changes
-                            });
-
-                            // Handle cancel action
-                            cancelButton.setOnAction(e -> {
-                                // Simply remove the rename field without saving
-                            });
-
-                            // Layout for the rename field and buttons
-                            HBox renameBox = new HBox(renameField, saveButton, cancelButton);
-                            renameBox.setSpacing(10);
-                        }
-                    });
                     noteMenu.getItems().add(renameNote);
 
-                    // Option to delete note from context menu
+                    // option to delete note from context menu
                     deleteNote.setOnAction(actionEvent -> {
                         System.out.println("Trying to delete note: " + selectedNote.getNoteName());
                         try {
@@ -202,8 +186,8 @@ public class HomePageController {
                     });
                     noteMenu.getItems().add(exportNote);
 
-
                     noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
+
                 }
             }
         });
@@ -216,6 +200,24 @@ public class HomePageController {
             }
         }
         return null;
+    }
+
+    private void showRenameDialog(Note note) {
+        TextInputDialog dialog = new TextInputDialog(note.getNoteName());
+        dialog.setTitle("Rename Note");
+        dialog.setHeaderText("Enter new note name:");
+        dialog.setContentText("Note name:");
+
+        dialog.showAndWait().ifPresent(newName -> {
+            if (!newName.trim().isEmpty()) {
+                // update the note name
+                note.setNoteName(newName.trim());
+                noteDAO.updateNote(note);
+                // refresh view
+                NoteService.loadUserData();
+                NoteService.populateNotesTreeView();
+            }
+        });
     }
 
     @FXML

@@ -36,7 +36,6 @@ public class CreateNoteController {
     @FXML
     private TextField noteTagsTextField;
 
-
     /**
      * Constructs an instance of both a note and a folder Data Access Object ({@link INoteDAO} and
      * {@link IFolderDAO}). The available folders are loaded to the instance by accessing the existing
