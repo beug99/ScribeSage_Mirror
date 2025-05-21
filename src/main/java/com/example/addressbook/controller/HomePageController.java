@@ -149,7 +149,7 @@ public class HomePageController {
                     // Option to rename note from context menu
                     renameNote.setOnAction(actionEvent -> {
                         if (selectedNote != null) {
-                            System.out.println("Trying to rename note: " + selectedNote);
+                            System.out.println("Trying to rename note: " + selectedNote.getNoteName());
                             // Text field for renaming
                             TextField renameField = new TextField(selectedNote.getNoteName());
 
@@ -177,7 +177,7 @@ public class HomePageController {
 
                     // Option to delete note from context menu
                     deleteNote.setOnAction(actionEvent -> {
-                        System.out.println("Trying to delete note: " + selectedNote);
+                        System.out.println("Trying to delete note: " + selectedNote.getNoteName());
                         try {
                             onDeleteItem();
                         } catch (IOException e) {
@@ -189,7 +189,7 @@ public class HomePageController {
                     // Option to create note from copy of selected note
                     duplicateNote.setOnAction(actionEvent -> {
                         if (selectedNote != null) {
-                            System.out.println("Trying to duplicate note: " + selectedNote);
+                            System.out.println("Trying to duplicate note: " + selectedNote.getNoteName());
                         }
                     });
                     noteMenu.getItems().add(duplicateNote);
@@ -197,7 +197,7 @@ public class HomePageController {
                     // Option to export note to PDF
                     exportNote.setOnAction(actionEvent -> {
                         if (selectedNote != null) {
-                            System.out.println("Trying to export note: " + selectedNote);
+                            System.out.println("Trying to export note: " + selectedNote.getNoteName());
                         }
                     });
                     noteMenu.getItems().add(exportNote);
