@@ -175,7 +175,7 @@ public class NoteService {
         return false;
     }
 
-    private static Note findNoteByName(String noteName) {
+    public static Note findNoteByName(String noteName) {
         for (Note note : getUserNotes()) {
             if (note.getNoteName().equals(noteName)) {
                 return note;

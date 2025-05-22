@@ -4,6 +4,10 @@ import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.model.*;
 import com.example.addressbook.service.FolderService;
 import com.example.addressbook.service.NoteService;
+import com.lowagie.text.*;
+import com.lowagie.text.html.simpleparser.HTMLWorker;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.draw.LineSeparator;
 import com.sun.source.tree.Tree;
 import javafx.application.Platform;
 import com.example.addressbook.Session;
@@ -12,17 +16,24 @@ import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+import java.util.List;
 
 import javafx.scene.control.TextField;
 
-import static com.example.addressbook.service.NoteService.notesTreeView;
-import static com.example.addressbook.service.NoteService.selectedNote;
+import static com.example.addressbook.service.NoteService.*;
+import static com.lowagie.text.StandardFonts.HELVETICA;
+import static com.lowagie.text.StandardFonts.HELVETICA_ITALIC;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 
 public class HomePageController {
 
@@ -103,7 +114,7 @@ public class HomePageController {
         MenuItem removeFromFolder = new MenuItem("Remove from folder");
         MenuItem deleteNote = new MenuItem("Delete note (NOT IMPLEMENTED)");
         MenuItem duplicateNote = new MenuItem("Duplicate note (NOT IMPLEMENTED)");
-        MenuItem exportNote = new MenuItem("Export as PDF (NOT IMPLEMENTED)");
+        MenuItem exportNote = new MenuItem("Export note");
         MenuItem renameNote = new MenuItem("Rename note");
 
         renameNote.setOnAction(event -> {
@@ -115,6 +126,21 @@ public class HomePageController {
                 }
             }
         });
+        exportNote.setOnAction(event -> {
+            TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
+            if (item != null && NoteService.isNoteItem(item)) {
+                Note note = findNoteByName(item.getValue());
+                if (note != null) {
+                    showExportDialog(note);
+                } else {
+                    showAlert("Export Error", "Selected note not found.");
+                }
+            } else {
+                showAlert("Export Error", "No valid note selected.");
+            }
+        });
+
+
 
         notesTreeView.setOnContextMenuRequested(event -> {
             TreeItem<String> item = notesTreeView.getSelectionModel().getSelectedItem();
@@ -178,13 +204,8 @@ public class HomePageController {
                     });
                     noteMenu.getItems().add(duplicateNote);
 
-                    // Option to export note to PDF
-                    exportNote.setOnAction(actionEvent -> {
-                        if (selectedNote != null) {
-                            System.out.println("Trying to export note: " + selectedNote.getNoteName());
-                        }
-                    });
                     noteMenu.getItems().add(exportNote);
+
 
                     noteMenu.show(notesTreeView, event.getScreenX(), event.getSceneY());
 
@@ -200,6 +221,14 @@ public class HomePageController {
             }
         }
         return null;
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void showRenameDialog(Note note) {
@@ -218,6 +247,128 @@ public class HomePageController {
                 NoteService.populateNotesTreeView();
             }
         });
+    }
+
+    /**
+     * Exports selected note into pdf format
+     * @param note the selected note
+     */
+    private void showExportDialog(Note note) {
+        try {
+            // file chooser dialog box pops up when user selects the export option
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Export Note to PDF");
+            fileChooser.setInitialFileName(note.getNoteName() + ".pdf");
+
+            // add extension filter to set filechooser to pdf files
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+
+            // show the save file dialog
+            File file = fileChooser.showSaveDialog(notesTreeView.getScene().getWindow());
+
+            if (file != null) {
+                // call method to create the PDF
+                exportNoteToPdf(note, file);
+
+                // show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Export Successful");
+                alert.setHeaderText(null);
+                alert.setContentText("Note has been successfully exported");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            // show error message
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Export Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to export note: " + e.getMessage());
+            alert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a PDF file from the selected note
+     * @param note The note to export
+     * @param outputFile The file to save the PDF to
+     */
+    private void exportNoteToPdf(Note note, File outputFile) throws IOException, DocumentException {
+        // create document with A4 size
+        Document document = new Document(PageSize.A4);
+        // create pdf
+        PdfWriter.getInstance(document, new FileOutputStream(outputFile));
+
+        // open doc
+        document.open();
+
+        // add data from note
+        document.addTitle(note.getNoteName());
+        document.addAuthor(note.getNoteOwner());
+        document.addCreationDate();
+
+        // Add title
+        Paragraph title = new Paragraph(note.getNoteName(), HELVETICA.create());
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(20);
+        document.add(title);
+
+        // Add creation date if available
+        if (note.getCreatedDate() != null) {
+            Paragraph dateInfo = new Paragraph("Created on: " + note.getFormattedCreatedDate(), HELVETICA.create());
+            dateInfo.setAlignment(Element.ALIGN_RIGHT);
+            dateInfo.setSpacingAfter(15);
+            document.add(dateInfo);
+        }
+
+        // Add separator line
+        LineSeparator lineSeparator = new LineSeparator();
+        lineSeparator.setLineWidth(0.5f);
+        document.add(lineSeparator);
+        document.add(Chunk.NEWLINE);
+
+        // Determine if note text is HTML or plain text
+        String noteText = note.getNoteText();
+        if (isHtmlContent(noteText)) {
+            // Parse HTML content
+            HTMLWorker htmlWorker = new HTMLWorker(document);
+            htmlWorker.parse(new StringReader(noteText));
+        } else {
+            // Add plain text content
+            Paragraph content = new Paragraph(noteText, HELVETICA.create());
+            content.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(content);
+        }
+
+        // Add tags if available
+        if (note.getNoteTags() != null && !note.getNoteTags().isEmpty()) {
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            Paragraph tags = new Paragraph();
+            tags.setAlignment(Element.ALIGN_LEFT);
+            document.add(tags);
+        }
+
+        // Close document
+        document.close();
+    }
+
+    /**
+     * Determines if the content is HTML
+     * @param content The content to check
+     * @return true if content appears to be HTML
+     */
+    private boolean isHtmlContent(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return false;
+        }
+
+        String trimmedContent = content.trim().toLowerCase();
+        return trimmedContent.contains("<html") ||
+                trimmedContent.contains("<p>") ||
+                trimmedContent.contains("<div") ||
+                trimmedContent.contains("<body");
     }
 
     @FXML

@@ -46,8 +46,8 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteTags VARCHAR NOT NULL,"
                     + "noteText VARCHAR NOT NULL,"
                     + "noteOwner VARCHAR NOT NULL,"
-                    + "folderId INTEGER"
-                    + "createdData TIMESTAMP"
+                    + "folderId INTEGER,"
+                    + "createdDate TIMESTAMP"
                     + ")";
             statement.execute(query);
             logSQLexecution(statement.toString());
@@ -93,7 +93,7 @@ public class SqliteNoteDAO implements INoteDAO {
     public void updateNote(Note note) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, " +
-                    "noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?, createdDate = ? WHERE id = ?");
+                    "noteText = ?, noteOwner = ?, folderId = ?, createdDate = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
