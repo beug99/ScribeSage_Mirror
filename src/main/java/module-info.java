@@ -12,6 +12,8 @@ module com.example.addressbook {
     requires com.sun.jna.platform;
     requires com.github.librepdf.openpdf;
     requires java.desktop;
+    requires org.apache.commons.io;
+    requires org.apache.pdfbox;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="layout" spacing="10" style="-fx-background-color: #2a2d3e;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.addressbook.controller.ImportPopupController">
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+    <HBox spacing="10">
+        <Button fx:id="chooseFileButton" onAction="#onChooseFile" style="-fx-background-color: #6a5acd;" text="Select File" textFill="WHITE">
+            <font>
+                <Font name="HelveticaRounded-Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="copyButton" onAction="#onCopyImport" style="-fx-background-color: #6a5acd;" text="Copy File Text" textFill="WHITE">
+            <font>
+                <Font name="HelveticaRounded-Bold" size="14.0" />
+            </font>
+        </Button>
+    </HBox>
+    <StackPane fx:id="stackPane" minHeight="500">
+        <TextArea fx:id="importArea" editable="false" promptText="Your imported file will appear here" wrapText="true">
+            <font>
+                <Font name="Helvetica" size="14.0" />
+            </font>
+        </TextArea>
+    </StackPane>
+</VBox>

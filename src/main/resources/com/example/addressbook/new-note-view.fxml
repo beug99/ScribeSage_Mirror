@@ -79,11 +79,17 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="importAudioButton" onAction="#onLoadButtonClick" style="-fx-background-color: #6a5acd;" text="Import Audio" textFill="WHITE">
+                <Button fx:id="importAudioButton" onAction="#onTranscribeButton" style="-fx-background-color: #6a5acd;" text="Transcribe Audio" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
+                <Button fx:id="importTextButton" onAction="#onImportTextButton" style="-fx-background-color: #6a5acd;" text="Import File" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+
 
                 <!-- Added StackPane to overlay progress indicator on button -->
                 <StackPane>

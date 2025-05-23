@@ -19,7 +19,7 @@ public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
     /**
-     *
+     * Initialises connection with database
      */
     public SqliteNoteDAO() {
         connection = SqliteNoteConnection.getInstance("notes.db");

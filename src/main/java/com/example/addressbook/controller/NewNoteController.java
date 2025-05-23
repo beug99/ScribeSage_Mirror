@@ -6,30 +6,19 @@ import com.example.addressbook.helper.SceneLoader;
 import com.example.addressbook.service.AIService;
 import com.example.addressbook.model.Note;
 import com.example.addressbook.model.SqliteNoteDAO;
-import com.example.addressbook.service.VoskTranscribeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
-
-import javax.sound.sampled.Clip;
-import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -44,12 +33,10 @@ public class NewNoteController extends CreateNoteController {
     public Button homeButton;
     public TextField searchBarID;
     public Button saveButton;
-    public VBox vBoxForHtmlGui;
     public HTMLEditor htmlEditorGui;
     public Button searchBarButton;
     public TextArea todeletejustdisplay;
     public Label nameLabel;
-    public CheckBox enableAutoSaveCheckbox;
     public Button enhanceTextButton;
     public ProgressIndicator progressIndicator; // Add to FXML
     @FXML
@@ -63,7 +50,6 @@ public class NewNoteController extends CreateNoteController {
     private ExecutorService executorService;
     private SqliteNoteDAO noteDOA;
     private Note currentNote;
-    private boolean autoSavingEnabled = false;
     private Timer autoSaveTimer;
     private int AutoSaveInterval = 5; // How often the autosave runs in minutes
 
@@ -71,7 +57,7 @@ public class NewNoteController extends CreateNoteController {
         super();
         aiService = new AIService();
         noteDOA = new SqliteNoteDAO();
-        // Create a thread pool for background tasks
+        // create a thread pool for background tasks
         executorService = Executors.newFixedThreadPool(2);
     }
 
@@ -162,6 +148,9 @@ public class NewNoteController extends CreateNoteController {
         );
     }
 
+    /**
+     * Uses the intergraded AI to summarise the text
+     */
     @FXML
     public void onSummariseButton(){
         String selected = getSelectedHTMLText();
@@ -202,12 +191,21 @@ public class NewNoteController extends CreateNoteController {
     }
 
     @FXML
-    public void onLoadButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onTranscribeButton(ActionEvent actionEvent) throws IOException {
         System.out.println("Load button pressed");
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         SceneLoader.switchScene(popupStage, "transcript-view.fxml", false);
     }
+
+    @FXML
+    public void onImportTextButton(ActionEvent actionEvent) throws IOException {
+        System.out.println("Import file button pressed");
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        SceneLoader.switchScene(popupStage, "import-view.fxml", false);
+    }
+
 
     @FXML
     public void onHomeButtonClick(ActionEvent actionEvent) throws IOException {
