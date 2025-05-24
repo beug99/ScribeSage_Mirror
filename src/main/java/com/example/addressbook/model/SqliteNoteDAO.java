@@ -1,9 +1,6 @@
 package com.example.addressbook.model;
 
 import com.example.addressbook.Session;
-import com.sun.jna.platform.win32.Sspi;
-
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
-
+/**
+ * This DAO class will handle the CRUD operations with the SQlite Note database. This class
+ * implements the {@link com.example.addressbook.model.INoteDAO INoteDAO} interface. It handles
+ * the operations for note creation, viewing, editing and deletion.
+ */
 public class SqliteNoteDAO implements INoteDAO {
     private Connection connection;
 
+    /**
+     * Initialises connection with database
+     */
     public SqliteNoteDAO() {
         connection = SqliteNoteConnection.getInstance("notes.db");
         createTable();
@@ -42,8 +46,8 @@ public class SqliteNoteDAO implements INoteDAO {
                     + "noteTags VARCHAR NOT NULL,"
                     + "noteText VARCHAR NOT NULL,"
                     + "noteOwner VARCHAR NOT NULL,"
-                    + "folderId INTEGER"
-                    + "createdData TIMESTAMP"
+                    + "folderId INTEGER,"
+                    + "createdDate TIMESTAMP"
                     + ")";
             statement.execute(query);
             logSQLexecution(statement.toString());
@@ -89,7 +93,7 @@ public class SqliteNoteDAO implements INoteDAO {
     public void updateNote(Note note) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE notes SET noteName = ?, noteTags = ?, " +
-                    "noteText = ?, noteOwner = ?, folderId = ? WHERE id = ?, createdDate = ? WHERE id = ?");
+                    "noteText = ?, noteOwner = ?, folderId = ?, createdDate = ? WHERE id = ?");
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
@@ -217,6 +221,10 @@ public class SqliteNoteDAO implements INoteDAO {
         return notes;
     }
 
+    /**
+     *
+     * @param selectedNote
+     */
     @Override
     public void deleteNote(Note selectedNote) {
         try {

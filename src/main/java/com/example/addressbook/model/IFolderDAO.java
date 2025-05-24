@@ -4,6 +4,9 @@ import javafx.scene.control.TreeItem;
 
 import java.util.List;
 
+/**
+ * An interface for the SqliteFolderDAO.
+ */
 public interface IFolderDAO {
     void addFolder(Folder folder);
     List<Folder> getFolderByEmail(String email);

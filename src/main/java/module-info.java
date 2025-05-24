@@ -6,11 +6,14 @@ module com.example.addressbook {
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
-    requires java.desktop;
     requires password4j;
     requires jdk.compiler;
     requires vosk;
     requires com.sun.jna.platform;
+    requires com.github.librepdf.openpdf;
+    requires java.desktop;
+    requires org.apache.commons.io;
+    requires org.apache.pdfbox;
 
     opens com.example.addressbook to javafx.fxml;
     exports com.example.addressbook;
