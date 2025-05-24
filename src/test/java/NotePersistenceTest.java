@@ -31,41 +31,35 @@ public class NotePersistenceTest {
     private static final String Note1_Tags = "BioMed";
     private static final String Note1_Text_Before = "I am going to fail, I have not studdied. Sorry mum, me no doctor.";
     private static final String Note1_Text_After = "I will NOT fail, I have STUDDIED. MUM! ME AM DOCTOR!!!";
-    private static final String Note1_Owner = User1_Email;
 
     // Test Note 2
     private static final String Note2_Name = "BioMedNotes Week 2";
     private static final String Note2_Tags = "BioMed";
     private static final String Note2_Text = "Bones have something to do with anatomy... I think.";
-    private static final  String Note2_Owner = User1_Email;
 
     // Test Note 3
     private static final String Note3_Name = "Maths Week 1";
     private static final String Note3_Tags = "Math";
     private static final String Note3_Text_Before = "1 + 1 = _ uh let me get the calculator.";
     private static final String Note3_Text_After = "1 + 1 = 2.1 heheh eazy.";
-    private static final String Note3_Owner = User2_Email;
 
     // Test Note 4
     private static final String Note4_Name = "Maths Week 2";
     private static final String Note4_Tags = "Math";
     private static final String Note4_Text = "Ducks have eyes but not all eyes have a duck. Quack.";
-    private static final String Note4_Owner = User2_Email;
 
     // Test Note 5
     private static final String Note5_Name = "DELETE ME!";
     private static final String Note5_Tags = "";
     private static final String Note5_Text = "I meant to load a note not make this ugh! Whatever shall I do!";
-    private static final String Note5_Owner = User1_Email;
 
     // Test Note 6
     private static final String Note6_Name = "DELETE ME!";
     private static final String Note6_Tags = "";
     private static final String Note6_Text = "I meant to load a note not make this ugh! Whatever shall I do!";
-    private static final String Note6_Owner = User2_Email;
 
     /**
-     * Test Initialisations
+     * Test Initializations
      */
     private INoteDAO NotesDAO;
     private IUserDAO UserDAO;
@@ -74,12 +68,6 @@ public class NotePersistenceTest {
     private User User2;
     private List<User> userList;
 
-    private Note Note1;
-    private Note Note2;
-    private Note Note3;
-    private Note Note4;
-    private Note Note5;
-    private Note Note6;
     private List<Note> noteList;
 
     private NotePersistenceTest() {
@@ -112,58 +100,47 @@ public class NotePersistenceTest {
         UserDAO.addUser(User1);
         User2 = new User(User2_FirstName, User2_LastName, User2_Email, User2_Password);
         UserDAO.addUser(User2);
-
-
-        // Initialise test notes
-        Note1 = new Note(Note1_Name, Note1_Tags, Note1_Text_Before, Note1_Owner);
-        Note2 = new Note(Note2_Name, Note2_Tags, Note2_Text, Note2_Owner);
-        Note3 = new Note(Note3_Name, Note3_Tags, Note3_Text_Before, Note3_Owner);
-        Note4 = new Note(Note4_Name, Note4_Tags, Note4_Text, Note4_Owner);
-        Note5 = new Note(Note5_Name, Note5_Tags, Note5_Text, Note5_Owner);
-        Note6 = new Note(Note6_Name, Note6_Tags, Note6_Text, Note6_Owner);
-
     }
 
     /**
      * Test Method Overview
-     *
+     * <p>
      * Test Case 1:
-     *      User1 Logs in, creates a note, saves, logs out.
-     *      Success if User1's note has been retained.
-     *
+     * User1 Logs in, creates a note, saves, logs out.
+     * Success if User1's note has been retained.
+     * <p>
      * Test Case 2:
-     *      User1 Logs in, creates a note, saves.
-     *      User1 deletes the note, logs out.
-     *      Success if User1;s note has been deleted
-     *
+     * User1 Logs in, creates a note, saves.
+     * User1 deletes the note, logs out.
+     * Success if User1's note has been deleted
+     * <p>
      * Test Case 3:
-     *      User1 logs in, creates a note, saves, logs out.
-     *      User2 logs in, creates a note, saves, logs out.
-     *      User1 logs in, views note, logs out.
-     *      User2 logs in, views note, logs out.
-     *      Success if User1's and User2's notes have been retained.
-     *
+     * User1 logs in, creates a note, saves, logs out.
+     * User2 logs in, creates a note, saves, logs out.
+     * User1 logs in, views note, logs out.
+     * User2 logs in, views note, logs out.
+     * Success if User1's and User2's notes have been retained.
+     * <p>
      * Test Case 4:
-     *      User1 logs in, creates a note, saves, logs out.
-     *      User2 logs in, creates a note, saves, logs out.
-     *      User1 logs in, deletes their note, logs out.
-     *      User2 logs in, views note, logs out.
-     *      Success if User1's note has been deleted but User2's note has been retained.
-     *
-     *  Test Case 5:
-     *      User1 Logs in, creates a note, saves, logs out.
-     *      User2 logs in, creates a note, saves, logs out.
-     *      User1 Logs in, views note, edits the note, saves, logs out.
-     *      User2 Logs in, views note, edits the note, saves, logs out.
-     *      Success if User1's and User2's notes and edits have been retained.
-     *
-     *  Test Case 6:
-     *      User1 logs in, creates a note, saves, logs out.
-     *      User2 logs in, coincidentally creates a note of the same name, saves and logs out.
-     *      User1 logs back in, loads their note, edits the note, saves, logs out.
-     *      User2 logs back in, loads their note, edits the note, saves, logs out.
-     *      Success if both text fields retain changes only made by their owners.
-     *
+     * User1 logs in, creates a note, saves, logs out.
+     * User2 logs in, creates a note, saves, logs out.
+     * User1 logs in, deletes their note, logs out.
+     * User2 logs in, views note, logs out.
+     * Success if User1's note has been deleted but User2's note has been retained.
+     * <p>
+     * Test Case 5:
+     * User1 Logs in, creates a note, saves, logs out.
+     * User2 logs in, creates a note, saves, logs out.
+     * User1 Logs in, views note, edits the note, saves, logs out.
+     * User2 Logs in, views note, edits the note, saves, logs out.
+     * Success if User1's and User2's notes and edits have been retained.
+     * <p>
+     * Test Case 6:
+     * User1 logs in, creates a note, saves, logs out.
+     * User2 logs in, coincidentally creates a note of the same name, saves and logs out.
+     * User1 logs back in, loads their note, edits the note, saves, logs out.
+     * User2 logs back in, loads their note, edits the note, saves, logs out.
+     * Success if both text fields retain changes only made by their owners.
      */
 
     @Test
@@ -172,24 +149,29 @@ public class NotePersistenceTest {
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
         assertEquals(User1_Email, Session.getLoggedInEmail());
 
-        // User1 Creates a note
-        NotesDAO.addNote(Note1);
+        // User1 Creates a note (owner will be set to session user by DAO)
+        Note note1 = new Note(Note1_Name, Note1_Tags, Note1_Text_Before, null); // Owner doesn't matter, DAO uses session
+        NotesDAO.addNote(note1);
+
         List<Note> user1Notes = NotesDAO.getNotesByOwner(Session.getLoggedInEmail());
         assertEquals(1, user1Notes.size());
-        assertEquals(User1_Email, user1Notes.getFirst().getNoteOwner());
+        assertEquals(User1_Email, user1Notes.get(0).getNoteOwner());
+        assertEquals(Note1_Text_Before, user1Notes.get(0).getNoteText());
 
         // User1 logs out
         Session.clear();
         assertNull(Session.getLoggedInEmail());
 
-        // Forget User1's note from local test memory
-        user1Notes.clear();
+        // Clear local reference
+        user1Notes = null;
 
         // Get User1's notes now they are logged out
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
 
         // Check if success criteria met
-        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
+        assertEquals(1, user1Notes.size());
+        assertEquals(Note1_Text_Before, user1Notes.get(0).getNoteText());
+        assertEquals(User1_Email, user1Notes.get(0).getNoteOwner());
     }
 
     @Test
@@ -199,19 +181,22 @@ public class NotePersistenceTest {
         assertEquals(User1_Email, Session.getLoggedInEmail());
 
         // User1 creates a note
-        NotesDAO.addNote(Note5);
+        Note note5 = new Note(Note5_Name, Note5_Tags, Note5_Text, null);
+        NotesDAO.addNote(note5);
+
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note5_Name, user1Notes.getFirst().getNoteName());
+        assertEquals(Note5_Name, user1Notes.get(0).getNoteName());
 
-        // User1 deletes the note
-        NotesDAO.deleteNote(Note5);
+        // User1 deletes the note (get the note with ID from database)
+        Note noteToDelete = user1Notes.get(0);
+        NotesDAO.deleteNote(noteToDelete);
 
         // User1 logs out
         Session.clear();
         assertNull(Session.getLoggedInEmail());
 
-        // Verrify Success criteria (Ensure no notes remain)
+        // Verify Success criteria (Ensure no notes remain)
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertTrue(user1Notes.isEmpty());
     }
@@ -222,10 +207,12 @@ public class NotePersistenceTest {
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
 
         // User1 creates a note
-        NotesDAO.addNote(Note1);
+        Note note1 = new Note(Note1_Name, Note1_Tags, Note1_Text_Before, null);
+        NotesDAO.addNote(note1);
+
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
+        assertEquals(Note1_Text_Before, user1Notes.get(0).getNoteText());
 
         // User1 logs out
         Session.clear();
@@ -235,10 +222,12 @@ public class NotePersistenceTest {
         assertEquals(User2_Email, Session.getLoggedInEmail());
 
         // User2 creates a note
-        NotesDAO.addNote(Note3);
+        Note note3 = new Note(Note3_Name, Note3_Tags, Note3_Text_Before, null);
+        NotesDAO.addNote(note3);
+
         List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3_Name, user2Notes.getFirst().getNoteName());
+        assertEquals(Note3_Name, user2Notes.get(0).getNoteName());
 
         // User2 logs out
         Session.clear();
@@ -249,154 +238,150 @@ public class NotePersistenceTest {
         // Verify Success criteria (User1's note persists)
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note1_Name, user1Notes.getFirst().getNoteName());
+        assertEquals(Note1_Name, user1Notes.get(0).getNoteName());
 
         // Verify Success criteria (User2's note persists)
         user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3_Name, user2Notes.getFirst().getNoteName());
+        assertEquals(Note3_Name, user2Notes.get(0).getNoteName());
     }
 
     @Test
     public void testCase4() {
-        // User1 logs in
+        // User1 logs in and creates a note
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
+        Note note1 = new Note(Note1_Name, Note1_Tags, Note1_Text_Before, null);
+        NotesDAO.addNote(note1);
 
-        // User1 creates a note
-        NotesDAO.addNote(Note1);
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note1.getNoteText(), user1Notes.getFirst().getNoteText());
+        assertEquals(Note1_Text_Before, user1Notes.get(0).getNoteText());
 
         // User1 logs out
         Session.clear();
 
-        // User2 logs in
+        // User2 logs in and creates a note
         Session.setUser(User2.getEmail(), User2.getFirstName(), User2.getLastName());
+        Note note3 = new Note(Note3_Name, Note3_Tags, Note3_Text_Before, null);
+        NotesDAO.addNote(note3);
 
-        // User2 creates a ntoe
-        NotesDAO.addNote(Note3);
         List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3.getNoteText(), user2Notes.getFirst().getNoteText());
+        assertEquals(Note3_Text_Before, user2Notes.get(0).getNoteText());
 
         // User2 logs out
         Session.clear();
 
-        // User1 logs in
+        // User1 logs in and deletes their note
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
-
-        // User1 deletes their note
-        NotesDAO.deleteNote(Note1);
+        user1Notes = NotesDAO.getNotesByOwner(User1_Email);
+        Note noteToDelete = user1Notes.get(0);
+        NotesDAO.deleteNote(noteToDelete);
 
         // User1 logs out
         Session.clear();
 
-        // Verify Success criteria (User1's note iss deleted)
+        // Verify Success criteria (User1's note is deleted)
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertTrue(user1Notes.isEmpty());
 
         // Verify success criteria (User2's note still exists)
         user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note3.getNoteText(), user2Notes.getFirst().getNoteText());
-
+        assertEquals(Note3_Text_Before, user2Notes.get(0).getNoteText());
     }
 
     @Test
     public void testCase5() {
-        // User1 logs in
+        // User1 logs in and creates a note
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
+        Note note1 = new Note(Note1_Name, Note1_Tags, Note1_Text_Before, null);
+        NotesDAO.addNote(note1);
 
-        // User1 creates a note
-        NotesDAO.addNote(Note1);
         List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
-        assertEquals(Note1_Text_Before, user1Notes.getFirst().getNoteText());
+        assertEquals(Note1_Text_Before, user1Notes.get(0).getNoteText());
 
         // User1 logs out
         Session.clear();
 
-        // User2 logs in
+        // User2 logs in and creates a note
         Session.setUser(User2.getEmail(), User2.getFirstName(), User2.getLastName());
+        Note note3 = new Note(Note3_Name, Note3_Tags, Note3_Text_Before, null);
+        NotesDAO.addNote(note3);
 
-        // User2 creates a note
-        NotesDAO.addNote(Note3);
         List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
-        assertEquals(Note3_Text_Before, user2Notes.getFirst().getNoteText());
+        assertEquals(Note3_Text_Before, user2Notes.get(0).getNoteText());
 
         // User2 logs out
         Session.clear();
 
-        // User1 logs back in
+        // User1 logs back in and edits their note
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
-
-        // User1 edits note
-        Note1.setNoteText(Note1_Text_After);
-        NotesDAO.updateNote(Note1);
         user1Notes = NotesDAO.getNotesByOwner(User1_Email);
+        Note user1Note = user1Notes.get(0);
+        user1Note.setNoteText(Note1_Text_After);
+        NotesDAO.updateNote(user1Note);
 
         // User1 logs back out
         Session.clear();
 
-        // User2 logs back in
+        // User2 logs back in and edits their note
         Session.setUser(User2.getEmail(), User2.getFirstName(), User2.getLastName());
-
-
-        // User2's edits note
-        Note3.setNoteText(Note3_Text_After);
-        NotesDAO.updateNote(Note3);
         user2Notes = NotesDAO.getNotesByOwner(User2_Email);
+        Note user2Note = user2Notes.get(0);
+        user2Note.setNoteText(Note3_Text_After);
+        NotesDAO.updateNote(user2Note);
 
         // User2 logs out
         Session.clear();
 
         // Verify success criteria (User1's edits have been retained)
-        assertEquals(Note1_Text_After, user1Notes.getFirst().getNoteText());
+        user1Notes = NotesDAO.getNotesByOwner(User1_Email);
+        assertEquals(Note1_Text_After, user1Notes.get(0).getNoteText());
 
-        // Verify success criteria (User2's edits have been retained
-        assertEquals(Note3_Text_After, user2Notes.getFirst().getNoteText());
-
-
-
+        // Verify success criteria (User2's edits have been retained)
+        user2Notes = NotesDAO.getNotesByOwner(User2_Email);
+        assertEquals(Note3_Text_After, user2Notes.get(0).getNoteText());
     }
 
     @Test
     public void testCase6() {
-        // User1 logs in and creates a note
+        // User1 logs in and creates a note with a specific name
         Session.setUser(User1.getEmail(), User1.getFirstName(), User1.getLastName());
-        NotesDAO.addNote(Note5); // "DELETE ME!" owned by User1
-        Note5.setNoteText(Note1_Text_After); // Edit User1's note
-        NotesDAO.updateNote(Note5);
+        Note note5User1 = new Note(Note5_Name, Note5_Tags, Note5_Text, null);
+        NotesDAO.addNote(note5User1);
+
+        // User1 edits their note
+        List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
+        Note user1Note = user1Notes.get(0);
+        user1Note.setNoteText(Note1_Text_After);
+        NotesDAO.updateNote(user1Note);
+
         Session.clear();
 
         // User2 logs in and creates a note with the same name
         Session.setUser(User2.getEmail(), User2.getFirstName(), User2.getLastName());
-        NotesDAO.addNote(Note6); // "DELETE ME!" owned by User2
-        Note6.setNoteText(Note3_Text_After); // Edit User2's note
-        NotesDAO.updateNote(Note6);
+        Note note6User2 = new Note(Note6_Name, Note6_Tags, Note6_Text, null);
+        NotesDAO.addNote(note6User2);
+
+        // User2 edits their note
+        List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
+        Note user2Note = user2Notes.get(0);
+        user2Note.setNoteText(Note3_Text_After);
+        NotesDAO.updateNote(user2Note);
+
         Session.clear();
 
         // Verify success criteria (User1's note was retained and edited correctly)
-        List<Note> user1Notes = NotesDAO.getNotesByOwner(User1_Email);
+        user1Notes = NotesDAO.getNotesByOwner(User1_Email);
         assertEquals(1, user1Notes.size());
-        assertEquals(Note5.getNoteText(), user1Notes.getFirst().getNoteText());
+        assertEquals(Note1_Text_After, user1Notes.get(0).getNoteText());
+        assertEquals(User1_Email, user1Notes.get(0).getNoteOwner());
 
         // Verify success criteria (User2's note was retained and edited correctly)
-        List<Note> user2Notes = NotesDAO.getNotesByOwner(User2_Email);
+        user2Notes = NotesDAO.getNotesByOwner(User2_Email);
         assertEquals(1, user2Notes.size());
-        assertEquals(Note6.getNoteText(), user2Notes.getFirst().getNoteText());
+        assertEquals(Note3_Text_After, user2Notes.get(0).getNoteText());
+        assertEquals(User2_Email, user2Notes.get(0).getNoteOwner());
     }
-
-    /**
-     * Further test case ideas
-     * try delete non existent note
-     * try load note after deleting it
-     * try delete note as different user to note owner
-     * try load note as different user to note owner
-     */
-
-
-
-
-
 }
