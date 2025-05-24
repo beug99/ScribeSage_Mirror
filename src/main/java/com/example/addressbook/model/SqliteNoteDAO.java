@@ -68,7 +68,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
-            statement.setString(4, Session.getLoggedInEmail());
+            statement.setString(4, note.getNoteOwner());
 //            statement.setObject(5, note.getFolderId());
             if (note.getCreatedDate() == null) {
                 note.setCreatedDate(LocalDateTime.now());
@@ -97,7 +97,7 @@ public class SqliteNoteDAO implements INoteDAO {
             statement.setString(1, note.getNoteName());
             statement.setString(2, note.getNoteTags());
             statement.setString(3, note.getNoteText());
-            statement.setString(4, Session.getLoggedInEmail());
+            statement.setString(4, note.getNoteOwner());
             statement.setObject(5, note.getFolderId());
             statement.setInt(6, note.getId());
 
