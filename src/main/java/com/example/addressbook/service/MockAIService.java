@@ -1,6 +1,5 @@
-package com.example.addressbook.model;
+package com.example.addressbook.service;
 
-import java.sql.Time;
 import java.util.concurrent.TimeoutException;
 
 public class MockAIService {

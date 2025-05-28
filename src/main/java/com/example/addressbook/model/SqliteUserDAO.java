@@ -28,8 +28,7 @@ public class SqliteUserDAO implements IUserDAO {
      */
     private void createTable() {
         // Create table if not exists
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS users ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "firstName VARCHAR NOT NULL,"
@@ -49,17 +48,18 @@ public class SqliteUserDAO implements IUserDAO {
      */
     @Override
     public void addUser(User user) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)");
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users (firstName, lastName, " +
+                "email, password) VALUES (?, ?, ?, ?)")) {
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getPassword());
             statement.executeUpdate();
             // Set the id of the new contact
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                user.setId(generatedKeys.getInt(1));
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,8 +72,8 @@ public class SqliteUserDAO implements IUserDAO {
      */
     @Override
     public void updateUser(User user) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE contacts SET firstName = ?, lastName = ?, phone = ?, email = ? WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET firstName = ?, " +
+                "lastName = ?, phone = ?, email = ? WHERE id = ?")) {
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getPassword());
@@ -91,8 +91,7 @@ public class SqliteUserDAO implements IUserDAO {
      */
     @Override
     public void deleteUser(User user) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM contacts WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
             statement.setInt(1, user.getId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -107,18 +106,19 @@ public class SqliteUserDAO implements IUserDAO {
      */
     @Override
     public User getUser(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");){
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String email = resultSet.getString("email");
-                String password = resultSet.getString("password");
-                User user = new User(firstName, lastName, email, password);
-                user.setId(id);
-                return user;
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    String email = resultSet.getString("email");
+                    String password = resultSet.getString("password");
+                    User user = new User(firstName, lastName, email, password);
+                    user.setId(id);
+                    return user;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,20 +133,21 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             String query = "SELECT * FROM users";
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String email = resultSet.getString("email");
-                String password = resultSet.getString("password");
 
-                User user = new User(firstName, lastName, email, password);
-                user.setId(id);
-                users.add(user);
+            try (ResultSet resultSet = statement.executeQuery(query)) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    String email = resultSet.getString("email");
+                    String password = resultSet.getString("password");
+
+                    User user = new User(firstName, lastName, email, password);
+                    user.setId(id);
+                    users.add(user);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,22 +164,17 @@ public class SqliteUserDAO implements IUserDAO {
      */
     public static boolean authenticateUser(String email, String password) {
         boolean isAuthenticated = false;
-        try {
-            // match email and password parameters with userbase
-            PreparedStatement statement = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT password FROM users WHERE email = ?");
-
+        try (PreparedStatement statement = SqliteUserConnection.getInstance().prepareStatement(
+                "SELECT password FROM users WHERE email = ?")) {
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                String storedHash = resultSet.getString("password");
-                // verifying password with password4j
-                isAuthenticated = PasswordHasher.verifyPassword(password, storedHash);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String storedHash = resultSet.getString("password");
+                    // verifying password with password4j
+                    isAuthenticated = PasswordHasher.verifyPassword(password, storedHash);
+                }
             }
-            resultSet.close();
-            statement.close();
-
         } catch (SQLException e) {
             System.err.println("Authentication error: " + e.getMessage());
         }
@@ -196,36 +192,30 @@ public class SqliteUserDAO implements IUserDAO {
      */
     public static boolean updatePassword(String email, String oldPassword, String newPassword) {
         boolean isUpdated = false;
+        try (PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
+                "SELECT password FROM users WHERE email = ?")) {
 
-        try {
             // get password hash
-            PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
-                    "SELECT password FROM users WHERE email = ?");
             getStmt.setString(1, email);
-            ResultSet resultSet = getStmt.executeQuery();
+            try (ResultSet resultSet = getStmt.executeQuery()) {
+                if (isValidPassword(newPassword)) {
+                    if (resultSet.next()) {
+                        String storedHash = resultSet.getString("password");
+                        // verifying old password using password4j
+                        if (PasswordHasher.verifyPassword(oldPassword, storedHash)) {
+                            String newHashedPassword = PasswordHasher.hashPassword(newPassword);
 
-            if(isValidPassword(newPassword)) {
-
-                if (resultSet.next()) {
-                    String storedHash = resultSet.getString("password");
-
-                    // verifying old password using password4j
-                    if (PasswordHasher.verifyPassword(oldPassword, storedHash)) {
-                        String newHashedPassword = PasswordHasher.hashPassword(newPassword);
-
-                        // updated database
-                        PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                                "UPDATE users SET password = ? WHERE email = ?");
-                        updateStmt.setString(1, newHashedPassword);
-                        updateStmt.setString(2, email);
-                        int rowsAffected = updateStmt.executeUpdate();
-                        isUpdated = (rowsAffected > 0);
-
-                        updateStmt.close();
+                            // updated database
+                            try (PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
+                                    "UPDATE users SET password = ? WHERE email = ?")) {
+                                updateStmt.setString(1, newHashedPassword);
+                                updateStmt.setString(2, email);
+                                int rowsAffected = updateStmt.executeUpdate();
+                                isUpdated = (rowsAffected > 0);
+                            }
+                        }
                     }
                 }
-                resultSet.close();
-                getStmt.close();
             }
         }
         catch (SQLException e) {
@@ -246,35 +236,28 @@ public class SqliteUserDAO implements IUserDAO {
     public static boolean updateEmail(String currentEmail, String password, String newEmail) {
         boolean isUpdated = false;
         if(isValidEmail(newEmail)) {
-            try {
+            try (PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
+                    "SELECT password FROM users WHERE email = ?")) {
+
                 // Check if the current email exists
-                PreparedStatement getStmt = SqliteUserConnection.getInstance().prepareStatement(
-                        "SELECT password FROM users WHERE email = ?"
-                );
                 getStmt.setString(1, currentEmail); // placeholder
+                try (ResultSet resultSet = getStmt.executeQuery()) {
+                    if (resultSet.next()) {
+                        String storedHash = resultSet.getString("password");
 
-                ResultSet resultSet = getStmt.executeQuery();
-                if (resultSet.next()) {
-                    String storedHash = resultSet.getString("password");
-
-                    // verify password with password4j
-                    if (PasswordHasher.verifyPassword(password, storedHash)) {
-                        // If valid, update the email
-                        PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
-                                "UPDATE users SET email = ? WHERE email = ?"
-                        );
-                        updateStmt.setString(1, newEmail);
-                        updateStmt.setString(2, currentEmail);
-                        int rowsAffected = updateStmt.executeUpdate();
-                        isUpdated = (rowsAffected > 0);
-
-                        updateStmt.close();
+                        // verify password with password4j
+                        if (PasswordHasher.verifyPassword(password, storedHash)) {
+                            // If valid, update the email
+                            try (PreparedStatement updateStmt = SqliteUserConnection.getInstance().prepareStatement(
+                                    "UPDATE users SET email = ? WHERE email = ?")) {
+                                updateStmt.setString(1, newEmail);
+                                updateStmt.setString(2, currentEmail);
+                                int rowsAffected = updateStmt.executeUpdate();
+                                isUpdated = (rowsAffected > 0);
+                            }
+                        }
                     }
                 }
-
-                resultSet.close();
-                getStmt.close();
-
             } catch (SQLException e) {
                 System.err.println("Email update error: " + e.getMessage());
             }
@@ -288,21 +271,20 @@ public class SqliteUserDAO implements IUserDAO {
      * @return A user if one exists with this email, else returns null.
      */
     public static User getUserByEmail(String email) {
-        try {
-            Connection conn = SqliteUserConnection.getInstance();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+        try (PreparedStatement stmt = SqliteUserConnection.getInstance().prepareStatement("SELECT * FROM users " +
+                "WHERE email = ?")) {
             stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                User user = new User(
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("email"),
-                        rs.getString("password")
-                );
-                user.setId(rs.getInt("id"));
-                return user;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            rs.getString("email"),
+                            rs.getString("password")
+                    );
+                    user.setId(rs.getInt("id"));
+                    return user;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -333,5 +315,4 @@ public class SqliteUserDAO implements IUserDAO {
         Pattern pattern = Pattern.compile(passwordRegex);
         return pattern.matcher(password).matches();
     }
-
 }
