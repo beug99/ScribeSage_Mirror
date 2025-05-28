@@ -2,13 +2,12 @@ import com.example.addressbook.service.MockAIService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.mockito.MockedStatic;
 
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AI_IntegrationTest {
+public class aiIntegrationtest {
     private MockAIService service;
 
     @BeforeEach
