@@ -43,7 +43,6 @@ I also contributed to UI consistency, testing UI logic, and sprint planning usin
 ## 📸 Screenshots
 ![Homepage](https://github.com/user-attachments/assets/15350cb9-585d-459e-8fad-77879eb08fee)
 
-
 ![Ctrl-F](https://github.com/user-attachments/assets/b5ef7467-5c8f-4233-acc5-847c8c65e820)
 
 ![Homepage nav ](https://github.com/user-attachments/assets/dbf76e41-4944-4442-8771-21b77a62a7a5)
